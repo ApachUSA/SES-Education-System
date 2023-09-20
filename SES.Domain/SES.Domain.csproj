@@ -10,7 +10,6 @@
     <Folder Include="Entity\User\" />
     <Folder Include="Entity\Test\" />
     <Folder Include="Entity\Abstract\" />
-    <Folder Include="Enum\" />
     <Folder Include="ViewModel\" />
     <Folder Include="Response\" />
     <Folder Include="Helper\" />
