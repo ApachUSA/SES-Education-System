@@ -17,5 +17,7 @@ namespace SES.Domain.Entity.UserE
 		public required int City_ID { get; set; }
 
 		public City? City { get; set; }
+
+		public List<User>? Users { get; set; }
 	}
 }
