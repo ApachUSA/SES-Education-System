@@ -14,4 +14,8 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.11" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\SES.Domain\SES.Domain.csproj" />
+  </ItemGroup>
+
 </Project>
