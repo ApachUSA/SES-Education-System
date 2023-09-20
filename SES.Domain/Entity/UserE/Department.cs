@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SES.Domain.Entity.User
+namespace SES.Domain.Entity.UserE
 {
 	public class Department
 	{

@@ -1,10 +1,11 @@
-﻿using System;
+﻿using SES.Domain.Entity.TestE;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SES.Domain.Entity.User
+namespace SES.Domain.Entity.UserE
 {
 	public class Position
 	{
@@ -13,5 +14,7 @@ namespace SES.Domain.Entity.User
 		public required string Name { get; set;}
 
 		public List<User>? Users { get; set; }
+
+		public List<Test>? Tests { get; set; }
 	}
 }

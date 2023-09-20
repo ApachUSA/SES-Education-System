@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SES.Domain.Entity.Abstract
+namespace SES.Domain.Entity.AbstractE
 {
 	public class Abstract
 	{
@@ -15,6 +15,6 @@ namespace SES.Domain.Entity.Abstract
 
 		public required string URL { get; set; }
 
-		public required Area_of_study AreaOfStudy_ID { get; set; }
+		public required AreaOfStudy AreaOfStudy_ID { get; set; }
 	}
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SES.Domain.Enum
 {
-	public enum Area_of_study
+	public enum AreaOfStudy
 	{
 		Функціональна,
 		Психологічна,

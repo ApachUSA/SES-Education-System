@@ -1,11 +1,12 @@
-﻿using SES.Domain.Enum;
+﻿using SES.Domain.Entity.TestE;
+using SES.Domain.Enum;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SES.Domain.Entity.User
+namespace SES.Domain.Entity.UserE
 {
 	public class User
 	{
@@ -31,6 +32,8 @@ namespace SES.Domain.Entity.User
 
 		public required Role Role_ID { get; set; }
 
+		public List<Test_Result>? Test_Results { get; set; }
 
+		public List<Test_History>? Test_Histories { get; set; }
 	}
 }

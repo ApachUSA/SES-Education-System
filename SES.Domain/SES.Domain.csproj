@@ -7,7 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Entity\Test\" />
     <Folder Include="ViewModel\" />
     <Folder Include="Response\" />
     <Folder Include="Helper\" />
