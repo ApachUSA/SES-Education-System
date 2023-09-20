@@ -9,7 +9,6 @@
   <ItemGroup>
     <Folder Include="Entity\User\" />
     <Folder Include="Entity\Test\" />
-    <Folder Include="Entity\Abstract\" />
     <Folder Include="ViewModel\" />
     <Folder Include="Response\" />
     <Folder Include="Helper\" />
