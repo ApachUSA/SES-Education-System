@@ -15,6 +15,6 @@ namespace SES.Domain.Entity.Abstract
 
 		public required string URL { get; set; }
 
-		public required Area_of_study AreaOfStudy { get; set; }
+		public required Area_of_study AreaOfStudy_ID { get; set; }
 	}
 }
