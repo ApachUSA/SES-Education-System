@@ -23,6 +23,4 @@ namespace SES.Domain.Response
 			return new BaseResponse<T> { StatusCode = responseStatus, Description = description };
 		}
 	}
-
-	
 }

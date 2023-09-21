@@ -12,10 +12,12 @@ namespace SES.Domain.Entity.TestE
 
 		public required string Text { get; set; }
 
+		public bool Right { get; set; } = false;
+
 		public required int Question_ID { get; set; }
 
 		public Question? Question { get; set; }
 
-		public List<Right_Answer>? Right_Answers { get; set; }
+		//public List<Right_Answer>? Right_Answers { get; set; }
 	}
 }
