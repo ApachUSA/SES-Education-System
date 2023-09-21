@@ -13,6 +13,8 @@ namespace SES.Domain.Entity.UserE
 
 		public required string Name { get; set;}
 
+		public string? Image { get; set;}
+
 		public List<User>? Users { get; set; }
 
 		public List<Test>? Tests { get; set; }
