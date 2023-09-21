@@ -1,7 +1,12 @@
+using Microsoft.EntityFrameworkCore;
+using SES.Infrastructure;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddDbContext<SES_DB_Context>(options =>
+						options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 var app = builder.Build();
 
