@@ -18,9 +18,9 @@ namespace SES.Domain.Entity.UserE
 
 		public required string Patronymic { get; set;}
 
-		public required string Department_ID { get; set;}
+		public required int Department_ID { get; set; }
 
-		public Department? Department { get; set;}
+		public Department? Department { get; set; }
 
 		public required int Position_ID { get; set; }
 
