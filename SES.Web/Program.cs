@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using SES.Infrastructure;
+using SES.Infrastructure.Interfaces;
+using SES.Infrastructure.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,6 +9,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<SES_DB_Context>(options =>
 						options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddScoped(typeof(IBaseRepository<>), typeof(Repository<>));
 
 var app = builder.Build();
 
