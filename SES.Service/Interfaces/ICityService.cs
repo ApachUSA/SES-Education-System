@@ -12,6 +12,6 @@ namespace SES.Service.Interfaces
 {
 	public interface ICityService
 	{
-		Task<BaseResponse<SelectList>> Get(int area_ID);
+		Task<BaseResponse<SelectList>> Get(int region_ID);
 	}
 }

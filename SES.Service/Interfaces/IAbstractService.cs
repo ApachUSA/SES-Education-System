@@ -15,7 +15,7 @@ namespace SES.Service.Interfaces
 
 		Task<BaseResponse<List<Abstract>>> Get(int area_ID);
 
-		Task<BaseResponse<bool>> Update(int abstract_ID);
+		Task<BaseResponse<bool>> Update(Abstract model);
 
 		Task<BaseResponse<bool>> Delete(int abstract_ID);
 

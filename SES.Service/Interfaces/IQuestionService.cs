@@ -10,7 +10,7 @@ namespace SES.Service.Interfaces
 {
 	public interface IQuestionService
 	{
-		Task<BaseResponse<List<Question>>> Get();
+		Task<BaseResponse<List<Question>>> Get(int test_ID);
 
 		Task<BaseResponse<bool>> Create(List<Question> model);
 
