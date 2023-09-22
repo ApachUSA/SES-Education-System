@@ -2,6 +2,9 @@ using Microsoft.EntityFrameworkCore;
 using SES.Infrastructure;
 using SES.Infrastructure.Interfaces;
 using SES.Infrastructure.Repositories;
+using SES.Service.Implementations;
+using SES.Service.Interfaces;
+using SES.Service.Mapping;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +14,8 @@ builder.Services.AddDbContext<SES_DB_Context>(options =>
 						options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddScoped(typeof(IBaseRepository<>), typeof(Repository<>));
+builder.Services.AddAutoMapper(typeof(MappingProfile));
+builder.Services.AddScoped<IAccountService, AccountService>();
 
 var app = builder.Build();
 
