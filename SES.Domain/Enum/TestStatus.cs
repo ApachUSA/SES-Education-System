@@ -8,7 +8,7 @@ namespace SES.Domain.Enum
 {
 	public enum TestStatus
 	{
-		Actual,
-		Previously
+		Основне,
+		Підготовче
 	}
 }
