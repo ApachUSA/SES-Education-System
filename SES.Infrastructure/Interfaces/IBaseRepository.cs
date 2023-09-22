@@ -10,7 +10,11 @@ namespace SES.Infrastructure.Interfaces
 	{
 		Task Create(T entity);
 
+		Task Create(List<T> entity);
+
 		Task Delete(T entity);
+
+		Task Delete(List<T> entity);
 
 		IQueryable<T> Get();
 

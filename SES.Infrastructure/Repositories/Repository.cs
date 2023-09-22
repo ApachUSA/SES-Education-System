@@ -22,9 +22,21 @@ namespace SES.Infrastructure.Repositories
 			await _dbContext.SaveChangesAsync();
 		}
 
+		public async Task Create(List<T> entity)
+		{
+			await _dbContext.Set<T>().AddRangeAsync(entity);
+			await _dbContext.SaveChangesAsync();
+		}
+
 		public async Task Delete(T entity)
 		{
 			_dbContext.Set<T>().Remove(entity);
+			await _dbContext.SaveChangesAsync();
+		}
+
+		public async Task Delete(List<T> entity)
+		{
+			_dbContext.Set<T>().RemoveRange(entity);
 			await _dbContext.SaveChangesAsync();
 		}
 
