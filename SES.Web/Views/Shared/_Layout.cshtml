@@ -7,28 +7,20 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/SES.Web.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="icon" type="image/x-icon" href="https://upload.wikimedia.org/wikipedia/commons/8/82/DSNS_emblem_2016.svg">
 </head>
-<body>
+<body >
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">SES.Web</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
-                </div>
+        <div class="container-fluid text-center header">
+            <div class="container justify-content-between align-content-between align-items-center d-inline-flex">
+                <div class="header_btn"><a class="link_button">Кабінет</a></div>
+                <div class="header_btn"><a class="link_button">Матеріали конспектів</a></div>
+                <div class="header_img"><a><img height="80" width="80" src="https://upload.wikimedia.org/wikipedia/commons/8/82/DSNS_emblem_2016.svg" /></a></div>
+                <div class="header_btn"><a class="link_button">Підготовчі тестування</a></div>
+                <div class="header_btn"><a class="link_button">Вийти</a></div>
             </div>
-        </nav>
+        </div>
     </header>
     <div class="container">
         <main role="main" class="pb-3">
@@ -36,9 +28,52 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2023 - SES.Web - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+    <footer class="container-fluid footer text-center d-flex flex-wrap">
+        <div class="container footer_line justify-content-between align-content-between align-items-center d-inline-flex">
+          <div class="d-flex flex-column">
+                <div class="footer_item d-flex align-items-center">
+                    <div class="footer_title"><span>ДСНС - разом і надійно!</span></div>
+                </div>
+               
+                <div class="footer_item d-flex align-items-center">
+                    <div class="footer_icon"><img height="60" width="60" src="https://upload.wikimedia.org/wikipedia/commons/8/82/DSNS_emblem_2016.svg" /></div>
+                    <div class="d-flex flex-column text-start justify-content-between">
+                        <span>Державна служба України</span>
+                        <span> з надзвичайних ситуацій</span>
+                    </div>
+                </div>
+          </div>
+           <div class="d-flex flex-column">
+                <div class="footer_item d-flex text-start">
+                    <div class="footer_icon"><i class="bi bi-geo-alt"></i></div>
+                    <div class="d-flex flex-column text-start justify-content-between">
+                        <span>ГУ в місті Київ за адресою:</span>
+                        <a class="link_button_nodecorate" href="https://maps.app.goo.gl/Zi4Z3se6jdbKNEAH8">вул. О.Гончара 55-а</a>
+                    </div>
+                </div>
+                <div class="footer_item d-flex ">
+                    <div class="footer_icon"><i class="bi bi-clock"></i></div>
+                    <div class="d-flex flex-column text-start  justify-content-between">
+                        <span>пн-пт: 08:00 - 18:00</span>
+                        <span>сб-нд: 09:00 - 17:00</span>
+                    </div>
+                </div>
+           </div>
+            <div class="d-flex flex-column">
+                <div class="footer_item d-flex text-start">
+                    <div class="footer_icon"><i class="bi bi-info-circle"></i></div>
+                    <div class="d-flex flex-column text-start  justify-content-between">
+                        <span>044-202-32-11</span>
+                        <a href="https://dsns.gov.ua/uk" class="link_button_nodecorate"> kyiv.dsns.gov.ua</a>
+                    </div>
+                </div>
+                <div class="footer_item d-flex align-items-center">
+                    <div class="footer_icon"><i class="bi bi-envelope"></i></div>
+                    <div class="d-flex flex-column text-star  justify-content-betweent">
+                        <a class="link_button_nodecorate">kyiv@dsns.gov.ua</a>
+                    </div>
+                </div>
+            </div>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
@@ -47,3 +82,56 @@
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
+
+    <style>
+        .header{
+        background: #03183E;
+        line-height: 120px;
+        }
+
+    .header_btn{
+        width: auto;
+       
+    }
+
+    .header_img{
+        width: 80px;
+        height: 80px;
+    }
+
+    .header_img img{
+        vertical-align: inherit;
+    }
+
+    .footer{
+        height: 168px !important;
+        background: var(--main-dark, #03183E);
+        line-height: inherit!important;
+        color: #fff;
+    }
+
+    .footer_line{
+      
+        padding: 10px;
+    }
+
+    .footer_title span{
+        color: #FFF;
+        font-family: Inter;
+        font-size: 24px;
+        font-style: normal;
+        font-weight: 700 ;
+        line-height: normal;
+    }
+
+    .footer_item{
+        padding: 10px;
+        height: 60px;
+    }
+
+    .footer_icon {
+        font-size: 30px;
+        margin-right: 10px;
+    }
+
+    </style>

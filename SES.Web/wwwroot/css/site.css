@@ -18,5 +18,52 @@ html {
 }
 
 body {
-  margin-bottom: 60px;
+    background: var(--additional-dark, #1F3A58);
+
 }
+
+a {
+    text-decoration: none !important;
+    cursor: pointer;
+    margin: 0;
+    padding: 0;
+    color: #FFF!important;
+}
+
+span {
+    color: #fff;
+    font-family: Inter;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.link_button {
+    /* кнопка */
+    font-family: Inter;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    padding-bottom: 10px;
+}
+
+    .link_button:hover {
+        color: #ffdf17 !important;
+        border-bottom: 4px solid #ffdf17;
+        background: 0 0;
+    }
+
+.link_button_nodecorate {
+    /* кнопка */
+    font-family: Inter;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+    .link_button_nodecorate:hover {
+        color: #ffdf17 !important;
+        background: 0 0;
+    }
