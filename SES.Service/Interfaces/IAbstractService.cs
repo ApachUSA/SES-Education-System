@@ -11,11 +11,12 @@ namespace SES.Service.Interfaces
 {
 	public interface IAbstractService
 	{
-		Task<BaseResponse<bool>> Create(Abstract model);
+		Task<BaseResponse<bool>> Create(Abstracts model);
 
-		Task<BaseResponse<List<Abstract>>> Get(int area_ID);
+		Task<BaseResponse<List<Abstracts>>> GetAll(int area_ID);
+		Task<BaseResponse<Abstracts>> Get(int abstract_ID);
 
-		Task<BaseResponse<bool>> Update(Abstract model);
+		Task<BaseResponse<bool>> Update(Abstracts model);
 
 		Task<BaseResponse<bool>> Delete(int abstract_ID);
 

@@ -17,7 +17,7 @@ namespace SES.Infrastructure
 			Database.EnsureCreated();
 		}
 
-		public DbSet<Abstract> Abstracts { get; set; }
+		public DbSet<Abstracts> Abstracts { get; set; }
 
 		public DbSet<Option> Options { get; set; }
 		public DbSet<Question> Questions { get; set; }
@@ -34,7 +34,7 @@ namespace SES.Infrastructure
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
-			modelBuilder.Entity<Abstract>(builder =>
+			modelBuilder.Entity<Abstracts>(builder =>
 			{
 				builder.ToTable("Abstracts").HasKey(x => x.Abstract_ID);
 				builder.Property(x => x.Abstract_ID).ValueGeneratedOnAdd();

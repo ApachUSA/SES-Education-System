@@ -16,14 +16,14 @@ namespace SES.Service.Implementations
 {
 	public class AbstractService : IAbstractService
 	{
-		private readonly IBaseRepository<Abstract> _abstractRepository;
+		private readonly IBaseRepository<Abstracts> _abstractRepository;
 
-		public AbstractService(IBaseRepository<Abstract> abstractRepository)
+		public AbstractService(IBaseRepository<Abstracts> abstractRepository)
 		{
 			_abstractRepository = abstractRepository;
 		}
 
-		public async Task<BaseResponse<bool>> Create(Abstract model)
+		public async Task<BaseResponse<bool>> Create(Abstracts model)
 		{
 			try
 			{
@@ -53,22 +53,37 @@ namespace SES.Service.Implementations
 			}
 		}
 
-		public async Task<BaseResponse<List<Abstract>>> Get(int area_ID)
+		public async Task<BaseResponse<Abstracts>> Get(int abstract_ID)
+		{
+			try
+			{
+				var _abstract = await _abstractRepository.Get().FirstOrDefaultAsync(x => x.Abstract_ID == abstract_ID);
+				if (_abstract == null) return BaseResponse<Abstracts>.Fail(ResponseStatus.ItemNotFound, "Лекцію не знайдено");
+
+				return BaseResponse<Abstracts>.Success(_abstract, "");
+			}
+			catch (Exception e)
+			{
+				return BaseResponse<Abstracts>.Error($"[Abstract Get] : {e.Message}");
+			}
+		}
+
+		public async Task<BaseResponse<List<Abstracts>>> GetAll(int area_ID)
 		{
 			try
 			{
 				var _abstracts = await _abstractRepository.Get().Where(x => (int)x.AreaOfStudy_ID == area_ID).ToListAsync();
-				if(_abstracts == null) return BaseResponse<List<Abstract>>.Fail(ResponseStatus.ItemNotFound, "Лекції не знайдено");
+				if(_abstracts == null) return BaseResponse<List<Abstracts>>.Fail(ResponseStatus.ItemNotFound, "Лекції не знайдено");
 
-				return BaseResponse<List<Abstract>>.Success(_abstracts, "");
+				return BaseResponse<List<Abstracts>>.Success(_abstracts, "");
 			}
 			catch (Exception e)
 			{
-				return BaseResponse<List<Abstract>>.Error($"[Abstract Get] : {e.Message}");
+				return BaseResponse<List<Abstracts>>.Error($"[Abstracts GetAll] : {e.Message}");
 			}
 		}
 
-		public async Task<BaseResponse<bool>> Update(Abstract model)
+		public async Task<BaseResponse<bool>> Update(Abstracts model)
 		{
 			try
 			{
