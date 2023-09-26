@@ -16,6 +16,7 @@ builder.Services.AddDbContext<SES_DB_Context>(options =>
 builder.Services.AddScoped(typeof(IBaseRepository<>), typeof(Repository<>));
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 builder.Services.AddScoped<IAccountService, AccountService>();
+builder.Services.AddScoped<IAbstractService, AbstractService>();
 
 var app = builder.Build();
 
