@@ -1,25 +1,40 @@
 html {
-  font-size: 14px;
+    font-size: 14px;
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    html {
+        font-size: 16px;
+    }
 }
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
 
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
 }
 
 body {
     background: var(--additional-dark, #1F3A58);
+    padding-bottom: 168px;
+}
 
+.form-control {
+    background-color: var(--main-dark, #03183E);
+    color: #fff;
+}
+
+    .form-control:focus {
+        color: #fff;
+        box-shadow: 0 0 0 0.1rem #ffdf17;
+        background-color: var(--main-dark, #03183E);
+    }
+
+h1, h2, h3, h4, h5 {
+    color: #fff;
 }
 
 a {
@@ -27,10 +42,22 @@ a {
     cursor: pointer;
     margin: 0;
     padding: 0;
-    color: #FFF!important;
+    color: #FFF !important;
+}
+
+i {
+    color: #fff;
 }
 
 span {
+    color: #fff;
+    font-family: Inter;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+label {
     color: #fff;
     font-family: Inter;
     font-style: normal;
@@ -67,3 +94,58 @@ span {
         color: #ffdf17 !important;
         background: 0 0;
     }
+
+        .link_button_nodecorate:hover i {
+            color: #ffdf17 !important;
+        }
+
+        .link_button_nodecorate:hover span {
+            color: #ffdf17 !important;
+        }
+
+.main_button {
+    border-radius: 5px;
+    background: #03183E;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.main_button_light {
+    background: var(--additional-dark, #1F3A58);
+}
+
+.main_button:hover {
+    background: #ffdf17;
+    transition: 0.3s;
+    transform: scale(1.01);
+}
+
+    .main_button:hover span {
+        color: black;
+    }
+
+
+.add_icon:hover i {
+    color: greenyellow;
+}
+
+.edit_icon:hover i {
+    color: deepskyblue;
+}
+
+.delete_icon:hover i {
+    color: red;
+}
+
+
+.modal-content {
+    background: var(--main-dark, #03183E);
+    padding: 60px 180px;
+    width: 660px;
+    height: auto;
+}
+
+.modal_card {
+    width: 300px;
+}
