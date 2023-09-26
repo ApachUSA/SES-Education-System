@@ -1,0 +1,44 @@
+﻿
+@model List<Abstracts>
+
+
+<div class="d-flex flex-column mb-3">
+
+	<div class="mb-4" style="margin-top: 5%"><a class="link_button_nodecorate" onclick="ChoosingArea()"><i class="bi bi-arrow-left "></i><span>Назад</span></a></div>
+
+	<div class="theme_title"><h1>@(((AreaOfStudy)ViewBag.AreaName).ToString()) підготовка</h1></div>
+	<div class="admin_icon mb-2 mt-2"><a class="add_icon" onclick="GetCreate(@ViewBag.AreaName)"><i class="bi bi-plus-square-fill"></i></a></div>
+	@foreach (var item in Model)
+	{
+		<div class="theme_item">
+			<a class="link_button_nodecorate" href="@item.URL" target="_blank"><span>@item.Name</span></a>
+			<div class="admin_icon"><a class="edit_icon" onclick="GetEdit(@item.Abstract_ID)" ><i class="bi bi-pencil-square"></i></a></div>
+			<div class="admin_icon"><a class="delete_icon" onclick="AbstractDelete(@item.Abstract_ID,@((int)item.AreaOfStudy_ID))"><i class="bi bi-trash3-fill"></i></a></div>
+		</div>
+	}
+
+</div>
+
+
+<style>
+
+	.theme_item{
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+	}
+
+		.theme_item a{
+			width: 100%;
+		}
+
+		.theme_item .admin_icon {
+			margin: 0 10px;
+		}
+
+	.admin_icon{
+		font-size: 25px;
+	}
+
+	
+</style>

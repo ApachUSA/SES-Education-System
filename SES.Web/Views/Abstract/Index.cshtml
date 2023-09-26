@@ -1,0 +1,177 @@
+﻿@using SES.Domain.Enum;
+
+@model Abstracts
+
+<div class="main_content">
+	<partial name="_ChoosingAreaPartialView" />
+</div>
+<div class="modal_page">
+</div>
+
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="false">
+	<div class="modal-dialog modal-dialog-centered">
+		<div class="modal-content">
+			<div class="modal_card d-flex flex-column justify-content-between">
+				<span style="font-weight: 700; padding: 10px 0">Видалення конспекту</span>
+				<span style="padding: 40px 0">Ви точно хочете видалити конспект? Після виконання цієї дії конспект з цієї теми неможливо буде відновити!</span>
+				<a class="main_button main_button_light" onclick="ConfirmDelete()" style="width: 100%; height: 40px"><span>Видалити</span></a>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+
+<script>
+	function GetThemes(area_ID) {
+		$.ajax({
+			url: "@Url.Action("GetThemes", "Abstract")",
+			type: "GET",
+			data: {
+				area_ID: area_ID
+			},
+			success: function (data) {
+				$(".main_content").html(data); 
+			}
+		});
+	}
+
+	function ChoosingArea() {
+		$.ajax({
+			url: "@Url.Action("GetAreaOfStudy", "Abstract")",
+			type: "GET",
+			success: function (data) {
+				$(".main_content").html(data);
+			}
+		});
+	}
+
+	function ShowModal() {
+		$('#exampleModal').modal('show');
+	}
+
+	function HideModal() {
+		$('#exampleModal').modal('hide');
+	}
+
+	function GetCreate(area_ID) {
+		$.ajax({
+			url: "@Url.Action("Create", "Abstract")",
+			type: "GET",
+			data: {
+				area_ID: area_ID
+			},
+			success: function (data) {
+				$(".modal_page").html(data);
+				ShowModal();
+			}
+		});
+
+	}
+
+	function GetEdit(abstract_ID) {
+		$.ajax({
+			url: "@Url.Action("Edit", "Abstract")",
+			type: "GET",
+			data: {
+				abstract_ID: abstract_ID
+			},
+			success: function (data) {
+				$(".modal_page").html(data);
+				ShowModal();
+			}
+		});
+
+	}
+
+	function Create() {
+		var formData = {
+			Name: $("#Name").val(),
+			URL: $("#URL").val(),
+			AreaOfStudy_ID: $("#AreaOfStudy_ID").val()
+		};
+
+		$.ajax({
+			url: "@Url.Action("Create", "Abstract")",
+			type: "POST",
+			data: {
+				_abstract: formData
+			},
+			success: function (data) {
+				HideModal();
+				GetThemes(data);
+			},
+			error: function (xhr) {
+				var errors = xhr.responseJSON;
+				if (errors) {
+					$.each(errors, function (key, value) {
+						errorElement = $("[name='" + key.replace('_abstract.', '') + "']").siblings("span.text-danger");
+						errorElement.text(value);
+					});
+				}
+			}
+		});
+
+	}
+
+	function AbstractEdit() {
+		var formData = {
+			Abstract_ID: $("#Abstract_ID").val(),
+			Name: $("#Name").val(),
+			URL: $("#URL").val(),
+			AreaOfStudy_ID: $("#AreaOfStudy_ID").val()
+		};
+
+		$.ajax({
+			url: "@Url.Action("Edit", "Abstract")",
+			type: "POST",
+			data: {
+				_abstract: formData
+			},
+			success: function (data) {
+				HideModal();
+				GetThemes(data);
+			},
+			error: function (xhr) {
+				var errors = xhr.responseJSON;
+				if (errors) {
+					$.each(errors, function (key, value) {
+						errorElement = $("[name='" + key.replace('_abstract.', '') + "']").siblings("span.text-danger");
+						errorElement.text(value);
+					});
+				}
+			}
+		});
+
+	}
+
+	function AbstractDelete(abstract_ID, area_ID) {
+		$('#deleteModal').modal('show');
+		$('#deleteModal').data('abstract_ID', abstract_ID);
+		$('#deleteModal').data('area_ID', area_ID);
+	}
+
+	function ConfirmDelete() {
+		var abstract_ID = $('#deleteModal').data('abstract_ID');
+		var area_ID = $('#deleteModal').data('area_ID');
+
+		$('#deleteModal').modal('hide');
+
+		$.ajax({
+			url: "@Url.Action("Delete", "Abstract")",
+			type: "POST",
+			data: {
+				abstract_ID: abstract_ID,
+				area_ID: area_ID
+			},
+			success: function (data) {
+				GetThemes(data);
+			},
+			error: function (xhr) {
+			}
+		});
+	}
+
+</script>
+

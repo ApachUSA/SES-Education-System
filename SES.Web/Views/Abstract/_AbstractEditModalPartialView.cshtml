@@ -1,0 +1,28 @@
+﻿@model Abstracts
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="false">
+	<div class="modal-dialog modal-dialog-centered">
+		<div class="modal-content">
+			<div class="modal_card d-flex flex-column justify-content-between">
+				<form asp-action="Edit" id="CreateForm">
+					<input asp-for="Abstract_ID" hidden />
+					<span style="font-weight: 700">Редагування</span>
+					<div class="form-group mb-3 mt-4">
+						<label asp-for="Name"></label>
+						<input asp-for="Name" class="form-control" />
+						<span asp-validation-for="Name" class="text-danger"></span>
+					</div>
+					<div class="form-group mb-3">
+						<label asp-for="URL"></label>
+						<input asp-for="URL" class="form-control" />
+						<span asp-validation-for="URL" class="text-danger"></span>
+					</div>
+					<input asp-for="AreaOfStudy_ID" hidden />
+					<a class="main_button main_button_light" onclick="AbstractEdit()" style="width: 100%; height: 40px"><span>Зберегти</span></a>
+				</form>
+
+			</div>
+		</div>
+	</div>
+</div>

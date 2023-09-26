@@ -1,0 +1,29 @@
+﻿
+@model Abstracts
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="false">
+	<div class="modal-dialog modal-dialog-centered">
+		<div class="modal-content">
+			<div class="modal_card d-flex flex-column justify-content-between">
+				<form asp-action="Create" id="CreateForm">
+					<span style="font-weight: 700">Додавання нової теми</span>
+					<div class="form-group mb-3 mt-4">
+						<label asp-for="Name"></label>
+						<input asp-for="Name" class="form-control" />
+						<span asp-validation-for="Name" class="text-danger"></span>
+					</div>
+					<div class="form-group mb-3">
+						<label asp-for="URL"></label>
+						<input asp-for="URL" class="form-control" />
+						<span asp-validation-for="URL" class="text-danger"></span>
+					</div>
+					<input asp-for="AreaOfStudy_ID" value="@(ViewBag.AreaName)" hidden/>
+					<a class="main_button main_button_light" onclick="Create()" style="width: 100%; height: 40px"><span>Створити</span></a>
+				</form>
+
+			</div>
+		</div>
+	</div>
+</div>
+
