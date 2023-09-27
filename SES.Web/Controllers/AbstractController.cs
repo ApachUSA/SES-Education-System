@@ -8,9 +8,11 @@ using SES.Service.Implementations;
 using SES.Service.Interfaces;
 using SES.Web.Models;
 using System.Diagnostics;
+using Microsoft.AspNetCore.Authorization;
 
 namespace SES.Web.Controllers
 {
+	[Authorize]
 	public class AbstractController : Controller
 	{
 

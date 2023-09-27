@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SES.Domain.ViewModel;
 using SES.Infrastructure;
 using SES.Service.Interfaces;
@@ -7,6 +8,7 @@ using System.Diagnostics;
 
 namespace SES.Web.Controllers
 {
+	[Authorize]
 	public class HomeController : Controller
 	{
 		private readonly ILogger<HomeController> _logger;
