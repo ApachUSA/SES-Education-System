@@ -2,6 +2,7 @@
 using SES.Domain.Enum;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -33,6 +34,9 @@ namespace SES.Domain.Entity.UserE
 		public required string Login { get; set; }
 
 		public required string Password { get; set; }
+
+		[Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+		public required string PasswordConfirm { get; set; }
 
 		public required Role Role_ID { get; set; }
 
