@@ -1,0 +1,174 @@
+﻿@model User
+
+
+<ul class="nav nav-pills mb-3" style="margin-top: 5%;" id="pills-tab" role="tablist">
+	<li class="nav-item" role="presentation">
+		<button class="nav-link active" data-bs-toggle="pill" data-bs-target="#pills-profile" aria-selected="true"><span>Профіль</span></button>
+	</li>
+	<li class="nav-item" role="presentation">
+		<button class="nav-link" data-bs-toggle="pill" data-bs-target="#pills-result" aria-selected="false"><span>Результати тестування</span></button>
+	</li>
+	<li class="nav-item" role="presentation">
+		<button class="nav-link" data-bs-toggle="pill" data-bs-target="#pills-account-create" aria-selected="false"><span>Створення акаунтів</span></button>
+	</li>
+	<li class="nav-item" role="presentation">
+		<button class="nav-link" data-bs-toggle="pill" data-bs-target="#pills-workers"><span>Список працівників</span></button>
+	</li>
+</ul>
+<div class="tab-content" id="pills-tabContent" style="margin-top: 4%">
+	<div class="tab-pane fade show active " id="pills-profile">
+		<form asp-action="Index" asp-controller="User">
+			<input asp-for="User_ID" hidden />
+			<input asp-for="Surname" hidden />
+			<input asp-for="Name" hidden />
+			<input asp-for="Patronymic" hidden />
+			<input asp-for="Position_ID" hidden />
+			<input asp-for="Rang_ID" hidden />
+			<input asp-for="Department_ID" hidden />
+			<input asp-for="Role_ID" hidden />
+			<div class="d-flex flex-column">
+				<div class="d-flex flex-row">
+					<div class="profile_title"><span>Персональні дані</span></div>
+					<div class="profile_info d-flex flex-column">
+						<div class="d-flex flex-row">
+							<div class="profile_image">
+								<img width="120" height="120" src="@Model.Position.Image" />
+							</div>
+							<div class="profile_name d-flex flex-column">
+								<h4 style="font-weight: 700">@Model.Surname @Model.Name @Model.Patronymic</h4>
+								<span>Звання</span>
+								<span style="font-weight: 700">@Model.Rang.Name</span>
+								<span>Посада</span>
+								<span style="font-weight: 700">@Model.Position.Name</span>
+							</div>
+						</div>
+						<div class="profile_address"><span style="font-style: italic;">ДПРЧ ГУ ДСНС №@Model.Department.Number, @Model.Department.City.Region_ID.ToString() обл., м.@Model.Department.City.Name, @Model.Department.Address</span></div>
+					</div>
+				</div>
+
+				<div class="d-flex flex-row" style="margin-top: 80px;">
+					<div class="profile_title"><span>Зміна паролю</span></div>
+					<div class="profile_info d-flex flex-column" style="margin-right: 60px; width: 300px">
+						<div class="form-group" style="width: 100%">
+							<label asp-for="Login"></label>
+							<input asp-for="Login" style="width: 100%;" class="form-control text-center" disabled />
+						</div>
+					</div>
+					<div class="profile_info d-flex flex-column" style="width: 300px">
+						<div class="form-group mb-3" style="width: 100%">
+							<label asp-for="Password"></label>
+							<input asp-for="Password" style="width: 100%; background: transparent;" type="password" placeholder="Введіть новий пароль" class="form-control text-center" />
+							<span asp-validation-for="Password" class="text-danger"></span>
+						</div>
+						<div class="form-group mb-3" style="width: 100%">
+							<input asp-for="PasswordConfirm" style="width: 100%;  background: transparent;" type="password" placeholder="Підтвердіть пароль" class="form-control text-center" />
+							<span asp-validation-for="PasswordConfirm" class="text-danger"></span>
+
+						</div>
+						<a onclick="AbstractEdit()" class="main_button" style="width: 100%; height: 40px"><span>Оновити</span></a>
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+	<div class="tab-pane fade" id="pills-result">..</div>
+	<div class="tab-pane fade" id="pills-account-create">...</div>
+	<div class="tab-pane fade" id="pills-workers">....</div>
+</div>
+
+<script>
+	function AbstractEdit() {
+		var formData = {
+			User_ID: $("#User_ID").val(),
+			Surname: $("#Surname").val(),
+			Name: $("#Name").val(),
+			Patronymic: $("#Patronymic").val(),
+			Position_ID: $("#Position_ID").val(),
+			Rang_ID: $("#Rang_ID").val(),
+			Department_ID: $("#Department_ID").val(),
+			Rang_ID: $("#Rang_ID").val(),
+			Role_ID: $("#Role_ID").val(),
+			Login: $("#Login").val(),
+			Password: $("#Password").val(),
+			PasswordConfirm: $("#PasswordConfirm").val()
+		};
+
+		$.ajax({
+			url: "@Url.Action("Index", "User")",
+			type: "POST",
+			data: {
+				user: formData
+			},
+			success: function (data) {
+				location.reload();
+			},
+			error: function (xhr) {
+				$("span.text-danger").text("");
+				$("input").removeClass("error");
+
+				var errors = xhr.responseJSON;
+				if (errors) {
+					$.each(errors, function (key, value) {
+						errorElement = $("[name='" + key.replace('user.', '') + "']").siblings("span.text-danger");
+						errorElement.text(value);
+					});
+				}
+			}
+		});
+
+	}
+</script>
+
+<style>
+
+	.profile_title {
+		width: 200px;
+		margin-right: 184px;
+	}
+
+		.profile_title span {
+			font-size: 20px;
+			font-weight: 700;
+		}
+
+	.profile_image {
+		margin-right: 60px;
+		background: rgba(3, 24, 62, 0.5);
+		border-radius: 5px;
+	}
+
+	.profile_name span {
+		margin-bottom: 5px;
+	}
+
+	.profile_address {
+		margin-top: 5px;
+	}
+
+	.nav-item:first-child .nav-link {
+		border-top-left-radius: 5px;
+		border-bottom-left-radius: 5px;
+	}
+
+	.nav-item:last-child .nav-link {
+		border-top-right-radius: 5px;
+		border-bottom-right-radius: 5px;
+	}
+
+	.nav-pills .nav-link {
+		height: 40px;
+		border-radius: 0;
+		background: rgba(3, 24, 62, 0.5);
+		color: #fff;
+	}
+
+
+		.nav-pills .nav-link:hover {
+			background: var(--main-dark, #03183E);
+		}
+
+		.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+			background: var(--main-dark, #03183E);
+		}
+
+</style>
