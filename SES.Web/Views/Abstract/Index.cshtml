@@ -103,6 +103,9 @@
 				GetThemes(data);
 			},
 			error: function (xhr) {
+				$("span.text-danger").text("");
+				$("input").removeClass("error");
+
 				var errors = xhr.responseJSON;
 				if (errors) {
 					$.each(errors, function (key, value) {
@@ -134,6 +137,9 @@
 				GetThemes(data);
 			},
 			error: function (xhr) {
+				$("span.text-danger").text("");
+				$("input").removeClass("error");
+
 				var errors = xhr.responseJSON;
 				if (errors) {
 					$.each(errors, function (key, value) {
