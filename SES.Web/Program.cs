@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using SES.Infrastructure;
 using SES.Infrastructure.Interfaces;
@@ -17,6 +18,14 @@ builder.Services.AddScoped(typeof(IBaseRepository<>), typeof(Repository<>));
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<IAbstractService, AbstractService>();
+builder.Services.AddScoped<IUserService, UserService>();
+
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+	.AddCookie(options =>
+	{
+		options.LoginPath = new PathString("/Account/Login");
+		options.AccessDeniedPath = new PathString("/Account/Login");
+	});
 
 var app = builder.Build();
 
