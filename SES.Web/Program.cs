@@ -19,6 +19,7 @@ builder.Services.AddAutoMapper(typeof(MappingProfile));
 builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<IAbstractService, AbstractService>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<ISelectService, SelectService>();
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
 	.AddCookie(options =>
