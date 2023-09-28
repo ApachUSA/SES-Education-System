@@ -1,0 +1,91 @@
+﻿@model RegisterVM
+
+
+<div class="d-flex flex-column">
+	<form>
+		<div class="d-flex flex-row">
+			<div class="d-flex flex-column">
+				<div class="profile_title"><span>Персональні дані</span></div>
+				<div class="profile_image mt-4" style="width: fit-content">
+					<img id="register_image" width="200" height="200" src="" />
+				</div>
+			</div>
+
+			<div class="d-flex flex-column" style="width: 420px">
+				<div class="form-group mb-3" style="width: 100%">
+					<label>Введіть ПІБ працівника:</label>
+					<input asp-for="Snp" style="width: 100%; background: transparent;" class="form-control" />
+					<span asp-validation-for="Snp" class="text-danger"></span>
+				</div>
+				<div class="form-group mb-3" style="width: 100%">
+					<label>Оберіть звання працівника:</label>
+					<select asp-for="Rang_ID_VM" asp-items="ViewBag.Rang" class=" form-select"></select>
+					<span asp-validation-for="Rang_ID_VM" class="text-danger"></span>
+				</div>
+				<div class="form-group mb-3" style="width: 100%">
+					<label>Оберіть посаду працівника:</label>
+					<select asp-for="Position_ID_VM" onchange="ChangeImage(this)" asp-items="ViewBag.Position" class=" form-select"></select>
+					<span asp-validation-for="Position_ID_VM" class="text-danger"></span>
+				</div>
+				<div class="form-group mb-3" style="width: 100%">
+					<label>Оберіть область, в якій служить працівник:</label>
+					<select asp-items="ViewBag.Region" onchange="FillDepartmentOption(this)" id="region" class=" form-select"></select>
+				</div>
+				<div class="form-group mb-3" style="width: 100%">
+					<label>Оберіть частину, в якій служить працівник:</label>
+					<select asp-for="Department_ID_VM"  class=" form-select"></select>
+					<span asp-validation-for="Department_ID_VM" class="text-danger"></span>
+				</div>
+			</div>
+		</div>
+
+		<div class="d-flex flex-row mb-3" style="margin-top: 80px">
+			<div class="d-flex flex-column">
+				<div class="profile_title"><span>Налаштування безпеки</span></div>
+			</div>
+
+			<div class="d-flex flex-column" style="width: 420px">
+			@*	<div class="form-group mb-3" style="width: 100%">
+					<label>Оберіть роль користувача:</label>
+					<select asp-for="Role_ID_VM" asp-items="ViewBag.Role" class=" form-select"></select>
+					<span asp-validation-for="Role_ID_VM" class="text-danger"></span>
+				</div>*@
+				<div class="form-group mb-3" style="width: 100%">
+					<label>Введіть логін для безпечного входу працівника у систему:</label>
+					<input asp-for="Login_VM" style="width: 100%; background: transparent;" class="form-control" />
+					<span style="font-size: 14px; font-weight: 700">! Логін має складатися з прізвища та ініціалів працівника</span>
+					<span asp-validation-for="Login_VM" class="text-danger"></span>
+				</div>
+				<div class="form-group mb-3" style="width: 100%">
+					<label>Введіть пароль для безпечного входу працівника у систему:</label>
+					<input asp-for="Password_VM" style="width: 100%; background: transparent;" class="form-control" />
+					<span asp-validation-for="Password_VM" class="text-danger"></span>
+				</div>
+				<div class="mb-4 d-flex flex-row justify-content-between" style="width: 100%">
+					<a onclick="GetRegisterView() " class="main_button" style="width: 100%; margin-right: 10px; height: 40px"><span>Cкасувати</span></a>
+					<a onclick="RegisterUser()" class="main_button" style="width: 100%; margin-left: 10px; height: 40px"><span>Зберегти</span></a>
+				</div>
+			</div>
+		</div>
+	</form>
+</div>
+<script>
+	function ChangeImage(selectElement) {
+		var position_ID = selectElement.value;
+		var imagesJson = '@Html.Raw(@ViewBag.PositionImage)';
+		var images = JSON.parse(imagesJson);
+
+		var previewImage = document.getElementById("register_image");
+		
+		var imageObject = images.find(function (image) {
+			return image.ID === parseInt(position_ID);
+		});
+
+		if (imageObject) {
+			previewImage.src = imageObject.Image;
+		} else {
+			// Если изображение не найдено, можно установить заглушку или другое значение по умолчанию
+			previewImage.src = 'https://cdn-icons-png.flaticon.com/512/3177/3177440.png'; // Замените на вашу заглушку
+		}
+	}
+</script>

@@ -9,7 +9,7 @@
 		<button class="nav-link" data-bs-toggle="pill" data-bs-target="#pills-result" aria-selected="false"><span>Результати тестування</span></button>
 	</li>
 	<li class="nav-item" role="presentation">
-		<button class="nav-link" data-bs-toggle="pill" data-bs-target="#pills-account-create" aria-selected="false"><span>Створення акаунтів</span></button>
+		<button class="nav-link" data-bs-toggle="pill" data-bs-target="#pills-account-create" onclick="GetRegisterView();" aria-selected="false"><span>Створення акаунтів</span></button>
 	</li>
 	<li class="nav-item" role="presentation">
 		<button class="nav-link" data-bs-toggle="pill" data-bs-target="#pills-workers"><span>Список працівників</span></button>
@@ -65,19 +65,26 @@
 							<span asp-validation-for="PasswordConfirm" class="text-danger"></span>
 
 						</div>
-						<a onclick="AbstractEdit()" class="main_button" style="width: 100%; height: 40px"><span>Оновити</span></a>
+						<a onclick="AccountUpdate()" class="main_button" style="width: 100%; height: 40px"><span>Оновити</span></a>
 					</div>
 				</div>
 			</div>
 		</form>
 	</div>
 	<div class="tab-pane fade" id="pills-result">..</div>
-	<div class="tab-pane fade" id="pills-account-create">...</div>
+	<div class="tab-pane fade account-create" id="pills-account-create">
+		@*<partial name="_CreateUserPartialView" model="new RegisterVM(){ Snp = string.Empty, Department_ID=0, Login=string.Empty, Password = string.Empty, Position_ID=0, Rang_ID=0, Role_ID=0}"/>*@
+	</div>
 	<div class="tab-pane fade" id="pills-workers">....</div>
 </div>
-
 <script>
-	function AbstractEdit() {
+	window.addEventListener('load', function () {
+	
+
+	});
+</script>
+<script>
+	function AccountUpdate() {
 		var formData = {
 			User_ID: $("#User_ID").val(),
 			Surname: $("#Surname").val(),
@@ -117,13 +124,108 @@
 		});
 
 	}
+
+	function GetRegisterView() {
+		$.ajax({
+			url: "@Url.Action("Register", "Account")",
+			type: "GET",
+			success: function (data) {
+				$(".account-create").html(data);
+
+				var selectElement = document.getElementById("region");
+				if (selectElement) {
+					var event = new Event("change", {
+						bubbles: true,
+						cancelable: true,
+					});
+					selectElement.dispatchEvent(event);
+				}
+
+				var selectElement = document.getElementById("Position_ID_VM");
+				if (selectElement) {
+					var event = new Event("change", {
+						bubbles: true,
+						cancelable: true,
+					});
+					selectElement.dispatchEvent(event);
+				}
+			}
+		});
+	}
+
+
+
+
+
+	function FillDepartmentOption(selectElement) {
+		var region = selectElement.value;
+
+		$.ajax({
+			url: "@Url.Action("FillDepartmentOption", "Account")",
+			type: "GET",
+			data: {
+				region_ID: region
+			},
+			success: function (data) {
+				var selectElement = document.getElementById("Department_ID_VM");
+				selectElement.innerHTML = "";
+				for (var i = 0; i < data.length; i++) {
+
+					var option = document.createElement("option");
+					option.value = data[i].value;
+					option.text = data[i].text;
+					selectElement.appendChild(option);
+
+				}
+
+
+
+			}
+		});
+	}
+
+	function RegisterUser() {
+		var formData = {
+			Snp: $("#Snp").val(),
+			Position_ID_VM: $("#Position_ID_VM").val(),
+			Rang_ID_VM: $("#Rang_ID_VM").val(),
+			Department_ID_VM: $("#Department_ID_VM").val(),
+			Role_ID_VM: $("#Role_ID_VM").val(),
+			Login_VM: $("#Login_VM").val(),
+			Password_VM: $("#Password_VM").val(),
+		};
+
+		$.ajax({
+			url: "@Url.Action("Register", "Account")",
+			type: "POST",
+			data: {
+				model: formData
+			},
+			success: function (data) {
+				GetRegisterView();
+			},
+			error: function (xhr) {
+				$("span.text-danger").text("");
+				$("input").removeClass("error");
+
+				var errors = xhr.responseJSON;
+				if (errors) {
+					$.each(errors, function (key, value) {
+						errorElement = $("[name='" + key.replace('model.', '') + "']").siblings("span.text-danger");
+						errorElement.text(value);
+					});
+				}
+			}
+		});
+
+	}
 </script>
 
 <style>
 
 	.profile_title {
-		width: 200px;
-		margin-right: 184px;
+		width: 250px;
+		margin-right: 164px;
 	}
 
 		.profile_title span {
