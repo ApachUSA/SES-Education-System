@@ -24,7 +24,7 @@ namespace SES.Web.Controllers
 
 		public IActionResult Index()
 		{
-			var response = _accountService.Register(new RegisterVM { Department_ID = 1, Login = "dwa", Password = "dwa", Position_ID = 1, Rang_ID = 1, Role_ID = Domain.Enum.Role.Teacher, Snp = "Войтенко Ігор Миколайович" });
+			//var response = _accountService.Register(new RegisterVM { Department_ID = 1, Login = "dwa", Password = "dwa", Position_ID = 1, Rang_ID = 1, Role_ID = Domain.Enum.Role.Teacher, Snp = "Войтенко Ігор Миколайович" });
 			return View();
 		}
 

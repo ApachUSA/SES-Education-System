@@ -76,7 +76,19 @@ label {
     line-height: normal;
 }
 
-.link_button {
+.form-select {
+    background-color: var(--additional-dark, #1F3A58);
+    color: #fff;
+    width: 100%;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23dee2e6' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+}
+
+    .form-select:focus {
+        color: #fff;
+        box-shadow: 0 0 0 0.1rem #ffdf17;
+    }
+
+    .link_button {
     /* кнопка */
         font-family: Inter;
         font-size: 16px;
@@ -90,6 +102,10 @@ label {
         color: #ffdf17 !important;
         border-bottom: 4px solid #ffdf17;
         background: 0 0;
+    }
+
+    .link_button:hover span{
+        color: #ffdf17 !important;
     }
 
 .link_button_nodecorate {
