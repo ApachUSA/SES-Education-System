@@ -101,6 +101,11 @@
 			success: function (data) {
 				HideModal();
 				GetThemes(data);
+
+				var toastText = "Конспект успішно створено";
+				$("#s_toastText").text(toastText);
+				var Toast = new bootstrap.Toast(document.getElementById('successToast'));
+				Toast.show();
 			},
 			error: function (xhr) {
 				$("span.text-danger").text("");
@@ -135,6 +140,11 @@
 			success: function (data) {
 				HideModal();
 				GetThemes(data);
+
+				var toastText = "Конспект успішно оновлено";
+				$("#s_toastText").text(toastText);
+				var Toast = new bootstrap.Toast(document.getElementById('successToast'));
+				Toast.show();
 			},
 			error: function (xhr) {
 				$("span.text-danger").text("");
@@ -173,6 +183,11 @@
 			},
 			success: function (data) {
 				GetThemes(data);
+
+				var toastText = "Конспект успішно видалено";
+				$("#s_toastText").text(toastText);
+				var Toast = new bootstrap.Toast(document.getElementById('successToast'));
+				Toast.show();
 			},
 			error: function (xhr) {
 			}
