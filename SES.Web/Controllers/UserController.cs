@@ -21,18 +21,21 @@ namespace SES.Web.Controllers
 		}
 
 		[HttpGet]
-		public async Task<IActionResult> Index()
+		public IActionResult Index() => View();
+
+		[HttpGet]
+		public async Task<IActionResult> Profile()
 		{
 			var response = await _userService.Get(int.Parse(HttpContext.User.FindFirst("UserID").Value));
-			if(response.StatusCode == ResponseStatus.Success)
+			if (response.StatusCode == ResponseStatus.Success)
 			{
-				return View(response.Data);
+				return PartialView("_UserProfilePartialView", response.Data);
 			}
 			return View("ErrorView", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> Index(User user)
+		public async Task<IActionResult> Profile(User user)
 		{
 			if (ModelState.IsValid)
 			{
@@ -46,5 +49,37 @@ namespace SES.Web.Controllers
 			return BadRequest(ModelState);
 
 		}
+
+		[HttpGet]
+		public async Task<IActionResult> GetUsersList()
+		{
+			var response = await _userService.Get();
+			if (response.StatusCode == ResponseStatus.Success)
+			{
+				return PartialView("_UserListPartialView", response.Data);
+			}
+			return View("ErrorView", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+		}
+
+		[HttpGet]
+		public async Task<IActionResult> GetUsersListByName(string pib)
+		{
+			var response = await _userService.Get();
+			if (response.StatusCode == ResponseStatus.Success)
+			{
+				if(pib == null) return PartialView("_UserListPartialView", response.Data);
+
+				pib = pib.ToLower();
+				var findedUser = response.Data.Where(x => x.Name.ToLower().Contains(pib) || x.Surname.ToLower().Contains(pib) || x.Patronymic.ToLower().Contains(pib)).ToList();
+
+				if (findedUser == null)
+				{
+					return BadRequest("Користувачів не знайдено");
+				}
+				return PartialView("_UserListPartialView", findedUser);
+			}
+			return View("ErrorView", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+		}
+
 	}
 }
