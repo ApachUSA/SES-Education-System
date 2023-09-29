@@ -25,6 +25,7 @@ body {
 .form-control {
     background-color: var(--main-dark, #03183E);
     color: #fff;
+    width: 100%;
 }
 
     .form-control:focus {
@@ -41,7 +42,9 @@ body {
         margin: 0;
     }
 
-
+.form-group{
+    width: 100%;
+}
 
 h1, h2, h3, h4, h5, h6 {
     color: #fff;
@@ -88,15 +91,27 @@ label {
         box-shadow: 0 0 0 0.1rem #ffdf17;
     }
 
-    .link_button {
+.custom-toast {
+    max-width: 250px;
+    margin-top: 130px;
+    color: #fff;
+    background-color: #03183E;
+}
+
+.toast-header {
+    color: #fff;
+    background-color: #03183E;
+}
+
+.link_button {
     /* кнопка */
-        font-family: Inter;
-        font-size: 16px;
-        font-style: normal;
-        font-weight: 400;
-        line-height: normal;
-        padding-bottom: 10px;
-    }
+    font-family: Inter;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    padding-bottom: 10px;
+}
 
     .link_button:hover {
         color: #ffdf17 !important;
@@ -104,9 +119,9 @@ label {
         background: 0 0;
     }
 
-    .link_button:hover span{
-        color: #ffdf17 !important;
-    }
+        .link_button:hover span {
+            color: #ffdf17 !important;
+        }
 
 .link_button_nodecorate {
     /* кнопка */
@@ -156,6 +171,10 @@ label {
 
 .add_icon:hover i {
     color: greenyellow;
+}
+
+.orange_icon:hover i {
+    color: #ffdf17;
 }
 
 .edit_icon:hover i {
