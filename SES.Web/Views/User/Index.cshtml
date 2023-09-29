@@ -6,7 +6,7 @@
 		<button class="nav-link active" data-bs-toggle="pill" data-bs-target="#pills-profile" onclick="GetProfileView()" aria-selected="true"><span>Профіль</span></button>
 	</li>
 	<li class="nav-item" role="presentation">
-		<button class="nav-link" data-bs-toggle="pill" data-bs-target="#pills-result" aria-selected="false"><span>Результати тестування</span></button>
+		<button class="nav-link" data-bs-toggle="pill" data-bs-target="#pills-result" onclick="GetResult()" @*onclick="GetHistory()"*@ aria-selected="false"><span>Результати тестування</span></button>
 	</li>
 	<li class="nav-item" role="presentation">
 		<button class="nav-link" data-bs-toggle="pill" data-bs-target="#pills-account-create" onclick="GetRegisterView();" aria-selected="false"><span>Створення акаунтів</span></button>
@@ -19,7 +19,56 @@
 	<div class="tab-pane fade show active profile" id="pills-profile">
 		@*<partial name="_UserProfilePartialView" />*@
 	</div>
-	<div class="tab-pane fade" id="pills-result">..</div>
+	<div class="tab-pane fade result" id="pills-result">
+
+		<div class="d-flex flex-column">
+			<span style="font-weight: 700; margin-bottom: 20px">Оберіть для якої посади необхідно сформувати список результатів:</span>
+			<div class="d-flex flex-row justify-content-between" style="margin-bottom: 20px">
+				<div class="form-check filter-checkbox">
+					<input id="Водій автодрабини" class="form-check-input filter-checkbox" type="checkbox" >
+					<label class="form-check-label" for="flexCheckDefault">
+						Водій автодрабини
+					</label>
+				</div>
+				<div class="form-check filter-checkbox">
+					<input id="Командир відділення" class="form-check-input filter-checkbox" type="checkbox" >
+					<label class="form-check-label" for="flexCheckDefault">
+						Командир відділення
+					</label>
+				</div>
+				<div class="form-check filter-checkbox">
+					<input id="Радіотелефоніст" class="form-check-input filter-checkbox" type="checkbox" >
+					<label class="form-check-label" for="flexCheckDefault">
+						Радіотелефоніст
+					</label>
+				</div>
+				<div class="form-check filter-checkbox">
+					<input id="Пожежний-рятувальник" class="form-check-input filter-checkbox" type="checkbox" >
+					<label class="form-check-label" for="flexCheckDefault">
+						Пожежний-рятувальник
+					</label>
+				</div>
+			</div>
+
+			<div class="d-flex flex-row align-items-center" style="width: 100%;">
+				<span style="margin-right: 40px;">Оберіть дату, за якою необхідно сформувати список для завірення підписом і печаткою:</span>
+				<div style="width: 250px">
+					<input class="filter_date" type="date" id="start" name="trip-start" max="2024-12-31" style="width: 100%" lang="en" translate="no" />
+				</div>
+			</div>
+
+			<div class="result_view" style="margin-top: 70px; width: 100%">
+
+			</div>
+
+			<div class="d-flex flex-row align-items-center justify-content-center" style="margin-top: 50px">
+				<a onclick="" class="main_button" style="width: 300px; height: 40px"><span>Завантажити</span></a>
+			</div>
+			
+		</div>
+
+
+	</div>
 	<div class="tab-pane fade account-create" id="pills-account-create">
 		@*<partial name="_CreateUserPartialView"/>*@
 	</div>
@@ -33,14 +82,32 @@
 		<div class="workers">
 			@*<partial name="_UserListPartialView"/>*@
 		</div>
-		
+
 	</div>
 </div>
+
+<div class="modal_page">
+</div>
+
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="false">
+	<div class="modal-dialog modal-dialog-centered">
+		<div class="modal-content">
+			<div class="modal_card d-flex flex-column justify-content-between">
+				<span style="font-weight: 700; padding: 10px 0">Видалення акаунту працівника</span>
+				<span style="padding: 40px 0">Ви точно хочете видалити акаунт? Після виконання цієї дії акаунт даного працівника неможливо буде відновити!</span>
+				<a class="main_button main_button_light" onclick="ConfirmUserDelete()" style="width: 100%; height: 40px"><span>Видалити</span></a>
+			</div>
+		</div>
+	</div>
+</div>
+
+
 <script>
 	window.addEventListener('load', function () {
 		GetProfileView();
 	});
 </script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
 
 	function GetProfileView() {
@@ -105,7 +172,7 @@
 			type: "GET",
 			success: function (data) {
 				$(".account-create").html(data);
-
+				$(".workers").empty();
 				var selectElement = document.getElementById("region");
 				if (selectElement) {
 					var event = new Event("change", {
@@ -191,14 +258,14 @@
 				if (errors) {
 					$.each(errors, function (key, value) {
 
-						if(key !== ""){
+						if (key !== "") {
 							errorElement = $("[name='" + key.replace('model.', '') + "']").siblings("span.text-danger");
 							errorElement.text(value);
 						}
 						$("#e_toastText").text(value);
 						var errorToast = new bootstrap.Toast(document.getElementById('errorToast'));
 						errorToast.show();
-						
+
 					});
 				}
 			}
@@ -212,6 +279,7 @@
 			type: "GET",
 			success: function (data) {
 				$(".workers").html(data);
+				$(".account-create").empty();
 
 			}
 		});
@@ -228,7 +296,159 @@
 			},
 			success: function (data) {
 				$(".workers").html(data);
+				$(".account-create").empty();
 				inputElement.value = "";
+
+			},
+			error: function (xhr) {
+				$("#e_toastText").text(xhr.responseText);
+				var Toast = new bootstrap.Toast(document.getElementById('errorToast'));
+				Toast.show();
+			}
+		});
+	}
+
+	function ShowModal() {
+		$('#editUserModal').modal('show');
+	}
+
+	function HideModal() {
+		$('#editUserModal').modal('hide');
+	}
+
+
+	function GetUserEdit(user_Id) {
+		$.ajax({
+			url: "@Url.Action("Edit", "User")",
+			type: "GET",
+			data: {
+				user_Id: user_Id
+			},
+			success: function (data) {
+
+				$(".modal_page").html(data);
+				ShowModal();
+
+				var selectElement = document.getElementById("region");
+				if (selectElement) {
+					var event = new Event("change", {
+						bubbles: true,
+						cancelable: true,
+					});
+					selectElement.dispatchEvent(event);
+				}
+
+				var selectElement = document.getElementById("Position_ID_VM");
+				if (selectElement) {
+					var event = new Event("change", {
+						bubbles: true,
+						cancelable: true,
+					});
+					selectElement.dispatchEvent(event);
+				}
+			}
+		});
+
+	}
+
+
+	function UserDelete(user_Id) {
+		$('#deleteModal').modal('show');
+		$('#deleteModal').data('user_ID', user_Id);
+	}
+
+	function ConfirmUserDelete() {
+		var user_Id = $('#deleteModal').data('user_ID');
+		$('#deleteModal').modal('hide');
+
+		$.ajax({
+			url: "@Url.Action("Delete", "User")",
+			type: "POST",
+			data: {
+				user_Id: user_Id
+			},
+			success: function (data) {
+				GetUsersListView();
+				$("#s_toastText").text(data);
+				var Toast = new bootstrap.Toast(document.getElementById('successToast'));
+				Toast.show();
+			},
+			error: function (xhr) {
+				$("#e_toastText").text(xhr.responseText);
+				var Toast = new bootstrap.Toast(document.getElementById('errorToast'));
+				Toast.show();
+			}
+		});
+	}
+
+
+	function GetHistory() {
+		$.ajax({
+			url: "@Url.Action("TestHistory", "TestResult")",
+			type: "GET",
+			success: function (data) {
+				$(".result").html(data);
+
+			}
+		});
+	}
+
+	function GetResult() {
+		$.ajax({
+			url: "@Url.Action("TestResult", "TestResult")",
+			type: "GET",
+			success: function (data) {
+				$(".result_view").html(data);
+
+			}
+		});
+	}
+
+	$(".filter-checkbox").click(function () {
+		FilterResult();
+	});
+
+	$(".filter_date").on("blur keypress", function (e) {
+		// Проверяем, нажата ли клавиша Enter (код клавиши 13)
+		if (e.type === "keypress" && e.which !== 13) {
+			return;
+		}
+		FilterResult();
+	});
+
+	function FilterResult() {
+		var selectedValues = [];
+
+		// Получаем выбранные флажки
+		$(".filter-checkbox:checked").each(function () {
+			selectedValues.push($(this).attr("id"));
+		});
+
+		var formattedDate = $(".filter_date").val();
+		 // Разделяем дату на части по дефису
+		if (formattedDate != "")
+		{
+			var parts = formattedDate.split("-");
+			formattedDate = parts[2] + "." + parts[1] + "." + parts[0];
+		}
+
+		// Преобразуем выбранные значения в строку для передачи
+		var filterValues = selectedValues.join(",");
+
+		$.ajax({
+			url: "@Url.Action("TestResultFiltered", "TestResult")",
+			type: "GET",
+			data: {
+				positions: filterValues,
+				date: formattedDate
+			}, 
+			success: function (data) {
+				$(".result_view").html(data);
+
+				var toastText = "Пошукові фільтри застосовано";
+				$("#s_toastText").text(toastText);
+				var Toast = new bootstrap.Toast(document.getElementById('successToast'));
+				Toast.show();
 
 			},
 			error: function (xhr) {
@@ -292,12 +512,12 @@
 			background: var(--main-dark, #03183E);
 		}
 
-	.search_input:focus-visible{
+	.search_input:focus-visible {
 		outline: none;
 	}
 
 	.search_input::placeholder {
-		color: #fff; 
+		color: #fff;
 	}
 
 </style>

@@ -1,0 +1,41 @@
+﻿@model List<Test_History>
+
+
+<div class="" style="margin-top: 70px; width: 100%">
+	<table style="width: 100%">
+		<thead>
+			<tr style="height: 65px">
+				<td style="width: 15%;"><h5 style=" font-weight: 700">Дата</h5></td>
+				<td style="width: 40%;"><h5 style=" font-weight: 700">Назва тесту</h5></td>
+				<td style="width: 25%;"><h5 style=" font-weight: 700">Статус</h5></td>
+				<td style="width: 10%;"><h5 style=" font-weight: 700">Бали</h5></td>
+				<td style="width: 10%;"><h5 style=" font-weight: 700">Результат</h5></td>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (var item in Model)
+			{
+				<tr style="height: 50px">
+					<td><span>@item.Date</span></td>
+					<td><span>Тестування за @item.Test.Year рік. @item.Test.Position.Name</span></td>
+					<td><span>@item.Test.Status</span></td>
+					<td><span>@item.Mark/5</span></td>
+					<td>
+						@if(item.Status == ResultStatus.Pass)
+						{
+							<span>Склав</span>
+						}
+						@if (item.Status == ResultStatus.Fail)
+						{
+							<span>Не склав</span>
+						}
+						@if (item.Status == ResultStatus.Retake)
+						{
+							<span>Перескладання</span>
+						}
+					</td>
+				</tr>
+			}
+		</tbody>
+	</table>
+</div>

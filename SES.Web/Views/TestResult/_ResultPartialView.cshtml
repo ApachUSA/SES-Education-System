@@ -1,0 +1,49 @@
+﻿
+@model List<Test_Result>
+
+
+	<table style="width: 100%">
+		<thead>
+			<tr style="height: 65px">
+				<td style="width: 5%;"><h5 style=" font-weight: 700">№</h5></td>
+				<td style="width: 35%;"><h5 style=" font-weight: 700">ПІБ працівника</h5></td>
+				<td style="width: 20%;"><h5 style=" font-weight: 700">Посада</h5></td>
+				<td class="text-end" style="width: 10%;"><h5 style=" font-weight: 700">Бали</h5></td>
+				<td class="text-end" style="width: 15%;"><h5 style=" font-weight: 700">Статус</h5></td>
+				<td class="text-end" style="width: 15%;"><h5 style=" font-weight: 700">Дата</h5></td>
+			</tr>
+		</thead>
+		<tbody>
+			@{
+				int i = 1;
+			}
+		@foreach (var item in Model)
+			{
+				
+				<tr style="height: 50px">
+					<td><span>@(i++)</span></td>
+					<td><span>@item.User.Surname @item.User.Name @item.User.Patronymic</span></td>
+					<td><span>@item.User.Position.Name</span></td>
+					<td class="text-end"><span>@item.Mark/5</span></td>
+					<td class="text-end">
+						@if (item.Status == ResultStatus.Pass)
+						{
+							<span>Склав</span>
+						}
+						@if (item.Status == ResultStatus.Fail)
+						{
+							<span>Не склав</span>
+						}
+						@if (item.Status == ResultStatus.Retake)
+						{
+							<span>Перескладання</span>
+						}
+					</td>
+					<td class="text-end"><span>@item.Date</span></td>
+
+				</tr>
+			}
+			
+			
+		</tbody>
+	</table>
