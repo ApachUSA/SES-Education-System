@@ -45,7 +45,7 @@ namespace SES.Web.Controllers
 		}
 
 		[HttpGet]
-		public async Task<IActionResult> Create(int area_ID)
+		public IActionResult Create(int area_ID)
 		{
 			ViewData["AreaName"] = area_ID;
 			return PartialView("_AbstractModalPartialView");
@@ -73,11 +73,11 @@ namespace SES.Web.Controllers
 		public async Task<IActionResult> Edit(int abstract_ID)
 		{
 			var response = await _abstractService.Get(abstract_ID);
-			if(response.StatusCode == ResponseStatus.Success)
+			if (response.StatusCode == ResponseStatus.Success)
 			{
 				return PartialView("_AbstractEditModalPartialView", response.Data);
 			}
-			return View("ErrorView",new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+			return View("ErrorView", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
 		}
 
 		[HttpPost]
