@@ -4,15 +4,13 @@
 
 <div class="d-flex flex-column">
 
-	
-
 	<div class="" style="margin-top: 70px; width: 100%">
 		<table style="width: 100%">
 			<thead>
 				<tr style="height: 65px">
-					<td style="width: 30%"><h5>ПІБ працівника</h5></td>
-					<td style="width: 25%"><h5>Посада</h5></td>
-					<td style="width: 35%"><h5>Частина</h5></td>
+					<td style="width: 30%;"><h5 style=" font-weight: 700">ПІБ працівника</h5></td>
+					<td style="width: 25%;"><h5 style=" font-weight: 700">Посада</h5></td>
+					<td style="width: 35%;"><h5 style=" font-weight: 700">Частина</h5></td>
 					<td style="width: 5%"><h5></h5></td>
 					<td style="width: 5%"><h5></h5></td>
 				</tr>
@@ -24,8 +22,8 @@
 						<td><span>@item.Surname @item.Name @item.Patronymic </span></td>
 						<td><span>@item.Position.Name</span></td>
 						<td><span>№@item.Department.Number, м. @item.Department.City.Name, @item.Department.City.Region_ID.ToString() обл. </span></td>
-						<td class="text-center"><a class="edit_icon" style="font-size: 20px" onclick=""><i class="bi bi-pencil-square"></i></a></td>
-						<td class="text-center"><a class="delete_icon" style="font-size: 20px" onclick=""><i class="bi bi-trash3-fill"></i></a></td>
+						<td class="text-center"><a class="edit_icon" style="font-size: 20px" onclick="GetUserEdit(@item.User_ID)"><i class="bi bi-pencil-square"></i></a></td>
+						<td class="text-center"><a class="delete_icon" style="font-size: 20px" onclick="UserDelete(@item.User_ID) "><i class="bi bi-trash3-fill"></i></a></td>
 					</tr>
 				}
 				

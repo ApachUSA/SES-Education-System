@@ -1,12 +1,16 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using SES.Domain.Entity.AbstractE;
 using SES.Domain.Entity.UserE;
 using SES.Domain.Enum;
+using SES.Domain.ViewModel;
 using SES.Service.Implementations;
 using SES.Service.Interfaces;
 using SES.Web.Models;
 using System.Diagnostics;
+using System.Text.Json;
 
 namespace SES.Web.Controllers
 {
@@ -14,10 +18,14 @@ namespace SES.Web.Controllers
 	public class UserController : Controller
 	{
 		private readonly IUserService _userService;
+		private readonly IMapper _mapper;
+		private readonly ISelectService _selectService;
 
-		public UserController(IUserService userService)
+		public UserController(IUserService userService, IMapper mapper, ISelectService selectService)
 		{
 			_userService = userService;
+			_mapper = mapper;
+			_selectService = selectService;
 		}
 
 		[HttpGet]
@@ -67,7 +75,7 @@ namespace SES.Web.Controllers
 			var response = await _userService.Get();
 			if (response.StatusCode == ResponseStatus.Success)
 			{
-				if(pib == null) return PartialView("_UserListPartialView", response.Data);
+				if (pib == null) return PartialView("_UserListPartialView", response.Data);
 
 				pib = pib.ToLower();
 				var findedUser = response.Data.Where(x => x.Name.ToLower().Contains(pib) || x.Surname.ToLower().Contains(pib) || x.Patronymic.ToLower().Contains(pib)).ToList();
@@ -79,6 +87,81 @@ namespace SES.Web.Controllers
 				return PartialView("_UserListPartialView", findedUser);
 			}
 			return View("ErrorView", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+		}
+
+		[HttpPost]
+		public async Task<IActionResult> Delete(int user_ID)
+		{
+
+			var response = await _userService.Delete(user_ID);
+			if (response.StatusCode == ResponseStatus.Success)
+			{
+				return Ok(response.Description);
+			}
+			return BadRequest(response.Description);
+
+		}
+
+		[HttpGet]
+		public async Task<IActionResult> Edit(int user_ID)
+		{
+			var response = await _userService.Get(user_ID);
+			
+			if (response.StatusCode == ResponseStatus.Success)
+			{
+				var register = _mapper.Map<RegisterVM>(response.Data);
+
+				var rang = await _selectService.GetRangs();
+				var position = await _selectService.GetPositions();
+				var region = await _selectService.GetRegions();
+				var role = await _selectService.GetRoles();
+
+				List<SelectListItem> selectRegion = region.Data.Select(reg => new SelectListItem
+				{
+					Value = ((int)reg).ToString(),
+					Text = reg.ToString()
+				}).ToList();
+
+				List<SelectListItem> selectRole = role.Data.Select(rol => new SelectListItem
+				{
+					Value = ((int)rol).ToString(),
+					Text = rol.ToString()
+				}).ToList();
+
+
+				ViewData["Region"] = new SelectList(selectRegion.OrderBy(x => x.Text), "Value", "Text", (int)response.Data.Department.City.Region_ID);
+				ViewData["Role"] = new SelectList(selectRole, "Value", "Text");
+				ViewData["Rang"] = new SelectList(rang.Data, "Rang_ID", "Name");
+				ViewData["Position"] = new SelectList(position.Data, "Position_ID", "Name");
+				ViewData["PositionImage"] = JsonSerializer.Serialize(position.Data.Select(x => new { ID = x.Position_ID, Image = x.Image }).ToList());
+
+				return PartialView("_UserEditPartialView", register);
+			}
+			return View("ErrorView", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+		}
+
+
+
+		[HttpPost]
+		public async Task<IActionResult> Edit(RegisterVM model)
+		{
+			if (ModelState.IsValid)
+			{
+				model.Role_ID_VM = model.Position_ID_VM switch
+				{
+					5 => Role.Teacher,
+					6 => Role.Admin,
+					_ => Role.Student,
+				};
+				var response = await _userService.Update(_mapper.Map<User>(model));
+				if (response.StatusCode == ResponseStatus.Success)
+				{
+					return Ok();
+				}
+				ModelState.AddModelError("", response.Description);
+			}
+			return BadRequest(ModelState);
+
 		}
 
 	}
