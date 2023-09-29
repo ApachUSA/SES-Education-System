@@ -3,7 +3,9 @@
 <div class="d-flex flex-column  align-items-center justify-content-center" style="height: calc(100vh - 288px);">
 	<h1 class="text-center" style="width: 660px; font-weight: 700; margin-bottom: 20px;">Ласкаво просимо до системи навчання працівників ДСНС!</h1>
 	<span style=" margin-bottom: 20px;">Для початку роботи, авторизуйтесь у системі</span>
+
 	<form asp-action="Login" asp-controller="Account">
+		<div asp-validation-summary="ModelOnly" class="text-danger"></div>
 		<div class="form-group mb-3" style="width: 300px">
 			<input asp-for="Login" style="width: 100%; background: transparent;" placeholder="Логін" class="form-control text-center" />
 			<span asp-validation-for="Login" class="text-danger"></span>
