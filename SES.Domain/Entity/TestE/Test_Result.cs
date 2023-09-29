@@ -16,6 +16,8 @@ namespace SES.Domain.Entity.TestE
 
 		public required int Mark { get; set; }
 
+		public required string Date { get; set; }
+
 		public required ResultStatus Status { get; set; }
 
 		public required int User_ID { get; set; }
