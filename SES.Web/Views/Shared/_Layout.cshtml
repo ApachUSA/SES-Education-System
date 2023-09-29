@@ -14,7 +14,7 @@
 <body>
 	<header>
 		<div class="container-fluid text-center header">
-			<div class="container justify-content-between align-content-between align-items-center d-inline-flex" style="width: 53%">
+			<div class="container justify-content-between align-content-between align-items-center d-inline-flex p-0" style="width: 53%">
 
 				<div class="header_btn">
 					<a class="link_button" asp-action="Index" asp-controller="User">
@@ -62,8 +62,8 @@
 		</div>
 	</header>
 
-	<div class="container" style="width: 53%">
-		<main role="main">
+	<div class="container p-0" style="width: 53%;">
+		<main role="main" style="margin-bottom: 50px">
 			@RenderBody()
 		</main>
 	</div>

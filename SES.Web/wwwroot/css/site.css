@@ -46,10 +46,45 @@ body {
     width: 100%;
 }
 
-h1, h2, h3, h4, h5, h6 {
-    color: #fff;
-    font-family: Inter;
+.form-check-input {
+    background-color: transparent;
+    border-radius: 5px;
+    border: 2px solid #FFF;
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
 }
+
+    .form-check-input:checked[type=checkbox] {
+        background-image: none;
+    }
+
+    .form-check-input:checked {
+        background-color: #EC6E07;
+        border-color: #fff;
+    }
+
+    .form-check-input:focus {
+        box-shadow: 0 0 0 0.1rem #EC6E07;
+    }
+
+input[type="date"] {
+    background-color: transparent;
+    border-radius: 5px;
+    border: 2px solid var(--main-light, #FFF);
+    color: #fff;
+    text-align: center;
+}
+
+    input[type="date"]::-webkit-calendar-picker-indicator {
+        background-image: url(https://cdn-icons-png.flaticon.com/512/10302/10302360.png);
+    }
+
+
+    h1, h2, h3, h4, h5, h6 {
+        color: #fff;
+        font-family: Inter;
+    }
 
 a {
     text-decoration: none !important;
@@ -189,10 +224,14 @@ label {
 .modal-content {
     background: var(--main-dark, #03183E);
     padding: 60px 180px;
-    width: 660px;
+    width: auto;
     height: auto;
 }
 
 .modal_card {
     width: 300px;
+}
+
+.modal-dialog-centered {
+    justify-content: center;
 }
