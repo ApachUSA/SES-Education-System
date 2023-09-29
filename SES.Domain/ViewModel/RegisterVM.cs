@@ -10,6 +10,8 @@ namespace SES.Domain.ViewModel
 {
 	public class RegisterVM
 	{
+		public int User_ID_VM { get; set; }
+
 		public required string Snp { get; set; }
 
 		public required int Department_ID_VM { get; set; }
