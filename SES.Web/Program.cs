@@ -20,6 +20,8 @@ builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<IAbstractService, AbstractService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ISelectService, SelectService>();
+builder.Services.AddScoped<ITestResultService, TestResultService>();
+builder.Services.AddScoped<ITestHistoryService, TestHistoryService>();
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
 	.AddCookie(options =>
