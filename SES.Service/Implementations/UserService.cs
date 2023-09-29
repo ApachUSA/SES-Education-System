@@ -49,7 +49,7 @@ namespace SES.Service.Implementations
 				if (user == null) return BaseResponse<bool>.Fail(ResponseStatus.UserNotFound, "Користувача не знайдено");
 
 				await _userRepository.Delete(user);
-				return BaseResponse<bool>.Success(true, "");
+				return BaseResponse<bool>.Success(true, "Користувача видалено");
 			}
 			catch (Exception e)
 			{

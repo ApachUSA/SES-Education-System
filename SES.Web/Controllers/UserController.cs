@@ -72,7 +72,7 @@ namespace SES.Web.Controllers
 				pib = pib.ToLower();
 				var findedUser = response.Data.Where(x => x.Name.ToLower().Contains(pib) || x.Surname.ToLower().Contains(pib) || x.Patronymic.ToLower().Contains(pib)).ToList();
 
-				if (findedUser == null)
+				if (findedUser == null || !findedUser.Any())
 				{
 					return BadRequest("Користувачів не знайдено");
 				}
