@@ -31,8 +31,8 @@ namespace SES.Service.Mapping
 
 		private static string? SplitSnp(string snp, int index)
 		{
-			var parts = snp.Split(' ');
-			return index >= 0 && index < parts.Length ? parts[index] : null;
+			string[] words = snp.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+			return index >= 0 && index < words.Length ? words[index] : null;
 		}
 	}
 }
