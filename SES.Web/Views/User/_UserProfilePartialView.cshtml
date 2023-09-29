@@ -1,0 +1,55 @@
+﻿@model User
+
+<form asp-action="Index" asp-controller="User">
+	<input asp-for="User_ID" hidden />
+	<input asp-for="Surname" hidden />
+	<input asp-for="Name" hidden />
+	<input asp-for="Patronymic" hidden />
+	<input asp-for="Position_ID" hidden />
+	<input asp-for="Rang_ID" hidden />
+	<input asp-for="Department_ID" hidden />
+	<input asp-for="Role_ID" hidden />
+	<div class="d-flex flex-column">
+		<div class="d-flex flex-row">
+			<div class="profile_title"><span>Персональні дані</span></div>
+			<div class="profile_info d-flex flex-column">
+				<div class="d-flex flex-row">
+					<div class="profile_image">
+						<img width="120" height="120" src="@Model.Position.Image" />
+					</div>
+					<div class="profile_name d-flex flex-column">
+						<h4 style="font-weight: 700">@Model.Surname @Model.Name @Model.Patronymic</h4>
+						<span>Звання</span>
+						<span style="font-weight: 700">@Model.Rang.Name</span>
+						<span>Посада</span>
+						<span style="font-weight: 700">@Model.Position.Name</span>
+					</div>
+				</div>
+				<div class="profile_address"><span style="font-style: italic;">ДПРЧ ГУ ДСНС №@Model.Department.Number, @Model.Department.City.Region_ID.ToString() обл., м.@Model.Department.City.Name, @Model.Department.Address</span></div>
+			</div>
+		</div>
+
+		<div class="d-flex flex-row" style="margin-top: 80px;">
+			<div class="profile_title"><span>Зміна паролю</span></div>
+			<div class="profile_info d-flex flex-column" style="margin-right: 60px; width: 300px">
+				<div class="form-group" style="width: 100%">
+					<label asp-for="Login"></label>
+					<input asp-for="Login" style="width: 100%;" class="form-control text-center" disabled />
+				</div>
+			</div>
+			<div class="profile_info d-flex flex-column" style="width: 300px">
+				<div class="form-group mb-3" style="width: 100%">
+					<label asp-for="Password"></label>
+					<input asp-for="Password" style="width: 100%; background: transparent;" type="password" placeholder="Введіть новий пароль" class="form-control text-center" />
+					<span asp-validation-for="Password" class="text-danger"></span>
+				</div>
+				<div class="form-group mb-3" style="width: 100%">
+					<input asp-for="PasswordConfirm" style="width: 100%;  background: transparent;" type="password" placeholder="Підтвердіть пароль" class="form-control text-center" />
+					<span asp-validation-for="PasswordConfirm" class="text-danger"></span>
+
+				</div>
+				<a onclick="AccountUpdate()" class="main_button" style="width: 100%; height: 40px"><span>Оновити</span></a>
+			</div>
+		</div>
+	</div>
+</form>
