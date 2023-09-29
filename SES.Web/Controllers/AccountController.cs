@@ -54,7 +54,7 @@ namespace SES.Web.Controllers
 				Text = reg.ToString()
 			}).ToList();
 
-			List<SelectListItem> selectRole= role.Data.Select(rol => new SelectListItem
+			List<SelectListItem> selectRole = role.Data.Select(rol => new SelectListItem
 			{
 				Value = ((int)rol).ToString(),
 				Text = rol.ToString()
@@ -72,18 +72,12 @@ namespace SES.Web.Controllers
 		[HttpPost]
 		public async Task<IActionResult> Register(RegisterVM model)
 		{
-			switch (model.Position_ID_VM)
+			model.Role_ID_VM = model.Position_ID_VM switch
 			{
-				case 5: model.Role_ID_VM = Role.Teacher;
-					break;
-				case 6:
-					model.Role_ID_VM = Role.Admin;
-					break;
-				default:
-					model.Role_ID_VM = Role.Student;
-					break;
-
-			}
+				5 => Role.Teacher,
+				6 => Role.Admin,
+				_ => Role.Student,
+			};
 			if (ModelState.IsValid)
 			{
 				var response = await _accountService.Register(model);
@@ -119,5 +113,6 @@ namespace SES.Web.Controllers
 			}
 			return Ok(new SelectList(selectListItems, "Value", "Text"));
 		}
+
 	}
 }
