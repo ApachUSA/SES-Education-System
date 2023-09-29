@@ -42,6 +42,7 @@ namespace SES.Service.Implementations
 			{
 				var test_history = await _testHistoryRepository.Get()
 					.Include(x => x.Test)
+					.ThenInclude(x => x.Position)
 					.Where(x => x.User_ID == user_ID)
 					.ToListAsync();
 
