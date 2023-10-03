@@ -99,7 +99,7 @@ namespace SES.Service.Implementations
 			{
 				await _testRepository.Update(model);
 
-				return BaseResponse<Test>.Success(model, "");
+				return BaseResponse<Test>.Success(model, "Тест оновлено");
 			}
 			catch (Exception e)
 			{
