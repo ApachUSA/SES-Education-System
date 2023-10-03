@@ -1,0 +1,189 @@
+﻿@model List<Test>
+
+<div class="text-center"><h1 class="fw-bold">Підготовчі тестування</h1></div>
+
+<div class="d-flex flex-row" style="margin-top: 40px">
+
+	<div class="d-flex flex-column" style="width: 35%">
+		<div class="admin_icon mb-2 mt-2"><a class="add_icon" onclick="GetTestCreateView()"><i class="bi bi-plus-square-fill"></i><span style="margin-left: 5px">Створити новий тест</span></a></div>
+		@*<div class="admin_icon mb-2 mt-2"><a class="add_icon" onclick="QuestionCreate()"><i class="bi bi-plus-square-fill"></i><span style="margin-left: 5px">Створити новий тест</span></a></div>*@
+		<div class="" >
+			<h5 style="margin-bottom: 20px; font-weight: 700">Рік:</h5>
+			@foreach (var item in Model.Select(x => x.Year).Distinct().OrderDescending().ToList())
+			{
+				<div class="form-check catalog-filter-checkbox ">
+					<input class="form-check-input year-checkbox" type="checkbox">
+					<label class="form-check-label" for="flexCheckDefault">
+						@item
+					</label>
+				</div>
+			}
+		</div>
+
+		<div class="" style="margin-top: 40px">
+			<h5 style="margin-bottom: 20px; font-weight: 700">Посада:</h5>
+			<div class="form-check catalog-filter-checkbox ">
+				<input class="form-check-input position-checkbox" type="checkbox">
+				<label class="form-check-label" for="flexCheckDefault">
+					Водій автодрабини
+				</label>
+			</div>
+			<div class="form-check catalog-filter-checkbox ">
+				<input  class="form-check-input position-checkbox" type="checkbox">
+				<label class="form-check-label" for="flexCheckDefault">
+					Командир відділення
+				</label>
+			</div>
+			<div class="form-check catalog-filter-checkbox ">
+				<input  class="form-check-input position-checkbox" type="checkbox">
+				<label class="form-check-label" for="flexCheckDefault">
+					Радіотелефоніст
+				</label>
+			</div>
+			<div class="form-check catalog-filter-checkbox ">
+				<input  class="form-check-input position-checkbox" type="checkbox">
+				<label class="form-check-label" for="flexCheckDefault">
+					Пожежний-рятувальник
+				</label>
+			</div>
+		</div>
+
+		<div class="" style="margin-top: 40px">
+			<h5 style="margin-bottom: 20px; font-weight: 700">Вид:</h5>
+			<div class="form-check catalog-filter-checkbox">
+				<input class="form-check-input  type-checkbox" type="checkbox">
+				<label class="form-check-label" for="flexCheckDefault">
+					Підготовче тестування
+				</label>
+			</div>
+			<div class="form-check catalog-filter-checkbox">
+				<input class="form-check-input  type-checkbox" type="checkbox">
+				<label class="form-check-label" for="flexCheckDefault">
+					Основне тестування
+				</label>
+			</div>
+		</div>
+		
+	</div>
+
+	<div class="test_catalog d-flex flex-wrap flex-row align-items-baseline justify-content-between" style="width: 65%">
+		<partial name="_TestCatalogPartialView" model="@Model"/>
+	</div>
+
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+
+	$(".catalog-filter-checkbox").click(function () {
+		GetCatalogFiltered();
+	});
+
+
+	function GetCatalogFiltered() {
+		var selectedYear = [];
+		var selectedPosition = [];
+		var selectedType = [];
+
+		// Получаем выбранные флажки
+		$(".year-checkbox:checked").each(function () {
+			selectedYear.push($(this).siblings("label").text().trim());
+		});
+
+		$(".position-checkbox:checked").each(function () {
+			selectedPosition.push($(this).siblings("label").text().trim());
+		});
+
+		$(".type-checkbox:checked").each(function () {
+			selectedType.push($(this).siblings("label").text().replace("тестування", "").trim());
+		});
+
+		$.ajax({
+			url: "@Url.Action("GetCatalogFiltered", "Test")",
+			type: "GET",
+			data: {
+				year: selectedYear.join(","),
+				position: selectedPosition.join(","),
+				type: selectedType.join(",")
+			},
+			success: function (data) {
+				$(".test_catalog").html(data);
+
+				var toastText = "Пошукові фільтри застосовано";
+				$("#s_toastText").text(toastText);
+				var Toast = new bootstrap.Toast(document.getElementById('successToast'));
+				Toast.show();
+
+			},
+			error: function (xhr) {
+				$("#e_toastText").text(xhr.responseText);
+				var Toast = new bootstrap.Toast(document.getElementById('errorToast'));
+				Toast.show();
+			}
+		});
+	}
+
+	function GetTestCreateView() {
+		$.ajax({
+			url: "@Url.Action("TestCreate", "Test")",
+			type: "GET",
+			success: function (data) {
+				$(".test_content").html(data);
+
+			}
+		});
+	}
+
+	function QuestionCreate(test_ID) {
+		$.ajax({
+			url: "@Url.Action("QuestionCreate", "Test")",
+			type: "GET",
+			data:{
+				Test_ID: test_ID
+			},
+			success: function (data) {
+				$(".test_content").html(data);
+
+			}
+		});
+	}
+
+	function TestEdit(test_ID) {
+		$.ajax({
+			url: "@Url.Action("TestEdit", "Test")",
+			type: "GET",
+			data: {
+				test_ID: test_ID
+			},
+			success: function (data) {
+				$(".test_content").html(data);
+
+			}
+		});
+	}
+
+	function TestDelete(test_ID) {
+		$('#deleteModal').modal('show');
+		$('#deleteModal').data('test_ID', test_ID);
+	}
+
+	function ConfirmTestDelete() {
+		var test_ID = $('#deleteModal').data('test_ID');
+		$('#deleteModal').modal('hide');
+		$.ajax({
+			url: "@Url.Action("TestDelete", "Test")",
+			type: "POST",
+			data: {
+				test_ID: test_ID
+			},
+			success: function (data) {
+				GetCatalogFilterView();
+
+				$("#s_toastText").text(data);
+				var Toast = new bootstrap.Toast(document.getElementById('successToast'));
+				Toast.show();
+			}
+		});
+	}
+</script>
