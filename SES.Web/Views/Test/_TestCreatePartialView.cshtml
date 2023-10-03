@@ -1,0 +1,92 @@
+﻿
+@model Test
+
+<div class="d-flex flex-column">
+
+	<div class="mb-1" style="margin-top: 5%"><a class="link_button_nodecorate" onclick="GetCatalogFilterView()"><i class="bi bi-arrow-left "></i><span>Назад</span></a></div>
+
+	<h1 class="fw-bold" style="margin-bottom: 5%">Створення нового тесту</h1>
+
+	<form>
+		<div class="form-group mb-3" style="width: 50%">
+			<label>Змінити посаду, для якої підходить тест:</label>
+			<select asp-for="Position_ID" asp-items="@ViewBag.Position" class="form-select"></select>
+			<span asp-validation-for="Position_ID" class="text-danger"></span>
+		</div>
+		<div class="form-group mb-3" style="width: 20%">
+			<label>Змінити рік тесту:</label>
+			<input asp-for="Year" style="background: transparent;" class="form-control" value="2023" min="2010"/>
+			<span asp-validation-for="Year" class="text-danger"></span>
+		</div>
+
+		<div class="form-group mb-3">
+			<label>Змінити статус тесту:</label>
+			<div class="form-check catalog-filter-checkbox ">
+				<input asp-for="Status" value="1" class="form-check-input year-checkbox" type="radio">
+				<label class="form-check-label" for="flexCheckDefault">
+					Підготовче тестування (відображатиметься на сайті самопідготовки)
+				</label>
+			</div>
+			<div class="form-check catalog-filter-checkbox ">
+				<input asp-for="Status" value="0" class="form-check-input year-checkbox" type="radio" checked>
+				<label class="form-check-label" for="flexCheckDefault">
+					Основне тестування (відображатиметься у системі щорічного тестування працівників)
+				</label>
+			</div>
+			<span asp-validation-for="Status" class="text-danger"></span>
+		</div>
+	</form>
+
+	<div class="d-flex mt-4 flex-row justify-content-center">
+		<a onclick="GetCatalogFilterView() " class="main_button main_button_light" style="width: 300px; margin-right: 10px; height: 40px"><span>Cкасувати</span></a>
+		<a onclick="CreateTest()" class="main_button" style="width: 300px; margin-left: 10px; height: 40px"><span>Зберегти тест і додати питання</span></a>
+	</div>
+
+</div>
+
+<script>
+	function CreateTest() {
+		var formData = {
+			Position_ID: $("#Position_ID").val(),
+			Year: $("#Year").val(),
+			Status: $("input[name='Status']:checked").val()
+		};
+
+		$.ajax({
+			url: "@Url.Action("TestCreate", "Test")",
+			type: "POST",
+			data: {
+				model: formData
+			},
+			success: function (data) {
+				//GetRegisterView();
+				console.log(data);
+				$("#s_toastText").text(data.message);
+				var Toast = new bootstrap.Toast(document.getElementById('successToast'));
+				Toast.show();
+				QuestionCreate(data.test_ID);
+			},
+			error: function (xhr) {
+				$("span.text-danger").text("");
+				$("input").removeClass("error");
+
+				var errors = xhr.responseJSON;
+				if (errors) {
+					$.each(errors, function (key, value) {
+
+						if (key !== "") {
+
+							errorElement = $("[name='" + key.replace('model.', '') + "']").siblings("span.text-danger");
+							errorElement.text(value);
+						}
+						$("#e_toastText").text(value);
+						var errorToast = new bootstrap.Toast(document.getElementById('errorToast'));
+						errorToast.show();
+
+					});
+				}
+			}
+		});
+
+	}
+</script>
