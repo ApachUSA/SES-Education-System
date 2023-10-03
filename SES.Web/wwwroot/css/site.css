@@ -42,7 +42,16 @@ body {
         margin: 0;
     }
 
-.form-group{
+    .form-control[type=file] {
+        border: none;
+        background: transparent;
+    }
+
+::file-selector-button {
+    display: none;
+}
+
+.form-group {
     width: 100%;
 }
 
@@ -81,10 +90,10 @@ input[type="date"] {
     }
 
 
-    h1, h2, h3, h4, h5, h6 {
-        color: #fff;
-        font-family: Inter;
-    }
+h1, h2, h3, h4, h5, h6 {
+    color: #fff;
+    font-family: Inter;
+}
 
 a {
     text-decoration: none !important;
@@ -95,6 +104,7 @@ a {
 }
 
 i {
+    font-size: 20px;
     color: #fff;
 }
 
@@ -104,6 +114,11 @@ span {
     font-style: normal;
     font-weight: 400;
     line-height: normal;
+}
+
+.text-danger span {
+    --bs-text-opacity: 1;
+    color: rgba(var(--bs-danger-rgb),var(--bs-text-opacity)) !important;
 }
 
 label {
