@@ -1,0 +1,37 @@
+﻿
+
+
+<div class="test_content" style="margin-top: 50px">
+	@*<partial name="_TestFiltersPartialView" />*@
+</div>
+
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="false">
+	<div class="modal-dialog modal-dialog-centered">
+		<div class="modal-content">
+			<div class="modal_card d-flex flex-column justify-content-between">
+				<span style="font-weight: 700; padding: 10px 0">Видалення тесту</span>
+				<span style="padding: 40px 0">Ви точно хочете видалити тест? Після виконання цієї дії вміст тесту неможливо буде відновити!</span>
+				<a class="main_button main_button_light" onclick="ConfirmTestDelete()" style="width: 100%; height: 40px"><span>Видалити</span></a>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+	window.addEventListener('load', function () {
+		GetCatalogFilterView();
+	});
+</script>
+
+<script>
+	function GetCatalogFilterView() {
+		$.ajax({
+			url: "@Url.Action("GetCatalogFilterView", "Test")",
+			type: "GET",
+			success: function (data) {
+				$(".test_content").html(data);
+				
+			}
+		});
+	}
+</script>
