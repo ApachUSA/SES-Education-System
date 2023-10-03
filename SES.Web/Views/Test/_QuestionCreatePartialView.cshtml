@@ -1,0 +1,311 @@
+﻿@model List<Question>
+
+<form asp-controller="Test" id="questionForm" asp-action="QuestionCreate">
+	<div class="d-flex flex-column">
+
+		<div class="mb-1" style="margin-top: 5%"><a class="link_button_nodecorate" onclick="GetCatalogFilterView()"><i class="bi bi-arrow-left "></i><span>Назад</span></a></div>
+
+		<div class="d-flex flex-row justify-content-between" style="margin-bottom: 5%">
+			<h1 class="fw-bold ">Додавання запитань до тесту</h1>
+			<div class="input-group" style="height: 40px;  width: 250px; border-radius: 5px; border: 2px solid var(--main-light, #FFF);">
+				<input type="file" name="fileInput" id="fileInput" class="form-control">
+				<a class="main_button" style="width: 100px;" onclick="UploadFile()"><span>Обробити</span></a>
+			</div>
+		</div>
+
+
+		<div class="items">
+			@for (int i = 0; i < (Model == null ? 2 : Model.Count); i++)
+			{
+				<div id="Question[@i]" class="mb-4">
+					
+					<div class="d-flex flex-row justify-content-between">
+						<h5 class="fw-bold mb-3">Питання @(i + 1)</h5>
+						<a class="delete_icon" style="font-size: 20px; margin: 0 5px;" onclick="DeleteQuestion(@i)"><i class="bi bi-trash3-fill"></i></a>
+					</div>
+					<div class="form-group mb-3">
+						<label>Введіть текст запитання:</label>
+						<textarea asp-for="@Model[i].Text" class="form-control" style="background: transparent" rows="3"></textarea>
+						<span asp-validation-for="@Model[i].Text" class="text-danger"></span>
+					</div>
+					<label class="mb-3">Введіть текст варіантів відповідей та позначте правильну(-і) з них ліворуч:</label>
+					<div id="Question[@i]-Options" class="options-container">
+						@for (int j = 0; j < (Model == null ? 2 : Model[i].Options.Count); j++)
+						{
+							<div class="d-flex flex-row mb-3 align-items-center" id="Question[@i]-Option[@j]">
+								<input asp-for="@Model[i].Options[j].Right" class="form-check-input" type="checkbox">
+								<section class="d-flex flex-column" style="width: 100%">
+									<input asp-for="@Model[i].Options[j].Text" class="form-control" style="width: 100%; background: transparent" />
+									<span asp-validation-for="@Model[i].Options[j].Text" class="text-danger"></span>
+								</section>
+								@if (j >= 2)
+								{
+									<a class="delete_icon" style="font-size: 20px; margin: 0 5px;" onclick="DeleteOption(@i, @j)"><i class="bi bi-trash3-fill"></i></a>
+								}
+							</div>
+						}
+					</div>
+					<a class="add_icon" style="font-size: 20px;" onclick="CreateOption(@i)"><i class="bi bi-plus-square-fill"></i></a>
+				</div>
+			}
+		</div>
+		<a class="add_icon mt-3 mb-4" onclick="CreateQuestion()"><i class="bi bi-plus-square-fill"></i><span style="margin-left: 5px;">Додати питання</span></a>
+		<div class="d-flex mt-4 flex-row justify-content-center">
+			<a onclick="GetCatalogFilterView() " class="main_button main_button_light" style="width: 300px; margin-right: 10px; height: 40px"><span>Cкасувати</span></a>
+			<button class="main_button" type="submit" style="width: 300px; margin-left: 10px; height: 40px"><span>Зберегти</span></button>
+		</div>
+	</div>
+</form>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
+<script>
+	document.getElementById("questionForm").addEventListener("submit", function (event) {
+		event.preventDefault();
+		//CheckIDAndSubmit();
+		var Questions = [];
+
+		var $form = $("#questionForm");
+		$form.removeData('validator');
+		$form.removeData('unobtrusiveValidation');
+		$.validator.unobtrusive.parse('form');
+		console.log('w');
+		if ($(this).valid()) {
+			$(".items > div").each(function (index) {
+				var question = {
+					Text: $(this).find("textarea").val(),
+					Test_ID: Test_ID,
+					Options: []
+				};
+
+				$(this).find(".d-flex.flex-row.mb-3.align-items-center").each(function () {
+					var option = {
+						Right: $(this).find("input[type=checkbox]").prop("checked"),
+						Text: $(this).find("input[type=text]").val()
+					};
+
+					question.Options.push(option);
+				});
+
+				Questions.push(question);
+			});
+
+			$.ajax({
+				url: "@Url.Action("QuestionCreate", "Test")",
+				type: "POST",
+				data: {
+					model: Questions,
+				},
+				success: function (data) {
+					GetCatalogFilterView();
+
+					$("#s_toastText").text(data);
+					var Toast = new bootstrap.Toast(document.getElementById('successToast'));
+					Toast.show();
+				},
+				error: function (xhr) {
+
+				}
+			});
+		}
+
+
+
+	});
+</script>
+
+<script>
+	var i = @(Model == null ? 2 : Model.Count);
+	var Test_ID = '@ViewBag.Test_ID'; //add id to model
+
+	function UploadFile() {
+		var formData = new FormData();
+		var fileInput = $("#fileInput")[0].files[0]; // Получить выбранный файл
+		formData.append("fileInput", fileInput);
+
+		if (!fileInput) {
+			var toastText = "Оберіть файл";
+			$("#e_toastText").text(toastText);
+			var Toast = new bootstrap.Toast(document.getElementById('errorToast'));
+			Toast.show();
+		} else {
+			formData.append("Test_ID", Test_ID); // Добавить Test_ID к formData
+
+			$.ajax({
+				url: "@Url.Action("UploadFile", "Test")",
+				type: "POST",
+				data: formData, // Отправить formData, который уже содержит Test_ID
+				processData: false, // Отключите автоматическую обработку данных
+				contentType: false, // Отключите автоматическую установку Content-Type
+				success: function (data) {
+					$(".test_content").html(data);
+				},
+				error: function (xhr) {
+					$("#e_toastText").text(xhr.responseText);
+					var Toast = new bootstrap.Toast(document.getElementById('errorToast'));
+					Toast.show();
+				}
+			});
+		}
+	}
+
+
+	
+	function CreateQuestion() {
+		var newRow = `<div id="Question[${i}]" class="mb-4">
+											<div class="d-flex flex-row justify-content-between">
+													<h5 class="fw-bold mb-3">Питання ${i + 1}</h5>
+												<a class="delete_icon" style="font-size: 20px; margin: 0 5px;" onclick="DeleteQuestion(${i})"><i class="bi bi-trash3-fill"></i></a>
+											</div>
+											<div class="form-group mb-3">
+												<label>Введіть текст запитання:</label>
+														<textarea class="form-control" style="background: transparent" rows="3" data-val="true" data-val-required="The Text field is required." id="z${i}__Text" name="[${i}].Text"></textarea>
+													<span class="text-danger field-validation-valid" data-valmsg-for="[${i}].Text" data-valmsg-replace="true"></span>
+											</div>
+											<label class="mb-3">Введіть текст варіантів відповідей та позначте правильну(-і) з них ліворуч:</label>
+													<div id="Question[${i}]-Options"  class="options-container">
+
+											</div>
+												<a class="add_icon" style="font-size: 20px;" onclick="CreateOption(${i})"><i class="bi bi-plus-square-fill"></i></a>
+										</div>`;
+
+		document.querySelector('.items').insertAdjacentHTML('beforeend', newRow);
+		CreateOption(i);
+		CreateOption(i);
+		i++;
+		CheckNumber();
+
+	}
+
+	function CreateOption(index) {
+		var container = document.getElementById(`Question[${index}]-Options`);
+		var optionsCount;
+
+		if (container) {
+			var nestedDivs = container.querySelectorAll('div');
+			optionsCount = nestedDivs.length;
+			if (optionsCount < 2) {
+				var newOption = `
+																						<div class="d-flex flex-row mb-3 align-items-center" id="Question[${index}]-Option[${optionsCount}]">
+																				<input class="form-check-input" type="checkbox" data-val="true" data-val-required="The Right field is required." id="z${index}__Options_${optionsCount}__Right" name="[${index}].Options[${optionsCount}].Right" value="true">
+																					<section class="d-flex flex-column" style="width: 100%">
+																				<input class="form-control" style="width: 100%; background: transparent" type="text" data-val="true" data-val-required="The Text field is required." id="z${index}__Options_${optionsCount}__Text" name="[${index}].Options[${optionsCount}].Text" value="">
+																		<span class="text-danger field-validation-valid" data-valmsg-for="[${index}].Options[${optionsCount}].Text" data-valmsg-replace="true"></span>
+																				</section>
+
+															</div>
+																				`;
+			}
+			else {
+				var newOption = `
+																						<div class="d-flex flex-row mb-3 align-items-center" id="Question[${index}]-Option[${optionsCount}]">
+																				<input class="form-check-input" type="checkbox" data-val="true" data-val-required="The Right field is required." id="z${index}__Options_${optionsCount}__Right" name="[${index}].Options[${optionsCount}].Right" value="true">
+																					<section class="d-flex flex-column" style="width: 100%">
+																				<input class="form-control" style="width: 100%; background: transparent" type="text" data-val="true" data-val-required="The Text field is required." id="z${index}__Options_${optionsCount}__Text" name="[${index}].Options[${optionsCount}].Text" value="">
+																		<span class="text-danger field-validation-valid" data-valmsg-for="[${index}].Options[${optionsCount}].Text" data-valmsg-replace="true"></span>
+																				</section>
+																			<a class="delete_icon" style="font-size: 20px; margin: 0 5px;" onclick="DeleteOption(${index}, ${optionsCount})"><i class="bi bi-trash3-fill"></i></a>
+															</div>
+																				`;
+			}
+
+			container.insertAdjacentHTML('beforeend', newOption);
+
+		}
+
+
+	}
+
+
+	function DeleteQuestion(index) {
+		var elementId = `Question[${index}]`;
+
+		var elementToRemove = document.getElementById(elementId);
+		if (elementToRemove) {
+			elementToRemove.remove();
+			CheckNumber();
+		}
+	}
+
+	function CheckNumber() {
+		var questions = document.querySelectorAll('.items > div');
+		for (var i = 0; i < questions.length; i++) {
+			var questionHeader = questions[i].querySelector('h5');
+			questionHeader.textContent = `Питання ${i + 1}`;
+		}
+
+	}
+
+	function CheckIDAndSubmit() {
+
+
+
+		var questions = document.querySelectorAll('.items > div');
+		for (var i = 0; i < questions.length; i++) {
+			questions[i].id = `Question[${i}]`;
+
+
+			var questionHeader = questions[i].querySelector('h5');
+			questionHeader.textContent = `Питання ${i + 1}`;
+
+
+			var deleteButton = questions[i].querySelector('.delete_icon');
+			deleteButton.setAttribute('onclick', `DeleteQuestion(${i})`);
+
+
+			var createButton = questions[i].querySelector('.add_icon');
+			createButton.setAttribute('onclick', `CreateOption(${i})`);
+
+
+			var textArea = questions[i].querySelector('textarea');
+			textArea.name = `[${i}].Text`;
+			textArea.id = `z${i}__Text`;
+
+
+			var span = questions[i].querySelector('span[data-valmsg-for]');
+			span.setAttribute('data-valmsg-for', `[${i}].Text`);
+
+
+			var optionsContainer = questions[i].querySelector('.options-container');
+
+			if (optionsContainer) {
+				optionsContainer.id = `Question[${i}]-Options`;
+				var options = optionsContainer.querySelectorAll('div');
+				for (var j = 0; j < options.length; j++) {
+					options[j].id = `Question[${i}]-Option[${j}]`;
+
+
+					var checkbox = options[j].querySelector('input[type="checkbox"]');
+					checkbox.name = `[${i}].Options[${j}].Right`;
+					checkbox.id = `z${i}__Options_${j}__Right`;
+
+					var inputText = options[j].querySelector('input[type="text"]');
+					inputText.name = `[${i}].Options[${j}].Text`;
+					inputText.id = `z${i}__Options_${j}__Text`;
+
+					var span = options[j].querySelector('.text-danger');
+					span.setAttribute('data-valmsg-for', `[${i}].Options[${j}].Text`);
+
+
+					if (j >= 2) {
+						var deleteOptionButton = options[j].querySelector('.delete_icon');
+						deleteOptionButton.setAttribute('onclick', `DeleteOption(${i}, ${j})`);
+					}
+
+
+				}
+			}
+		}
+	}
+
+	function DeleteOption(Iindex, Jindex) {
+		var elementId = `Question[${Iindex}]-Option[${Jindex}]`;
+
+		var elementToRemove = document.getElementById(elementId);
+		if (elementToRemove) {
+			elementToRemove.remove();
+		}
+	}
+
+</script>
