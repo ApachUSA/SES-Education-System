@@ -65,5 +65,20 @@ namespace SES.Service.Implementations
 				return BaseResponse<bool>.Error($"[Options Delete] : {e.Message}");
 			}
 		}
+
+		public async Task<BaseResponse<List<Option>>> Get(int question_ID)
+		{
+			try
+			{
+				var options = await _optionRepository.Get().Where(x => x.Question_ID == question_ID).ToListAsync();
+				if (options == null) return BaseResponse<List<Option>>.Fail(ResponseStatus.ItemNotFound, "Варіантів відповідей не знайдено");
+
+				return BaseResponse<List<Option>>.Success(options, "");
+			}
+			catch (Exception e)
+			{
+				return BaseResponse<List<Option>>.Error($"[Option Get] : {e.Message}");
+			}
+		}
 	}
 }

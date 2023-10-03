@@ -12,6 +12,8 @@ namespace SES.Service.Interfaces
 	{
 		Task<BaseResponse<bool>> Create(Option model);
 
+		Task<BaseResponse<List<Option>>> Get(int question_ID);
+
 		Task<BaseResponse<bool>> Create(List<Option> model);
 
 		Task<BaseResponse<bool>> Delete(int id);
