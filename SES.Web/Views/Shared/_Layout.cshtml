@@ -36,7 +36,7 @@
 				<div class="header_img"><a asp-action="Index" asp-controller="Home"><img height="80" width="80" src="https://upload.wikimedia.org/wikipedia/commons/8/82/DSNS_emblem_2016.svg" /></a></div>
 
 				<div class="header_btn">
-					<a class="link_button">
+					<a class="link_button" asp-action="TestIndex" asp-controller="Test">
 						@if (User.Identity.IsAuthenticated)
 						{
 							<span>
@@ -143,6 +143,8 @@
 
 	<script src="~/lib/jquery/dist/jquery.min.js"></script>
 	<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+	<script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+	<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
 	<script src="~/js/site.js" asp-append-version="true"></script>
 	@await RenderSectionAsync("Scripts", required: false)
 </body>
