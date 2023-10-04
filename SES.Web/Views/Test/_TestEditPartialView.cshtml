@@ -23,13 +23,13 @@
 			<label>Змінити статус тесту:</label>
 			<div class="form-check catalog-filter-checkbox ">
 				<input asp-for="Status" value="Підготовче" class="form-check-input year-checkbox" type="radio">
-				<label class="form-check-label" for="flexCheckDefault">
+				<label class="form-check-label" >
 					Підготовче тестування (відображатиметься на сайті самопідготовки)
 				</label>
 			</div>
 			<div class="form-check catalog-filter-checkbox ">
 				<input asp-for="Status" value="Основне" class="form-check-input year-checkbox" type="radio">
-				<label class="form-check-label" for="flexCheckDefault">
+				<label class="form-check-label" >
 					Основне тестування (відображатиметься у системі щорічного тестування працівників)
 				</label>
 			</div>
@@ -134,18 +134,14 @@
 					model: Test,
 				},
 				success: function (data) {
-					$("#s_toastText").text(data);
-					var Toast = new bootstrap.Toast(document.getElementById('successToast'));
-					Toast.show();
+					SuccesToastShow(data);
 				},
 				error: function (xhr) {
 
 				}
 			});
 		} else {
-			$("#e_toastText").text("хуизи");
-			var errorToast = new bootstrap.Toast(document.getElementById('errorToast'));
-			errorToast.show();
+			ErrorToastShow("Допущена помилка");
 		}
 	}
 
@@ -158,19 +154,11 @@
 			},
 			success: function (data) {
 				CreateOptionFunc(question_id, data.option_ID);
-
-				$("#s_toastText").text(data.message);
-				var Toast = new bootstrap.Toast(document.getElementById('successToast'));
-				Toast.show();
-
+				SuccesToastShow(data.message);
 
 			},
 			error: function (xhr) {
-
-				$("#e_toastText").text(xhr.responseText);
-				var errorToast = new bootstrap.Toast(document.getElementById('errorToast'));
-				errorToast.show();
-
+				ErrorToastShow(xhr.responseText);
 			}
 		});
 
@@ -231,16 +219,12 @@
 				if (elementToRemove) {
 					elementToRemove.remove();
 
-					$("#s_toastText").text(data);
-					var Toast = new bootstrap.Toast(document.getElementById('successToast'));
-					Toast.show();
+					SuccesToastShow(data);
 				}
 			},
 			error: function (xhr) {
 
-				$("#e_toastText").text(xhr.responseText);
-				var errorToast = new bootstrap.Toast(document.getElementById('errorToast'));
-				errorToast.show();
+				ErrorToastShow(xhr.responseText);
 
 			}
 		});
@@ -283,18 +267,13 @@
 				CreateOptionFunc(data.question_ID, data.option_ID);
 				CreateOptionFunc(data.question_ID, data.option_ID2);
 
-				$("#s_toastText").text(data.message);
-				var Toast = new bootstrap.Toast(document.getElementById('successToast'));
-				Toast.show();
+				SuccesToastShow(data.message);
 				CheckNumber();
 				i++;
 
 			},
 			error: function (xhr) {
-
-				$("#e_toastText").text(xhr.responseText);
-				var errorToast = new bootstrap.Toast(document.getElementById('errorToast'));
-				errorToast.show();
+				ErrorToastShow(xhr.responseText);
 
 			}
 		});
@@ -317,16 +296,12 @@
 					elementToRemove.remove();
 					CheckNumber();
 
-					$("#s_toastText").text(data);
-					var Toast = new bootstrap.Toast(document.getElementById('successToast'));
-					Toast.show();
+					SuccesToastShow(data);
 				}
 			},
 			error: function (xhr) {
 
-				$("#e_toastText").text(xhr.responseText);
-				var errorToast = new bootstrap.Toast(document.getElementById('errorToast'));
-				errorToast.show();
+				ErrorToastShow(xhr.responseText);
 
 			}
 		});

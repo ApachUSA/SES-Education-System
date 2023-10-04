@@ -116,28 +116,8 @@
 		</div>
 	</footer>
 
-	<div class="toast-container position-fixed top-0 end-0 p-3">
-		<div id="successToast" class="toast custom-toast" role="alert" aria-live="assertive" aria-atomic="true">
-			<div class="toast-header">
-				<img src="https://cdn-icons-png.flaticon.com/512/6785/6785304.png" width="15" height="15" class="rounded me-2" alt="...">
-				<strong class="me-auto">Успіх</strong>
-			</div>
-			<div class="toast-body">
-				<span id="s_toastText"></span>
-			</div>
-		</div>
-	</div>
-
-	<div class="toast-container position-fixed top-0 end-0 p-3">
-		<div id="errorToast" class="toast custom-toast" role="alert" aria-live="assertive" aria-atomic="true">
-			<div class="toast-header">
-				<img src="https://cdn-icons-png.flaticon.com/512/463/463612.png" width="15" height="15" class="rounded me-2" alt="...">
-				<strong class="me-auto">Упс</strong>	
-			</div>
-			<div class="toast-body">
-				<span id="e_toastText"></span>
-			</div>
-		</div>
+	<div class="toast-container position-fixed top-0 end-0 p-3" id="toast-container" style="margin-top: 130px">
+		
 	</div>
 
 	<script src="~/lib/jquery/dist/jquery.min.js"></script>
@@ -146,7 +126,42 @@
 	@await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
+<script>
+	function SuccesToastShow(toastText) {
+		let id = new Date().getTime();
+		let toast = `<div class="toast custom-toast" role="alert" aria-live="assertive" data-autohide="true" aria-atomic="true" data-delay="5000" id=${id}>
+					<div class="toast-header">
+						<img src="https://cdn-icons-png.flaticon.com/512/6785/6785304.png" width="15" height="15" class="rounded me-2" alt="...">
+						<strong class="me-auto">Успіх</strong>
+					</div>
+					<div class="toast-body">
+							<span id="s_toastText">${toastText}</span>
+					</div>
+				</div>`
+		let toastNode = document.createElement('div');
+		toastNode.innerHTML = toast;
+		document.getElementById('toast-container').appendChild(toastNode);
+		$(`#${id}`).toast('show');
+	}
 
+	function ErrorToastShow(toastText) {
+
+		let id = new Date().getTime();
+		let toast = `<div class="toast custom-toast" role="alert" aria-live="assertive" data-autohide="true" aria-atomic="true" data-delay="5000" id=${id}>
+						<div class="toast-header">
+								<img src="https://cdn-icons-png.flaticon.com/512/463/463612.png" width="15" height="15" class="rounded me-2" alt="...">
+							<strong class="me-auto">Упс</strong>
+						</div>
+						<div class="toast-body">
+								<span id="s_toastText">${toastText}</span>
+						</div>
+					</div>`
+		let toastNode = document.createElement('div');
+		toastNode.innerHTML = toast;
+		document.getElementById('toast-container').appendChild(toastNode);
+		$(`#${id}`).toast('show');
+	}
+</script>
 <style>
 	.header {
 		background: #03183E;

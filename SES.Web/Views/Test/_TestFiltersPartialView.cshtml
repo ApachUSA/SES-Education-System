@@ -13,7 +13,7 @@
 			{
 				<div class="form-check catalog-filter-checkbox ">
 					<input class="form-check-input year-checkbox" type="checkbox">
-					<label class="form-check-label" for="flexCheckDefault">
+					<label class="form-check-label" >
 						@item
 					</label>
 				</div>
@@ -24,25 +24,25 @@
 			<h5 style="margin-bottom: 20px; font-weight: 700">Посада:</h5>
 			<div class="form-check catalog-filter-checkbox ">
 				<input class="form-check-input position-checkbox" type="checkbox">
-				<label class="form-check-label" for="flexCheckDefault">
+				<label class="form-check-label" >
 					Водій автодрабини
 				</label>
 			</div>
 			<div class="form-check catalog-filter-checkbox ">
 				<input  class="form-check-input position-checkbox" type="checkbox">
-				<label class="form-check-label" for="flexCheckDefault">
+				<label class="form-check-label" >
 					Командир відділення
 				</label>
 			</div>
 			<div class="form-check catalog-filter-checkbox ">
 				<input  class="form-check-input position-checkbox" type="checkbox">
-				<label class="form-check-label" for="flexCheckDefault">
+				<label class="form-check-label" >
 					Радіотелефоніст
 				</label>
 			</div>
 			<div class="form-check catalog-filter-checkbox ">
 				<input  class="form-check-input position-checkbox" type="checkbox">
-				<label class="form-check-label" for="flexCheckDefault">
+				<label class="form-check-label" >
 					Пожежний-рятувальник
 				</label>
 			</div>
@@ -52,13 +52,13 @@
 			<h5 style="margin-bottom: 20px; font-weight: 700">Вид:</h5>
 			<div class="form-check catalog-filter-checkbox">
 				<input class="form-check-input  type-checkbox" type="checkbox">
-				<label class="form-check-label" for="flexCheckDefault">
+				<label class="form-check-label" >
 					Підготовче тестування
 				</label>
 			</div>
 			<div class="form-check catalog-filter-checkbox">
 				<input class="form-check-input  type-checkbox" type="checkbox">
-				<label class="form-check-label" for="flexCheckDefault">
+				<label class="form-check-label" >
 					Основне тестування
 				</label>
 			</div>
@@ -72,8 +72,6 @@
 
 </div>
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script>
 
 	$(".catalog-filter-checkbox").click(function () {
@@ -109,17 +107,13 @@
 			},
 			success: function (data) {
 				$(".test_catalog").html(data);
+				SuccesToastShow("Пошукові фільтри застосовано");
 
-				var toastText = "Пошукові фільтри застосовано";
-				$("#s_toastText").text(toastText);
-				var Toast = new bootstrap.Toast(document.getElementById('successToast'));
-				Toast.show();
 
 			},
 			error: function (xhr) {
-				$("#e_toastText").text(xhr.responseText);
-				var Toast = new bootstrap.Toast(document.getElementById('errorToast'));
-				Toast.show();
+				ErrorToastShow(xhr.responseText);
+				
 			}
 		});
 	}
@@ -180,9 +174,7 @@
 			success: function (data) {
 				GetCatalogFilterView();
 
-				$("#s_toastText").text(data);
-				var Toast = new bootstrap.Toast(document.getElementById('successToast'));
-				Toast.show();
+				SuccesToastShow(data);
 			}
 		});
 	}

@@ -25,26 +25,26 @@
 			<span style="font-weight: 700; margin-bottom: 20px">Оберіть для якої посади необхідно сформувати список результатів:</span>
 			<div class="d-flex flex-row justify-content-between" style="margin-bottom: 20px">
 				<div class="form-check filter-checkbox">
-					<input id="Водій автодрабини" class="form-check-input filter-checkbox" type="checkbox" >
-					<label class="form-check-label" for="flexCheckDefault">
+					<input id="Водій автодрабини" class="form-check-input filter-result-checkbox" type="checkbox" >
+					<label class="form-check-label" >
 						Водій автодрабини
 					</label>
 				</div>
 				<div class="form-check filter-checkbox">
-					<input id="Командир відділення" class="form-check-input filter-checkbox" type="checkbox" >
-					<label class="form-check-label" for="flexCheckDefault">
+					<input id="Командир відділення" class="form-check-input filter-result-checkbox" type="checkbox">
+					<label class="form-check-label" >
 						Командир відділення
 					</label>
 				</div>
 				<div class="form-check filter-checkbox">
-					<input id="Радіотелефоніст" class="form-check-input filter-checkbox" type="checkbox" >
-					<label class="form-check-label" for="flexCheckDefault">
+					<input id="Радіотелефоніст" class="form-check-input filter-result-checkbox" type="checkbox">
+					<label class="form-check-label" >
 						Радіотелефоніст
 					</label>
 				</div>
 				<div class="form-check filter-checkbox">
-					<input id="Пожежний-рятувальник" class="form-check-input filter-checkbox" type="checkbox" >
-					<label class="form-check-label" for="flexCheckDefault">
+					<input id="Пожежний-рятувальник" class="form-check-input filter-result-checkbox" type="checkbox">
+					<label class="form-check-label" >
 						Пожежний-рятувальник
 					</label>
 				</div>
@@ -145,10 +145,8 @@
 			},
 			success: function (data) {
 				GetProfileView();
-				var toastText = "Пароль оновлено";
-				$("#s_toastText").text(toastText);
-				var Toast = new bootstrap.Toast(document.getElementById('successToast'));
-				Toast.show();
+
+				SuccesToastShow("Пароль оновлено");
 			},
 			error: function (xhr) {
 				$("span.text-danger").text("");
@@ -245,10 +243,7 @@
 			success: function (data) {
 				GetRegisterView();
 
-				var toastText = "Користувач успішно створений";
-				$("#s_toastText").text(toastText);
-				var Toast = new bootstrap.Toast(document.getElementById('successToast'));
-				Toast.show();
+				SuccesToastShow("Користувач успішно створений");
 			},
 			error: function (xhr) {
 				$("span.text-danger").text("");
@@ -262,9 +257,10 @@
 							errorElement = $("[name='" + key.replace('model.', '') + "']").siblings("span.text-danger");
 							errorElement.text(value);
 						}
-						$("#e_toastText").text(value);
-						var errorToast = new bootstrap.Toast(document.getElementById('errorToast'));
-						errorToast.show();
+						else{
+							ErrorToastShow(value);
+						}
+						
 
 					});
 				}
@@ -301,9 +297,7 @@
 
 			},
 			error: function (xhr) {
-				$("#e_toastText").text(xhr.responseText);
-				var Toast = new bootstrap.Toast(document.getElementById('errorToast'));
-				Toast.show();
+				ErrorToastShow(xhr.responseText);
 			}
 		});
 	}
@@ -369,14 +363,12 @@
 			},
 			success: function (data) {
 				GetUsersListView();
-				$("#s_toastText").text(data);
-				var Toast = new bootstrap.Toast(document.getElementById('successToast'));
-				Toast.show();
+				SuccesToastShow(data);
+
 			},
 			error: function (xhr) {
-				$("#e_toastText").text(xhr.responseText);
-				var Toast = new bootstrap.Toast(document.getElementById('errorToast'));
-				Toast.show();
+
+				ErrorToastShow(xhr.responseText);
 			}
 		});
 	}
@@ -404,7 +396,7 @@
 		});
 	}
 
-	$(".filter-checkbox").click(function () {
+	$(".filter-result-checkbox").click(function () {
 		FilterResult();
 	});
 
@@ -420,7 +412,7 @@
 		var selectedValues = [];
 
 		// Получаем выбранные флажки
-		$(".filter-checkbox:checked").each(function () {
+		$(".filter-result-checkbox:checked").each(function () {
 			selectedValues.push($(this).attr("id"));
 		});
 
@@ -445,16 +437,12 @@
 			success: function (data) {
 				$(".result_view").html(data);
 
-				var toastText = "Пошукові фільтри застосовано";
-				$("#s_toastText").text(toastText);
-				var Toast = new bootstrap.Toast(document.getElementById('successToast'));
-				Toast.show();
+				SuccesToastShow("Пошукові фільтри застосовано");
+				
 
 			},
 			error: function (xhr) {
-				$("#e_toastText").text(xhr.responseText);
-				var Toast = new bootstrap.Toast(document.getElementById('errorToast'));
-				Toast.show();
+				ErrorToastShow(xhr.responseText);
 			}
 		});
 	}

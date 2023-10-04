@@ -97,10 +97,7 @@
 				HideModal();
 				GetUsersListView();
 
-				var toastText = "Дані працівника оновлено";
-				$("#s_toastText").text(toastText);
-				var Toast = new bootstrap.Toast(document.getElementById('successToast'));
-				Toast.show();
+				SuccesToastShow("Дані працівника оновлено");
 			},
 			error: function (xhr) {
 				$("span.text-danger").text("");

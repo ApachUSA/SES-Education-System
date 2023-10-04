@@ -23,13 +23,13 @@
 			<label>Змінити статус тесту:</label>
 			<div class="form-check catalog-filter-checkbox ">
 				<input asp-for="Status" value="1" class="form-check-input year-checkbox" type="radio">
-				<label class="form-check-label" for="flexCheckDefault">
+				<label class="form-check-label" >
 					Підготовче тестування (відображатиметься на сайті самопідготовки)
 				</label>
 			</div>
 			<div class="form-check catalog-filter-checkbox ">
 				<input asp-for="Status" value="0" class="form-check-input year-checkbox" type="radio" checked>
-				<label class="form-check-label" for="flexCheckDefault">
+				<label class="form-check-label" >
 					Основне тестування (відображатиметься у системі щорічного тестування працівників)
 				</label>
 			</div>
@@ -61,9 +61,7 @@
 			success: function (data) {
 				//GetRegisterView();
 				console.log(data);
-				$("#s_toastText").text(data.message);
-				var Toast = new bootstrap.Toast(document.getElementById('successToast'));
-				Toast.show();
+				SuccesToastShow(data.message);
 				QuestionCreate(data.test_ID);
 			},
 			error: function (xhr) {
@@ -79,9 +77,7 @@
 							errorElement = $("[name='" + key.replace('model.', '') + "']").siblings("span.text-danger");
 							errorElement.text(value);
 						}
-						$("#e_toastText").text(value);
-						var errorToast = new bootstrap.Toast(document.getElementById('errorToast'));
-						errorToast.show();
+						ErrorToastShow(value);
 
 					});
 				}

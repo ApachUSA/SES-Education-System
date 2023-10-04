@@ -99,10 +99,7 @@
 				},
 				success: function (data) {
 					GetCatalogFilterView();
-
-					$("#s_toastText").text(data);
-					var Toast = new bootstrap.Toast(document.getElementById('successToast'));
-					Toast.show();
+					SuccesToastShow(data);
 				},
 				error: function (xhr) {
 
@@ -142,9 +139,7 @@
 					$(".test_content").html(data);
 				},
 				error: function (xhr) {
-					$("#e_toastText").text(xhr.responseText);
-					var Toast = new bootstrap.Toast(document.getElementById('errorToast'));
-					Toast.show();
+					ErrorToastShow(xhr.responseText);
 				}
 			});
 		}
@@ -237,67 +232,67 @@
 
 	}
 
-	function CheckIDAndSubmit() {
+	//function CheckIDAndSubmit() {
 
 
 
-		var questions = document.querySelectorAll('.items > div');
-		for (var i = 0; i < questions.length; i++) {
-			questions[i].id = `Question[${i}]`;
+	//	var questions = document.querySelectorAll('.items > div');
+	//	for (var i = 0; i < questions.length; i++) {
+	//		questions[i].id = `Question[${i}]`;
 
 
-			var questionHeader = questions[i].querySelector('h5');
-			questionHeader.textContent = `Питання ${i + 1}`;
+	//		var questionHeader = questions[i].querySelector('h5');
+	//		questionHeader.textContent = `Питання ${i + 1}`;
 
 
-			var deleteButton = questions[i].querySelector('.delete_icon');
-			deleteButton.setAttribute('onclick', `DeleteQuestion(${i})`);
+	//		var deleteButton = questions[i].querySelector('.delete_icon');
+	//		deleteButton.setAttribute('onclick', `DeleteQuestion(${i})`);
 
 
-			var createButton = questions[i].querySelector('.add_icon');
-			createButton.setAttribute('onclick', `CreateOption(${i})`);
+	//		var createButton = questions[i].querySelector('.add_icon');
+	//		createButton.setAttribute('onclick', `CreateOption(${i})`);
 
 
-			var textArea = questions[i].querySelector('textarea');
-			textArea.name = `[${i}].Text`;
-			textArea.id = `z${i}__Text`;
+	//		var textArea = questions[i].querySelector('textarea');
+	//		textArea.name = `[${i}].Text`;
+	//		textArea.id = `z${i}__Text`;
 
 
-			var span = questions[i].querySelector('span[data-valmsg-for]');
-			span.setAttribute('data-valmsg-for', `[${i}].Text`);
+	//		var span = questions[i].querySelector('span[data-valmsg-for]');
+	//		span.setAttribute('data-valmsg-for', `[${i}].Text`);
 
 
-			var optionsContainer = questions[i].querySelector('.options-container');
+	//		var optionsContainer = questions[i].querySelector('.options-container');
 
-			if (optionsContainer) {
-				optionsContainer.id = `Question[${i}]-Options`;
-				var options = optionsContainer.querySelectorAll('div');
-				for (var j = 0; j < options.length; j++) {
-					options[j].id = `Question[${i}]-Option[${j}]`;
-
-
-					var checkbox = options[j].querySelector('input[type="checkbox"]');
-					checkbox.name = `[${i}].Options[${j}].Right`;
-					checkbox.id = `z${i}__Options_${j}__Right`;
-
-					var inputText = options[j].querySelector('input[type="text"]');
-					inputText.name = `[${i}].Options[${j}].Text`;
-					inputText.id = `z${i}__Options_${j}__Text`;
-
-					var span = options[j].querySelector('.text-danger');
-					span.setAttribute('data-valmsg-for', `[${i}].Options[${j}].Text`);
+	//		if (optionsContainer) {
+	//			optionsContainer.id = `Question[${i}]-Options`;
+	//			var options = optionsContainer.querySelectorAll('div');
+	//			for (var j = 0; j < options.length; j++) {
+	//				options[j].id = `Question[${i}]-Option[${j}]`;
 
 
-					if (j >= 2) {
-						var deleteOptionButton = options[j].querySelector('.delete_icon');
-						deleteOptionButton.setAttribute('onclick', `DeleteOption(${i}, ${j})`);
-					}
+	//				var checkbox = options[j].querySelector('input[type="checkbox"]');
+	//				checkbox.name = `[${i}].Options[${j}].Right`;
+	//				checkbox.id = `z${i}__Options_${j}__Right`;
+
+	//				var inputText = options[j].querySelector('input[type="text"]');
+	//				inputText.name = `[${i}].Options[${j}].Text`;
+	//				inputText.id = `z${i}__Options_${j}__Text`;
+
+	//				var span = options[j].querySelector('.text-danger');
+	//				span.setAttribute('data-valmsg-for', `[${i}].Options[${j}].Text`);
 
 
-				}
-			}
-		}
-	}
+	//				if (j >= 2) {
+	//					var deleteOptionButton = options[j].querySelector('.delete_icon');
+	//					deleteOptionButton.setAttribute('onclick', `DeleteOption(${i}, ${j})`);
+	//				}
+
+
+	//			}
+	//		}
+	//	}
+	//}
 
 	function DeleteOption(Iindex, Jindex) {
 		var elementId = `Question[${Iindex}]-Option[${Jindex}]`;
