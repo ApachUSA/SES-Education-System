@@ -13,7 +13,7 @@
 				<td class="text-end" style="width: 15%;"><h5 style=" font-weight: 700">Дата</h5></td>
 			</tr>
 		</thead>
-		<tbody>
+		<tbody class="result-items">
 			@{
 				int i = 1;
 			}
@@ -22,21 +22,21 @@
 				
 				<tr style="height: 50px">
 					<td><span>@(i++)</span></td>
-					<td><span>@item.User.Surname @item.User.Name @item.User.Patronymic</span></td>
-					<td><span>@item.User.Position.Name</span></td>
-					<td class="text-end"><span>@item.Mark/5</span></td>
+					<td><span name="UserResultName">@item.User.Surname @item.User.Name @item.User.Patronymic</span></td>
+				<td><span name="UserResultPosition">@item.User.Position.Name</span></td>
+				<td class="text-end"><span name="UserResultMark">@item.Mark/5</span></td>
 					<td class="text-end">
 						@if (item.Status == ResultStatus.Pass)
 						{
-							<span>Склав</span>
+						<span name="UserResultStatus">Склав</span>
 						}
 						@if (item.Status == ResultStatus.Fail)
 						{
-							<span>Не склав</span>
+						<span name="UserResultStatus">Не склав</span>
 						}
 						@if (item.Status == ResultStatus.Retake)
 						{
-							<span>Перескладання</span>
+						<span name="UserResultStatus">Перескладання</span>
 						}
 					</td>
 					<td class="text-end"><span>@item.Date</span></td>
