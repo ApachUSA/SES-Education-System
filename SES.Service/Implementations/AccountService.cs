@@ -72,7 +72,7 @@ namespace SES.Service.Implementations
 		{
 			var claims = new List<Claim>()
 			{
-				new Claim(ClaimsIdentity.DefaultNameClaimType, user.Surname + " " + user.Name),
+				new Claim(ClaimsIdentity.DefaultNameClaimType, user.Surname + " " + user.Name + " " + user.Patronymic),
 				new Claim(ClaimsIdentity.DefaultRoleClaimType,user.Role_ID.ToString()),
 				new Claim("UserId", user.User_ID.ToString())
 			};
