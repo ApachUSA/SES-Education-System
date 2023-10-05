@@ -14,6 +14,9 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<SES_DB_Context>(options =>
 						options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession();
+
 builder.Services.AddScoped(typeof(IBaseRepository<>), typeof(Repository<>));
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 builder.Services.AddScoped<IAccountService, AccountService>();
@@ -26,6 +29,8 @@ builder.Services.AddScoped<IOptionService, OptionService>();
 builder.Services.AddScoped<ITestResultService, TestResultService>();
 builder.Services.AddScoped<ITestHistoryService, TestHistoryService>();
 
+
+
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
 	.AddCookie(options =>
 	{
@@ -34,7 +39,6 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 	});
 
 var app = builder.Build();
-
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
@@ -47,11 +51,13 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-
+app.UseSession();
 app.UseAuthorization();
 
 app.MapControllerRoute(
 	name: "default",
 	pattern: "{controller=Home}/{action=Index}/{id?}");
+
+
 
 app.Run();
