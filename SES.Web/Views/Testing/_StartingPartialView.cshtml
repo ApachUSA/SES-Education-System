@@ -1,0 +1,59 @@
+﻿@model Test
+
+
+<div class="d-flex flex-column">
+
+	<div class="mb-1" style="margin-top: 1%"><a class="link_button_nodecorate" onclick="GetCatalogFilterView()"><i class="bi bi-arrow-left "></i><span>Назад</span></a></div>
+
+	<div class="d-flex flex-row justify-content-between"><h1 class="fw-bold">Тестування за @Model.Year рік</h1><span>@Model.Position.Name</span></div>
+
+	<div class="question-container" style="margin-top: 50px">
+
+		<h5 style="font-weight:700; margin-bottom: 30px">Дане тестування є підготовчим і має на меті занурити працівника в умови, наближені до тих, що будуть під час проведення Державної кваліфікаційної атестації</h5>
+
+		<div class="d-flex flex-row justify-content-between mb-2">
+
+			<h5> <strong>Кількість часу</strong>,  відведеного для тестування цієї посади складає:</h5>
+
+			<h5 style="font-weight: 700">@Model.Questions.Count хв</h5>
+		</div>
+
+		<h5>Ви <strong>можете</strong> змінювати відповідь на попередні запитання</h5>
+
+		<h5>
+			Тестування буде припинено:<br>
+			<ul>
+				<li>коли ви будете готові і натиснете на кнопку “Завершити” до того, як закінчиться час</li> або
+				<li>по завершенню наданого вам часу, при цьому буде збережено ту кількість відповідей, яку ви встигли обрати.</li>
+			</ul>
+		</h5>
+
+		<h3 class="text-center" style="font-weight: 700; margin: 30px 0px;">Бажаємо вам успіхів!</h3>
+
+		<div class="d-flex mt-4 flex-column justify-content-center align-items-center">
+			<a class="main_button" onclick="TestStarting(@Model.Test_ID) " style="width: 300px; height: 40px"><span>Почати тестування</span></a>
+			<a onclick="GetCatalogFilterView()" class="main_button main_button_light mt-2" style="width: 300px;height: 40px"><span>Назад</span></a>
+		</div>
+
+	</div>
+
+</div>
+
+<script>
+	function TestStarting(test_ID) {
+		$.ajax({
+			url: "@Url.Action("TestStarting", "Testing")",
+			type: "Get",
+			data: {
+				test_ID: test_ID,
+			},
+			success: function (data) {
+				$(".question-container").html(data);
+
+			},
+			error: function (xhr) {
+				ErrorToastShow(xhr.responseText);
+			}
+		});
+	}
+</script>
