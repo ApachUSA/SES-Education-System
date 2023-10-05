@@ -20,7 +20,7 @@
 		</div>
 
 		<div class="catalog_btn  d-flex flex-row justify-content-around align-items-center">
-				@*<a onclick="" class="main_button" style="width: 100%; height: 40px"><span>Обрати</span></a>*@
+			<a onclick="GetTest(@item.Test_ID)" class="main_button" style="width: 100%; height: 40px"><span>Обрати</span></a>
 			<a class="edit_icon" style="font-size: 20px" onclick="TestEdit(@item.Test_ID)"><i class="bi bi-pencil-square"></i></a>
 			<a class="delete_icon" style="font-size: 20px" onclick="TestDelete(@item.Test_ID)"><i class="bi bi-trash3-fill"></i></a>
 		</div>

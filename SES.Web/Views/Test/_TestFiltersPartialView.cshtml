@@ -178,4 +178,22 @@
 			}
 		});
 	}
+
+	function GetTest(test_ID) {
+		$.ajax({
+			url: "@Url.Action("GetTest", "Testing")",
+			type: "Get",
+			data: {
+				test_ID: test_ID,
+			},
+			success: function (data) {
+				$(".test_content").html(data);
+
+			},
+			error: function (xhr) {
+				ErrorToastShow(xhr.responseText);
+			}
+		});
+
+	}
 </script>
