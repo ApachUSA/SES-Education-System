@@ -25,26 +25,26 @@
 			<span style="font-weight: 700; margin-bottom: 20px">Оберіть для якої посади необхідно сформувати список результатів:</span>
 			<div class="d-flex flex-row justify-content-between" style="margin-bottom: 20px">
 				<div class="form-check filter-checkbox">
-					<input id="Водій автодрабини" class="form-check-input filter-result-checkbox" type="checkbox" >
-					<label class="form-check-label" >
+					<input id="Водій автодрабини" class="form-check-input filter-result-checkbox" type="checkbox">
+					<label class="form-check-label">
 						Водій автодрабини
 					</label>
 				</div>
 				<div class="form-check filter-checkbox">
 					<input id="Командир відділення" class="form-check-input filter-result-checkbox" type="checkbox">
-					<label class="form-check-label" >
+					<label class="form-check-label">
 						Командир відділення
 					</label>
 				</div>
 				<div class="form-check filter-checkbox">
 					<input id="Радіотелефоніст" class="form-check-input filter-result-checkbox" type="checkbox">
-					<label class="form-check-label" >
+					<label class="form-check-label">
 						Радіотелефоніст
 					</label>
 				</div>
 				<div class="form-check filter-checkbox">
 					<input id="Пожежний-рятувальник" class="form-check-input filter-result-checkbox" type="checkbox">
-					<label class="form-check-label" >
+					<label class="form-check-label">
 						Пожежний-рятувальник
 					</label>
 				</div>
@@ -58,13 +58,12 @@
 			</div>
 
 			<div class="result_view" style="margin-top: 70px; width: 100%">
-
 			</div>
 
 			<div class="d-flex flex-row align-items-center justify-content-center" style="margin-top: 50px">
-				<a onclick="" class="main_button" style="width: 300px; height: 40px"><span>Завантажити</span></a>
+				<a onclick="GetPDF()"  class="main_button" style="width: 300px; height: 40px"><span>Завантажити</span></a>
 			</div>
-			
+
 		</div>
 
 
@@ -257,10 +256,10 @@
 							errorElement = $("[name='" + key.replace('model.', '') + "']").siblings("span.text-danger");
 							errorElement.text(value);
 						}
-						else{
+						else {
 							ErrorToastShow(value);
 						}
-						
+
 
 					});
 				}
@@ -417,9 +416,8 @@
 		});
 
 		var formattedDate = $(".filter_date").val();
-		 // Разделяем дату на части по дефису
-		if (formattedDate != "")
-		{
+		// Разделяем дату на части по дефису
+		if (formattedDate != "") {
 			var parts = formattedDate.split("-");
 			formattedDate = parts[2] + "." + parts[1] + "." + parts[0];
 		}
@@ -433,13 +431,45 @@
 			data: {
 				positions: filterValues,
 				date: formattedDate
-			}, 
+			},
 			success: function (data) {
 				$(".result_view").html(data);
 
 				SuccesToastShow("Пошукові фільтри застосовано");
-				
 
+
+			},
+			error: function (xhr) {
+				ErrorToastShow(xhr.responseText);
+			}
+		});
+	}
+
+	function GetPDF() {
+
+		var PDFResult = [];
+
+		$(".result-items > tr").each(function (index) {
+			var result = {
+				SNP: $(this).find("span[name='UserResultName']").text(),
+				Position: $(this).find("span[name='UserResultPosition']").text(),
+				Mark: $(this).find("span[name='UserResultMark']").text(),
+				Status: $(this).find("span[name='UserResultStatus']").text()
+			}
+
+			PDFResult.push(result);
+		});
+
+		$.ajax({
+			url: "@Url.Action("StudentsResultPdf", "TestResult")",
+			type: "GET",
+			data: { result: JSON.stringify(PDFResult) },
+			success: function () {
+				var pdfUrl = '@Url.Action("StudentsResultPdf", "TestResult")';
+				pdfUrl += '?result=' + encodeURIComponent(JSON.stringify(PDFResult));
+				window.open(pdfUrl, '_blank');
+
+				SuccesToastShow("PDF згенеровано");
 			},
 			error: function (xhr) {
 				ErrorToastShow(xhr.responseText);
