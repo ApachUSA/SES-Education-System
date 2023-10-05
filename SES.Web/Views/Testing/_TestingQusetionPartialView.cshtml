@@ -1,0 +1,64 @@
+﻿@model Question
+
+
+<div class="container d-flex flex-column" style="width: 80%">
+
+	<h5 style="font-weight: 700; margin-bottom: 20px">@Model.Text</h5>
+
+
+	@foreach (var item in Model.Options)
+	{
+		<div class="d-flex flex-row" style="margin-top: 20px">
+			<div><input class="form-check-input answer-box" type="checkbox" name="@item.Option_ID"></div>
+			<div style="margin-left: 20px"><label>@item.Text</label></div>
+		</div>
+
+	}
+
+	<div class="d-flex flex-row justify-content-around" style="margin-top: 50px">
+		<a onclick="PreviousQuestion()" class="main_button main_button_light" style="width: 300px;height: 40px"><span>Назад</span></a>
+		<a class="main_button" onclick="NextQuestion(@Model.Test_ID) " style="width: 300px; height: 40px"><span>Далі</span></a>
+	</div>
+
+</div>
+
+
+<script>
+	function NextQuestion(question_ID) {
+		var selected_Options = [];
+
+		$(".answer-box:checked").each(function () {
+			selected_Options.push($(this).attr("name"));
+		});
+
+		$.ajax({
+			url: "@Url.Action("NextQuestion", "Testing")",
+			type: "Get",
+			data: {
+			answer_option_ID: selected_Options.join(","),
+			},
+			success: function (data) {
+				$(".question-container").html(data);
+
+			},
+			error: function (xhr) {
+				ErrorToastShow(xhr.responseText);
+			}
+		});
+	}
+
+	function PreviousQuestion() {
+
+		$.ajax({
+			url: "@Url.Action("PreviousQuestion", "Testing")",
+			type: "Get",
+			success: function (data) {
+				$(".question-container").html(data);
+				var answers = '@ViewBag.Answer'
+			},
+			error: function (xhr) {
+				ErrorToastShow(xhr.responseText);
+			}
+		});
+	}
+</script>
