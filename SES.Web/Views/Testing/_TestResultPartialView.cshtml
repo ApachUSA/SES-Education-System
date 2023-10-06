@@ -1,0 +1,47 @@
+﻿
+@model Test_History
+
+
+
+<div class="d-flex flex-column justify-content-between align-items-center">
+
+	@if(Model.Mark < 3)
+	{
+		<img width="120" height="120" src="https://cdn-icons-png.flaticon.com/512/4250/4250581.png" />
+
+		<h1 class="text-center" style="font-weight: 700; margin-top: 40px">На жаль, ви не набрали необхідної кількості балів для успішного складання тесту!</h1>
+	}
+	else
+	{
+		<img  width="120" height="120" src="https://cdn-icons-png.flaticon.com/512/4250/4250596.png" />
+
+		<h1 class="text-center" style="font-weight: 700; margin-top: 40px">Вітаємо з успішно складеним тестом!</h1>
+	}
+
+	<div class="d-flex flex-row" style="margin-top: 40px">
+		<div class="align-items-start" style="width: 160px"><span>Ваш результат:</span></div>
+		<div class="text-center" style="width: 100px"><h3 style="font-weight: 700">@Model.Right_Answer_Count/@ViewBag.QuestionCount</h3></div>
+		<div class="text-end" style="width: 70px;"><span>питань</span></div>
+	</div>
+
+	<div class="d-flex flex-row" style="margin-bottom: 40px">
+		<div class="align-items-start" style="width: 160px"><span>Ваша оцінка:</span></div>
+		<div class="text-center" style="width: 100px"><h3 style="font-weight: 700">@Model.Mark/5</h3></div>
+		<div class="text-end" style="width: 70px;"><span>балів</span></div>
+	</div>
+
+	@if (Model.Mark < 3)
+	{
+		<span class="text-center">Ваш результат щойно було збережено на сторінці “Кабінет” в розділі “Результати тестування”. Рекомендуємо Вам пройти цей тест ще раз для більш ретельної підготовки до Державної атестації</span>
+		
+	}
+	else
+	{
+		<span >Ваш результат щойно було збережено на сторінці “Кабінет” в розділі “Результати тестування”</span>
+	}
+
+	<div class="d-flex flex-row justify-content-around" style="margin-top: 50px">
+		<a class="main_button" asp-action="Index" asp-controller="User" style="width: 300px; height: 40px"><span>В кабінет</span></a>
+	</div>
+
+</div>
