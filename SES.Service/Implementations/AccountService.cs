@@ -31,7 +31,7 @@ namespace SES.Service.Implementations
 		{
 			try
 			{
-				var user = await _userRespository.Get().FirstOrDefaultAsync(x => x.Login == model.Login && x.Password == model.Password);
+				var user = await _userRespository.Get().Include(x => x.Department).FirstOrDefaultAsync(x => x.Login == model.Login && x.Password == model.Password);
 				if (user == null)
 				{
 					return BaseResponse<ClaimsIdentity>.Fail(ResponseStatus.UserNotFound, "Неправельний логін або пароль");
@@ -74,7 +74,8 @@ namespace SES.Service.Implementations
 			{
 				new Claim(ClaimsIdentity.DefaultNameClaimType, user.Surname + " " + user.Name + " " + user.Patronymic),
 				new Claim(ClaimsIdentity.DefaultRoleClaimType,user.Role_ID.ToString()),
-				new Claim("UserId", user.User_ID.ToString())
+				new Claim("UserId", user.User_ID.ToString()),
+				new Claim("Department", user.Department.Number.ToString())
 			};
 
 			return new ClaimsIdentity(claims, "ApplicationCookie", ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
