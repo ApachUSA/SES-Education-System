@@ -42,7 +42,7 @@ namespace SES.Web.Controllers
 		[HttpGet]
 		public async Task<IActionResult> TestResult()
 		{
-			var response = await _resultService.Get(1);
+			var response = await _resultService.Get(int.Parse(HttpContext.User.FindFirst("Department").Value));
 			if (response.StatusCode == ResponseStatus.Success)
 			{
 				return PartialView("_ResultPartialView", response.Data.OrderByDescending(x => x.Date).ToList());
@@ -53,7 +53,8 @@ namespace SES.Web.Controllers
 		[HttpGet]
 		public async Task<IActionResult> TestResultFiltered(string positions, string date)
 		{
-			var response = await _resultService.Get(1);
+			
+			var response = await _resultService.Get(int.Parse(HttpContext.User.FindFirst("Department").Value));
 			if (response.StatusCode == ResponseStatus.Success)
 			{
 				if (positions != null) response.Data = ApplyPositionFilter(response.Data, positions.Split(','));
