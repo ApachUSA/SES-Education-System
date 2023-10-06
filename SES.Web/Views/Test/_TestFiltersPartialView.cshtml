@@ -5,15 +5,18 @@
 <div class="d-flex flex-row" style="margin-top: 40px">
 
 	<div class="d-flex flex-column" style="width: 35%">
-		<div class="admin_icon mb-2 mt-2"><a class="add_icon" onclick="GetTestCreateView()"><i class="bi bi-plus-square-fill"></i><span style="margin-left: 5px">Створити новий тест</span></a></div>
-		@*<div class="admin_icon mb-2 mt-2"><a class="add_icon" onclick="QuestionCreate()"><i class="bi bi-plus-square-fill"></i><span style="margin-left: 5px">Створити новий тест</span></a></div>*@
-		<div class="" >
+		@if (User.IsInRole("Admin"))
+		{
+			<div class="admin_icon mb-2 mt-2"><a class="add_icon" onclick="GetTestCreateView()"><i class="bi bi-plus-square-fill"></i><span style="margin-left: 5px">Створити новий тест</span></a></div>
+		}
+
+		<div class="">
 			<h5 style="margin-bottom: 20px; font-weight: 700">Рік:</h5>
 			@foreach (var item in Model.Select(x => x.Year).Distinct().OrderDescending().ToList())
 			{
 				<div class="form-check catalog-filter-checkbox ">
-					<input class="form-check-input year-checkbox" type="checkbox">
-					<label class="form-check-label" >
+					<input class="form-check-input year-checkbox" type="checkbox" id="@item">
+					<label class="form-check-label" for="@item">
 						@item
 					</label>
 				</div>
@@ -23,51 +26,54 @@
 		<div class="" style="margin-top: 40px">
 			<h5 style="margin-bottom: 20px; font-weight: 700">Посада:</h5>
 			<div class="form-check catalog-filter-checkbox ">
-				<input class="form-check-input position-checkbox" type="checkbox">
-				<label class="form-check-label" >
+				<input class="form-check-input position-checkbox" type="checkbox" id="Водій автодрабини">
+				<label class="form-check-label" for="Водій автодрабини">
 					Водій автодрабини
 				</label>
 			</div>
 			<div class="form-check catalog-filter-checkbox ">
-				<input  class="form-check-input position-checkbox" type="checkbox">
-				<label class="form-check-label" >
+				<input class="form-check-input position-checkbox" type="checkbox" id="Командир відділення">
+				<label class="form-check-label" for="Командир відділення">
 					Командир відділення
 				</label>
 			</div>
 			<div class="form-check catalog-filter-checkbox ">
-				<input  class="form-check-input position-checkbox" type="checkbox">
-				<label class="form-check-label" >
+				<input class="form-check-input position-checkbox" type="checkbox" id="Радіотелефоніст">
+				<label class="form-check-label" for="Радіотелефоніст">
 					Радіотелефоніст
 				</label>
 			</div>
 			<div class="form-check catalog-filter-checkbox ">
-				<input  class="form-check-input position-checkbox" type="checkbox">
-				<label class="form-check-label" >
+				<input class="form-check-input position-checkbox" type="checkbox" id="Пожежний-рятувальник">
+				<label class="form-check-label" for="Пожежний-рятувальник">
 					Пожежний-рятувальник
 				</label>
 			</div>
 		</div>
+		@if (User.IsInRole("Admin"))
+		{
+			<div class="" style="margin-top: 40px">
+				<h5 style="margin-bottom: 20px; font-weight: 700">Вид:</h5>
+				<div class="form-check catalog-filter-checkbox">
+					<input class="form-check-input  type-checkbox" type="checkbox" id="Підготовче тестування">
+					<label class="form-check-label" for="Підготовче тестування">
+						Підготовче тестування
+					</label>
+				</div>
+				<div class="form-check catalog-filter-checkbox">
+					<input class="form-check-input  type-checkbox" type="checkbox" id="Основне тестування">
+					<label class="form-check-label" for="Основне тестування">
+						Основне тестування
+					</label>
+				</div>
+			</div>
+		}
 
-		<div class="" style="margin-top: 40px">
-			<h5 style="margin-bottom: 20px; font-weight: 700">Вид:</h5>
-			<div class="form-check catalog-filter-checkbox">
-				<input class="form-check-input  type-checkbox" type="checkbox">
-				<label class="form-check-label" >
-					Підготовче тестування
-				</label>
-			</div>
-			<div class="form-check catalog-filter-checkbox">
-				<input class="form-check-input  type-checkbox" type="checkbox">
-				<label class="form-check-label" >
-					Основне тестування
-				</label>
-			</div>
-		</div>
-		
+
 	</div>
 
 	<div class="test_catalog d-flex flex-wrap flex-row align-items-baseline justify-content-between" style="width: 65%">
-		<partial name="_TestCatalogPartialView" model="@Model"/>
+		<partial name="_TestCatalogPartialView" model="@Model" />
 	</div>
 
 </div>
@@ -113,7 +119,7 @@
 			},
 			error: function (xhr) {
 				ErrorToastShow(xhr.responseText);
-				
+
 			}
 		});
 	}
@@ -133,7 +139,7 @@
 		$.ajax({
 			url: "@Url.Action("QuestionCreate", "Test")",
 			type: "GET",
-			data:{
+			data: {
 				Test_ID: test_ID
 			},
 			success: function (data) {
