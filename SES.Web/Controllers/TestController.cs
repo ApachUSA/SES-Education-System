@@ -33,6 +33,7 @@ namespace SES.Web.Controllers
 			var response = await _testService.Get();
 			if (response.StatusCode == ResponseStatus.Success)
 			{
+				if (User.IsInRole("Student")) response.Data = response.Data.Where(x => x.Status == TestStatus.Підготовче).ToList();
 				return PartialView("_TestFiltersPartialView", response.Data);
 			}
 			return View("ErrorView", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
@@ -41,6 +42,7 @@ namespace SES.Web.Controllers
 		[HttpGet]
 		public async Task<IActionResult> GetCatalogFiltered(string year, string position, string type)
 		{
+			if (User.IsInRole("Student")) type = "Підготовче";
 			var response = await _testService.Get();
 			if (response.StatusCode == ResponseStatus.Success)
 			{
