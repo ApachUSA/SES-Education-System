@@ -3,48 +3,108 @@
 
 <div class="container d-flex flex-column" style="width: 80%">
 
+	<h6 id="question-number">Питання @ViewBag.Number</h6>
 	<h5 style="font-weight: 700; margin-bottom: 20px">@Model.Text</h5>
 
 
 	@foreach (var item in Model.Options)
 	{
-		<div class="d-flex flex-row" style="margin-top: 20px">
-			<div><input class="form-check-input answer-box" type="checkbox" name="@item.Option_ID"></div>
-			<div style="margin-left: 20px"><label>@item.Text</label></div>
+		<div class="d-flex flex-row align-items-center" style="margin-top: 20px">
+			<div>
+				<input class="form-check-input answer-box" type="checkbox" id="@item.Option_ID" name="@item.Option_ID">
+				<label for="@item.Option_ID"></label>
+			</div>
+			<div style="margin-left: 20px">
+				<label class="form-check-label" for="@item.Option_ID">@item.Text</label>
+			</div>
 		</div>
+
 
 	}
 
 	<div class="d-flex flex-row justify-content-around" style="margin-top: 50px">
-		<a onclick="PreviousQuestion()" class="main_button main_button_light" style="width: 300px;height: 40px"><span>Назад</span></a>
-		<a class="main_button" onclick="NextQuestion(@Model.Test_ID) " style="width: 300px; height: 40px"><span>Далі</span></a>
+		<a onclick="PreviousQuestion()" class="main_button main_button_light" id="back_btn" style="width: 300px;height: 40px"><span>Назад</span></a>
+		<a class="main_button" onclick="NextQuestion()" id="next_btn" style="width: 300px; height: 40px"><span>Далі</span></a>
+		<a class="main_button" onclick="NextQuestion('Finish')" id="finish_btn" style="width: 300px; height: 40px"><span>Завершити тестування</span></a>
 	</div>
 
 </div>
 
+<input type="hidden" id="questionAnswer" value="@ViewBag.Answer" />
 
 <script>
-	function NextQuestion(question_ID) {
+	function NextQuestion(Status) {
 		var selected_Options = [];
 
 		$(".answer-box:checked").each(function () {
 			selected_Options.push($(this).attr("name"));
 		});
+		if (selected_Options.length == 0) {
+			ErrorToastShow("Оберіть варінт(-и) відповіді");
+		}
+		else {
+			$.ajax({
+				url: "@Url.Action("NextQuestion", "Testing")",
+				type: "Get",
+				data: {
+					answer_option_ID: selected_Options.join(","),
+					status: Status
+				},
+				success: function (data) {
+					$(".question-container").html(data);
+					if (Status == null) {
+						CheckAnswer();
+						CheckNumber();
+					}
 
-		$.ajax({
-			url: "@Url.Action("NextQuestion", "Testing")",
-			type: "Get",
-			data: {
-			answer_option_ID: selected_Options.join(","),
-			},
-			success: function (data) {
-				$(".question-container").html(data);
+				},
+				error: function (xhr) {
+					ErrorToastShow(xhr.responseText);
+				}
+			});
+		}
+	}
 
-			},
-			error: function (xhr) {
-				ErrorToastShow(xhr.responseText);
+	function CheckAnswer() {
+		var answer = $("#questionAnswer").val();
+		if (answer != null) {
+			var answerArray = answer.split(',');
+
+			answerArray.forEach(function (item) {
+				var trimmedItem = item.trim();
+
+				var checkbox = $("input[type='checkbox'][name='" + trimmedItem + "']");
+
+				if (checkbox.length > 0) {
+					checkbox.prop('checked', true);
+				}
+			});
+		}
+
+	}
+
+	function CheckNumber() {
+		var number = $("#question-number").text().replace('Питання ', '').split('/');
+			var back = document.getElementById("back_btn");
+			var next = document.getElementById("next_btn");
+			var finish = document.getElementById("finish_btn");
+
+			if (number[0] == "1") {
+				back.style.display = "none";
 			}
-		});
+			else back.style.display = "flex";
+
+			if (number[0] == number[1]) {
+				next.style.display = "none";
+				finish.style.display = "flex";
+			}
+			else {
+				next.style.display = "flex";
+				finish.style.display = "none";
+			}
+
+
+
 	}
 
 	function PreviousQuestion() {
@@ -54,11 +114,14 @@
 			type: "Get",
 			success: function (data) {
 				$(".question-container").html(data);
-				var answers = '@ViewBag.Answer'
+				CheckAnswer();
+				CheckNumber();
 			},
 			error: function (xhr) {
 				ErrorToastShow(xhr.responseText);
 			}
 		});
 	}
+
+	function FinishTesting() { }
 </script>
