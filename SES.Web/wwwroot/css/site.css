@@ -64,18 +64,27 @@ body {
     margin-right: 10px;
 }
 
-    .form-check-input:checked[type=checkbox] {
-        background-image: none;
-    }
-
-    .form-check-input:checked {
-        background-color: #EC6E07;
-        border-color: #fff;
-    }
-
-    .form-check-input:focus {
+    .form-check-input:hover{
+        cursor: pointer;
         box-shadow: 0 0 0 0.1rem #EC6E07;
     }
+
+.form-check-label:hover {
+    cursor: pointer;
+}
+
+.form-check-input:checked[type=checkbox] {
+    background-image: none;
+}
+
+.form-check-input:checked {
+    background-color: #EC6E07;
+    border-color: #fff;
+}
+
+.form-check-input:focus {
+    box-shadow: 0 0 0 0.1rem #EC6E07;
+}
 
 input[type="date"] {
     background-color: transparent;
