@@ -66,6 +66,7 @@ namespace SES.Service.Implementations
 					.ThenInclude(x => x.City)
 					.Include(x => x.Position)
 					.Include(x => x.Test_Histories)
+					.Include(x => x.Rang)
 					.ToListAsync();
 
 				if (users == null) return BaseResponse<List<User>>.Fail(ResponseStatus.UserNotFound, "Користувачів не знайдено");
