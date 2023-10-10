@@ -16,6 +16,8 @@ namespace SES.Service.Interfaces
 
 		Task<BaseResponse<Test>> Get(int id);
 
+		Task<BaseResponse<Test>> GetByPosition(int position_ID);
+
 		Task<BaseResponse<Test>> Create(Test model);
 
 		Task<BaseResponse<Test>> Update(Test model);

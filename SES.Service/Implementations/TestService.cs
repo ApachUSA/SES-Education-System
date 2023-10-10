@@ -93,6 +93,26 @@ namespace SES.Service.Implementations
 			}
 		}
 
+		public async Task<BaseResponse<Test>> GetByPosition(int position_ID)
+		{
+			try
+			{
+				var test = await _testRepository.Get()
+					.Include(x => x.Questions)
+					.ThenInclude(x => x.Options)
+					.Include(x => x.Position)
+					.FirstOrDefaultAsync(x => x.Position_ID == position_ID);
+
+				if (test == null) return BaseResponse<Test>.Fail(ResponseStatus.ItemNotFound, "Тест не знайдено");
+
+				return BaseResponse<Test>.Success(test, "");
+			}
+			catch (Exception e)
+			{
+				return BaseResponse<Test>.Error($"[Test GetByPosition] : {e.Message}");
+			}
+		}
+
 		public async Task<BaseResponse<Test>> Update(Test model)
 		{
 			try
