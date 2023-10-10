@@ -37,6 +37,12 @@ namespace SES.Service.Mapping
 			.ForMember(dest => dest.Password_VM, opt => opt.MapFrom(src => src.Password))
 			.ForMember(dest => dest.Role_ID_VM, opt => opt.MapFrom(src => src.Role_ID));
 
+			CreateMap<User, UserApiVM>()
+				.ForMember(dest => dest.User_ID, opt => opt.MapFrom(src => src.User_ID))
+				.ForMember(dest => dest.Snp, opt => opt.MapFrom(src => $"{src.Surname} {src.Name} {src.Patronymic}"))
+				.ForMember(dest => dest.Rang, opt => opt.MapFrom(src => src.Rang.Name))
+				.ForMember(dest => dest.Position, opt => opt.MapFrom(src => src.Position.Name));
+
 
 			CreateMap<Test_Result, Test_History>();
 		}
