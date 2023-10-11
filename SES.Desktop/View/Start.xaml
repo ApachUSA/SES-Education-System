@@ -8,7 +8,7 @@
       d:DesignHeight="980" d:DesignWidth="1820"
       Title="Start">
 
-    <StackPanel Margin="450 120">
+    <StackPanel  Width="1020" VerticalAlignment="Center">
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
@@ -77,7 +77,7 @@
              FontWeight="Bold" Margin="0 10"/>
 
         <Button Width="300" Height="40" Content="Почати тестування" Margin="10" BorderThickness="0"
-         Style="{StaticResource MainButton}" Command=""/>
+         Style="{StaticResource MainButton}" Command="{Binding StartingTest}"/>
 
 
     </StackPanel>

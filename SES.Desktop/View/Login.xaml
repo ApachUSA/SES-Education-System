@@ -10,25 +10,27 @@
     <Page.DataContext>
         <local:LoginVM/>
     </Page.DataContext>
-    
-    <StackPanel VerticalAlignment="Center">
+
+    <StackPanel VerticalAlignment="Center" Width="300">
         <Image  Source="\Images\SES.png" Width="200" Height="200" Margin="20 20 20 20"/>
 
-        <Label Width="300" Height="auto"  Foreground="red" FontSize="16" HorizontalContentAlignment="Center"
-               Content="{Binding Error, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        <TextBlock Width="300" Height="auto"  Foreground="red" FontSize="16" TextAlignment="Center"
+               Text="{Binding Error, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap"/>
 
-        <TextBox Width="300" Height="40" Background="Transparent" BorderThickness="2"
-                 Margin="10 20 10 10 " FontSize="16" CaretBrush="White" Foreground="White" 
+        <TextBlock Text="Логін:" Foreground="White" Margin="10 20 10 5"/>
+        <TextBox  Height="40" Background="Transparent" BorderThickness="2"
+                 Margin="10 0 10 10 " FontSize="16" CaretBrush="White" Foreground="White" 
                  TextAlignment="Center" VerticalContentAlignment="Center" Style="{StaticResource InputStyle}"
                  Text="{Binding Login, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-        
-        <TextBox Width="300" Height="40" Background="Transparent" BorderThickness="2"
-         Margin="10" FontSize="16" CaretBrush="White" Foreground="White"
+
+        <TextBlock Text="Пароль:" Foreground="White" Margin="10 10 10 5"/>
+        <TextBox  Height="40" Background="Transparent" BorderThickness="2"
+         Margin="10 0 10 10" FontSize="16" CaretBrush="White" Foreground="White"
          TextAlignment="Center" VerticalContentAlignment="Center" Style="{StaticResource InputStyle}"
                   Text="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
 
-        <Button Width="300" Height="40" Content="Увійти" Margin="10" BorderThickness="0"
+        <Button  Height="40" Content="Увійти" Margin="10" BorderThickness="0"
                 Style="{StaticResource MainButton}" Command="{Binding LoginCommand}"/>
 
 
