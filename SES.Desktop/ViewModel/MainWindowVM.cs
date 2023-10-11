@@ -28,13 +28,23 @@ namespace SES.Desktop.ViewModel
 		public MainWindowVM()
 		{
             // По умолчанию отображаем страницу Login
-            CurrentPage = new View.Login();
+            CurrentPage = new Login();
 		}
 
 		// Метод для переключения на страницу Start
 		public void NavigateToStart(ApiGetTestVM test)
 		{
 			CurrentPage = new Start(test);
+		}
+
+		public void NavigateToTesting(ApiGetTestVM test)
+		{
+			CurrentPage = new Testing(test);
+		}
+
+		public void NavigateToFinish(UserApiVM user, Test_Result result, int question_count)
+		{
+			CurrentPage = new Finish(user, result, question_count);
 		}
 	}
 }
