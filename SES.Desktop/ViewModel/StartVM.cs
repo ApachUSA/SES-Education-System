@@ -1,9 +1,6 @@
 ﻿using SES.Desktop.Model;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Input;
 
 namespace SES.Desktop.ViewModel
 {
@@ -13,9 +10,17 @@ namespace SES.Desktop.ViewModel
 
 		public ApiGetTestVM TestVM { get; set; }
 
+		public ICommand StartingTest { get; set; }
+
 		public StartVM(ApiGetTestVM test)
 		{
 			TestVM = test;
+			StartingTest = new RelayCommand(param => StartTest());
+		}
+
+		private void StartTest()
+		{
+			((MainWindowVM)Application.Current.MainWindow.DataContext).NavigateToTesting(TestVM);
 		}
 	}
 }
