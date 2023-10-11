@@ -1,4 +1,6 @@
-﻿using System;
+﻿using SES.Desktop.Model;
+using SES.Desktop.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,9 +22,10 @@ namespace SES.Desktop.View
 	/// </summary>
 	public partial class Testing : Page
 	{
-		public Testing()
+		public Testing(ApiGetTestVM model)
 		{
 			InitializeComponent();
+			DataContext = new TestingVM(model);
 		}
 	}
 }
