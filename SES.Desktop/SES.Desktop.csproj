@@ -8,11 +8,19 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Images\FailEmoji.png" />
     <None Remove="Images\SES.png" />
+    <None Remove="Images\SuccessEmoji.png" />
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Images\FailEmoji.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Images\SES.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\SuccessEmoji.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
   </ItemGroup>
