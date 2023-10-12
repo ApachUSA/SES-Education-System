@@ -56,6 +56,8 @@ namespace SES.Desktop.ViewModel
 
 			TimerStart();
 
+			Application.Current.MainWindow.Closing += MainWindow_Closing;
+
 
 		}
 
@@ -119,6 +121,7 @@ namespace SES.Desktop.ViewModel
 			{
 				var response = await client.PostAsJsonAsync($"https://localhost:7277/TestApi/PostResult",  Test_Result);
 				response.EnsureSuccessStatusCode();
+
 				var baseResponse = JsonSerializer.Deserialize<BaseResponse<bool>>(await response.Content.ReadAsStringAsync(), new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 				if(baseResponse.StatusCode == ResponseStatus.Success)
 				{
@@ -218,6 +221,19 @@ namespace SES.Desktop.ViewModel
 			}
 
 			return true;
+		}
+
+		private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+		{
+
+			if (MessageBox.Show("Буде збережено ту кількість відповідей, яку ви встигли обрати.", "Ви впевнені що хочете вийти з тесту?", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+			{
+				Finish();
+			}
+			else
+			{
+				e.Cancel = true;
+			}
 		}
 	}
 }
