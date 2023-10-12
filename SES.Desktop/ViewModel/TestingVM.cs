@@ -125,6 +125,7 @@ namespace SES.Desktop.ViewModel
 				var baseResponse = JsonSerializer.Deserialize<BaseResponse<bool>>(await response.Content.ReadAsStringAsync(), new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 				if(baseResponse.StatusCode == ResponseStatus.Success)
 				{
+					Application.Current.MainWindow.Closing -= MainWindow_Closing;
 					((MainWindowVM)Application.Current.MainWindow.DataContext).NavigateToFinish(TestVM.User, Test_Result, UserQuestions.Count);
 				}
 				else MessageBox.Show(baseResponse.Description);
