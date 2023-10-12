@@ -80,7 +80,7 @@
 
 <script>
 
-	$(".catalog-filter-checkbox").click(function () {
+	$(".catalog-filter-checkbox .form-check-input").click(function () {
 		GetCatalogFiltered();
 	});
 
@@ -89,7 +89,7 @@
 		var selectedYear = [];
 		var selectedPosition = [];
 		var selectedType = [];
-
+		console.log("check");
 		// Получаем выбранные флажки
 		$(".year-checkbox:checked").each(function () {
 			selectedYear.push($(this).siblings("label").text().trim());
