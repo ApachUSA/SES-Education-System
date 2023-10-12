@@ -18,9 +18,16 @@
 			<span class="fw-bold">Час:</span>
 			<span>@item.Questions?.Count() хв</span>
 		</div>
+		@if (User.IsInRole("Admin"))
+		{
+			<div class="catalog_questtime catalog_item_padding  d-flex flex-row justify-content-between">
+				<span class="fw-bold">Статус:</span>
+				<span>@item.Status</span>
+			</div>
+		}
 
 		<div class="catalog_btn  d-flex flex-row justify-content-around align-items-center">
-			
+
 			@if (User.IsInRole("Admin"))
 			{
 				<a class="edit_icon" style="font-size: 20px" onclick="TestEdit(@item.Test_ID)"><i class="bi bi-pencil-square"></i></a>
@@ -39,7 +46,7 @@
 <style>
 	.catalog_card {
 		width: 300px;
-		height: 217px;
+		height: auto;
 		flex-shrink: 0;
 		border-radius: 5px;
 		background: rgba(3, 24, 62, 0.6);
