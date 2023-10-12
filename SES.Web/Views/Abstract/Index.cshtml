@@ -22,7 +22,9 @@
 
 
 
-
+@{
+	await Html.RenderPartialAsync("_ValidationScriptsPartial");
+}
 <script>
 	function GetThemes(area_ID) {
 		$.ajax({
@@ -32,7 +34,7 @@
 				area_ID: area_ID
 			},
 			success: function (data) {
-				$(".main_content").html(data); 
+				$(".main_content").html(data);
 			}
 		});
 	}
@@ -86,72 +88,66 @@
 	}
 
 	function Create() {
-		var formData = {
-			Name: $("#Name").val(),
-			URL: $("#URL").val(),
-			AreaOfStudy_ID: $("#AreaOfStudy_ID").val()
-		};
+		var $form = $("#CreateAbstractForm");
+		$form.removeData('validator');
+		$form.removeData('unobtrusiveValidation');
+		$.validator.unobtrusive.parse('form');
+		if ($form.valid()) {
+			var formData = {
+				Name: $("#Name").val(),
+				URL: $("#URL").val(),
+				AreaOfStudy_ID: $("#AreaOfStudy_ID").val()
+			};
 
-		$.ajax({
-			url: "@Url.Action("Create", "Abstract")",
-			type: "POST",
-			data: {
-				_abstract: formData
-			},
-			success: function (data) {
-				HideModal();
-				GetThemes(data);
-				SuccesToastShow("Конспект успішно створено");
-				
-			},
-			error: function (xhr) {
-				$("span.text-danger").text("");
-				$("input").removeClass("error");
+			$.ajax({
+				url: "@Url.Action("Create", "Abstract")",
+				type: "POST",
+				data: {
+					_abstract: formData
+				},
+				success: function (data) {
+					HideModal();
+					GetThemes(data);
+					SuccesToastShow("Конспект успішно створено");
 
-				var errors = xhr.responseJSON;
-				if (errors) {
-					$.each(errors, function (key, value) {
-						errorElement = $("[name='" + key.replace('_abstract.', '') + "']").siblings("span.text-danger");
-						errorElement.text(value);
-					});
+				},
+				error: function (xhr) {
+					ErrorToastShow(xhr.responseText);
 				}
-			}
-		});
+			});
+		}
 
 	}
 
 	function AbstractEdit() {
-		var formData = {
-			Abstract_ID: $("#Abstract_ID").val(),
-			Name: $("#Name").val(),
-			URL: $("#URL").val(),
-			AreaOfStudy_ID: $("#AreaOfStudy_ID").val()
-		};
+		var $form = $("#EditAbstractForm");
+		$form.removeData('validator');
+		$form.removeData('unobtrusiveValidation');
+		$.validator.unobtrusive.parse('form');
+		if ($form.valid()) {
+			var formData = {
+				Abstract_ID: $("#Abstract_ID").val(),
+				Name: $("#Name").val(),
+				URL: $("#URL").val(),
+				AreaOfStudy_ID: $("#AreaOfStudy_ID").val()
+			};
 
-		$.ajax({
-			url: "@Url.Action("Edit", "Abstract")",
-			type: "POST",
-			data: {
-				_abstract: formData
-			},
-			success: function (data) {
-				HideModal();
-				GetThemes(data);
-				SuccesToastShow("Конспект успішно оновлено");
-			},
-			error: function (xhr) {
-				$("span.text-danger").text("");
-				$("input").removeClass("error");
-
-				var errors = xhr.responseJSON;
-				if (errors) {
-					$.each(errors, function (key, value) {
-						errorElement = $("[name='" + key.replace('_abstract.', '') + "']").siblings("span.text-danger");
-						errorElement.text(value);
-					});
+			$.ajax({
+				url: "@Url.Action("Edit", "Abstract")",
+				type: "POST",
+				data: {
+					_abstract: formData
+				},
+				success: function (data) {
+					HideModal();
+					GetThemes(data);
+					SuccesToastShow("Конспект успішно оновлено");
+				},
+				error: function (xhr) {
+					ErrorToastShow(xhr.responseText);
 				}
-			}
-		});
+			});
+		}
 
 	}
 

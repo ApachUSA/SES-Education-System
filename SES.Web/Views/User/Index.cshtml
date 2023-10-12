@@ -17,7 +17,7 @@
 			<button class="nav-link" data-bs-toggle="pill" data-bs-target="#pills-result" onclick="GetResult()" aria-selected="false"><span>Результати тестування</span></button>
 		</li>
 	}
-	
+
 	@if (User.IsInRole("Admin"))
 	{
 		<li class="nav-item" role="presentation">
@@ -39,25 +39,25 @@
 			<div class="d-flex flex-row justify-content-between" style="margin-bottom: 20px">
 				<div class="form-check filter-checkbox">
 					<input id="Водій автодрабини" class="form-check-input filter-result-checkbox" type="checkbox">
-					<label class="form-check-label">
+					<label class="form-check-label" for="Водій автодрабини">
 						Водій автодрабини
 					</label>
 				</div>
 				<div class="form-check filter-checkbox">
 					<input id="Командир відділення" class="form-check-input filter-result-checkbox" type="checkbox">
-					<label class="form-check-label">
+					<label class="form-check-label" for="Командир відділення">
 						Командир відділення
 					</label>
 				</div>
 				<div class="form-check filter-checkbox">
 					<input id="Радіотелефоніст" class="form-check-input filter-result-checkbox" type="checkbox">
-					<label class="form-check-label">
+					<label class="form-check-label" for="Радіотелефоніст">
 						Радіотелефоніст
 					</label>
 				</div>
 				<div class="form-check filter-checkbox">
 					<input id="Пожежний-рятувальник" class="form-check-input filter-result-checkbox" type="checkbox">
-					<label class="form-check-label">
+					<label class="form-check-label" for="Пожежний-рятувальник">
 						Пожежний-рятувальник
 					</label>
 				</div>
@@ -119,9 +119,12 @@
 		GetProfileView();
 	});
 </script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
 
+
+@{
+	await Html.RenderPartialAsync("_ValidationScriptsPartial");
+}
+<script>
 	function GetProfileView() {
 		$.ajax({
 			url: "@Url.Action("Profile", "User")",
@@ -134,45 +137,44 @@
 	}
 
 	function AccountUpdate() {
-		var formData = {
-			User_ID: $("#User_ID").val(),
-			Surname: $("#Surname").val(),
-			Name: $("#Name").val(),
-			Patronymic: $("#Patronymic").val(),
-			Position_ID: $("#Position_ID").val(),
-			Rang_ID: $("#Rang_ID").val(),
-			Department_ID: $("#Department_ID").val(),
-			Rang_ID: $("#Rang_ID").val(),
-			Role_ID: $("#Role_ID").val(),
-			Login: $("#Login").val(),
-			Password: $("#Password").val(),
-			PasswordConfirm: $("#PasswordConfirm").val()
-		};
+		var $form = $("#UserProfile");
+		$form.removeData('validator');
+		$form.removeData('unobtrusiveValidation');
+		$.validator.unobtrusive.parse('form');
+		if ($form.valid()) {
 
-		$.ajax({
-			url: "@Url.Action("Profile", "User")",
-			type: "POST",
-			data: {
-				user: formData
-			},
-			success: function (data) {
-				GetProfileView();
 
-				SuccesToastShow("Пароль оновлено");
-			},
-			error: function (xhr) {
-				$("span.text-danger").text("");
-				$("input").removeClass("error");
+			var formData = {
+				User_ID: $("#User_ID").val(),
+				Surname: $("#Surname").val(),
+				Name: $("#Name").val(),
+				Patronymic: $("#Patronymic").val(),
+				Position_ID: $("#Position_ID").val(),
+				Rang_ID: $("#Rang_ID").val(),
+				Department_ID: $("#Department_ID").val(),
+				Rang_ID: $("#Rang_ID").val(),
+				Role_ID: $("#Role_ID").val(),
+				Login: $("#Login").val(),
+				Password: $("#Password").val(),
+				PasswordConfirm: $("#PasswordConfirm").val()
+			};
 
-				var errors = xhr.responseJSON;
-				if (errors) {
-					$.each(errors, function (key, value) {
-						errorElement = $("[name='" + key.replace('user.', '') + "']").siblings("span.text-danger");
-						errorElement.text(value);
-					});
+			$.ajax({
+				url: "@Url.Action("Profile", "User")",
+				type: "POST",
+				data: {
+					user: formData
+				},
+				success: function (data) {
+					GetProfileView();
+
+					SuccesToastShow("Пароль оновлено");
+				},
+				error: function (xhr) {
+					ErrorToastShow(xhr.responseText);
 				}
-			}
-		});
+			});
+		}
 
 	}
 
@@ -236,48 +238,37 @@
 	}
 
 	function RegisterUser() {
-		var formData = {
-			Snp: $("#Snp").val(),
-			Position_ID_VM: $("#Position_ID_VM").val(),
-			Rang_ID_VM: $("#Rang_ID_VM").val(),
-			Department_ID_VM: $("#Department_ID_VM").val(),
-			Role_ID_VM: $("#Role_ID_VM").val(),
-			Login_VM: $("#Login_VM").val(),
-			Password_VM: $("#Password_VM").val(),
-		};
+		var $form = $("#CreateUserForm");
+		$form.removeData('validator');
+		$form.removeData('unobtrusiveValidation');
+		$.validator.unobtrusive.parse('form');
+		if ($form.valid()) {
+			var formData = {
+				Snp: $("#Snp").val(),
+				Position_ID_VM: $("#Position_ID_VM").val(),
+				Rang_ID_VM: $("#Rang_ID_VM").val(),
+				Department_ID_VM: $("#Department_ID_VM").val(),
+				Role_ID_VM: $("#Role_ID_VM").val(),
+				Login_VM: $("#Login_VM").val(),
+				Password_VM: $("#Password_VM").val(),
+			};
 
-		$.ajax({
-			url: "@Url.Action("Register", "Account")",
-			type: "POST",
-			data: {
-				model: formData
-			},
-			success: function (data) {
-				GetRegisterView();
+			$.ajax({
+				url: "@Url.Action("Register", "Account")",
+				type: "POST",
+				data: {
+					model: formData
+				},
+				success: function (data) {
+					GetRegisterView();
 
-				SuccesToastShow("Користувач успішно створений");
-			},
-			error: function (xhr) {
-				$("span.text-danger").text("");
-				$("input").removeClass("error");
-
-				var errors = xhr.responseJSON;
-				if (errors) {
-					$.each(errors, function (key, value) {
-
-						if (key !== "") {
-							errorElement = $("[name='" + key.replace('model.', '') + "']").siblings("span.text-danger");
-							errorElement.text(value);
-						}
-						else {
-							ErrorToastShow(value);
-						}
-
-
-					});
+					SuccesToastShow("Користувач успішно створений");
+				},
+				error: function (xhr) {
+					ErrorToastShow(xhr.responseText);
 				}
-			}
-		});
+			});
+		}
 
 	}
 
@@ -307,6 +298,7 @@
 				$(".account-create").empty();
 				inputElement.value = "";
 
+				SuccesToastShow("Пошукові фільтри застосовано");
 			},
 			error: function (xhr) {
 				ErrorToastShow(xhr.responseText);
