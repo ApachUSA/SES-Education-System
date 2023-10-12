@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Azure;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using SES.Domain.Entity.TestE;
 using SES.Domain.Enum;
@@ -71,16 +72,28 @@ namespace SES.Web.Controllers
 		[HttpPost]
 		public async Task<IActionResult> TestCreate(Test model)
 		{
-			if (ModelState.IsValid)
+			if (model.Status == TestStatus.Основне)
 			{
-				var response = await _testService.Create(model);
-				if (response.StatusCode == ResponseStatus.Success)
+				var test = await _testService.Get();
+				if (test.StatusCode == ResponseStatus.Success)
 				{
-					return Ok(new { Message = "Тест успішно створено", Test_ID = model.Test_ID });
+					if (test.Data.Any(x => x.Position_ID == model.Position_ID && x.Status == TestStatus.Основне))
+					{
+						return BadRequest("Основний тест для цієї посади вже існує.");
+					}
 				}
-				ModelState.AddModelError("", response.Description);
+				return BadRequest(test.Description);
 			}
-			return BadRequest(ModelState);
+
+			var response = await _testService.Create(model);
+			if (response.StatusCode == ResponseStatus.Success)
+			{
+				return Ok(new { Message = "Тест успішно створено", Test_ID = model.Test_ID });
+			}
+			return BadRequest(response.Description);
+
+
+
 		}
 
 		[HttpGet]
@@ -104,11 +117,9 @@ namespace SES.Web.Controllers
 					{
 						questionList = JsonSerializer.Deserialize<List<Question>>(fileContent);
 
-						// Делайте что-то с данными jsonData
 					}
 					catch (JsonException ex)
 					{
-						// Обработка ошибки десериализации JSON
 						return BadRequest("Помилка десеріалізації JSON: " + ex.Message);
 					}
 					ViewBag.Test_ID = Test_ID;
