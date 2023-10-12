@@ -34,7 +34,7 @@ namespace SES.Web.Controllers
 			var response = await _historyService.Get(int.Parse(HttpContext.User.FindFirst("UserID").Value));
 			if (response.StatusCode == ResponseStatus.Success)
 			{
-				return PartialView("_HistoryPartialView", response.Data.OrderByDescending(x => x.Date).ToList());
+				return PartialView("_HistoryPartialView", response.Data.OrderByDescending(x => x.Test_History_ID).ToList());
 			}
 			return View("ErrorView", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
 		}
@@ -45,7 +45,7 @@ namespace SES.Web.Controllers
 			var response = await _resultService.Get(int.Parse(HttpContext.User.FindFirst("Department").Value));
 			if (response.StatusCode == ResponseStatus.Success)
 			{
-				return PartialView("_ResultPartialView", response.Data.OrderByDescending(x => x.Date).ToList());
+				return PartialView("_ResultPartialView", response.Data.OrderByDescending(x => x.Test_Result_ID).ToList());
 			}
 			return View("ErrorView", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
 		}
