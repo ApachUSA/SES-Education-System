@@ -1,12 +1,10 @@
-﻿
-
-@model RegisterVM
+﻿@model RegisterVM
 
 <div class="modal fade" id="editUserModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="false">
 	<div class="modal-dialog modal-dialog-centered">
 		<div class="modal-content">
 			<div class="d-flex flex-column">
-				<form>
+				<form id="EditUserForm">
 					<input asp-for="User_ID_VM" hidden />
 					<div class="d-flex flex-row">
 						<div class="d-flex flex-column">
@@ -37,7 +35,7 @@
 								<select asp-items="ViewBag.Region" onchange="FillDepartmentOption(this)" id="region" class=" form-select"></select>
 							</div>
 							<div class="form-group mb-3">
-								<label>Оберіть частину, в якій служить працівник:</label>
+								<label>Оберіть пожежну частину, в якій служить працівник:</label>
 								<select asp-for="Department_ID_VM" class=" form-select"></select>
 								<span asp-validation-for="Department_ID_VM" class="text-danger"></span>
 							</div>
@@ -76,46 +74,39 @@
 
 <script>
 	function UpdateUser() {
-		var formData = {
-			User_ID_VM: $("#User_ID_VM").val(),
-			Snp: $("#Snp").val(),
-			Position_ID_VM: $("#Position_ID_VM").val(),
-			Rang_ID_VM: $("#Rang_ID_VM").val(),
-			Department_ID_VM: $("#Department_ID_VM").val(),
-			Role_ID_VM: $("#Role_ID_VM").val(),
-			Login_VM: $("#Login_VM").val(),
-			Password_VM: $("#Password_VM").val(),
-		};
+		var $form = $("#EditUserForm");
+		$form.removeData('validator');
+		$form.removeData('unobtrusiveValidation');
+		$.validator.unobtrusive.parse('form');
+		if ($form.valid()) {
+			var formData = {
+				User_ID_VM: $("#User_ID_VM").val(),
+				Snp: $("#Snp").val(),
+				Position_ID_VM: $("#Position_ID_VM").val(),
+				Rang_ID_VM: $("#Rang_ID_VM").val(),
+				Department_ID_VM: $("#Department_ID_VM").val(),
+				Role_ID_VM: $("#Role_ID_VM").val(),
+				Login_VM: $("#Login_VM").val(),
+				Password_VM: $("#Password_VM").val(),
+			};
 
-		$.ajax({
-			url: "@Url.Action("Edit", "User")",
-			type: "POST",
-			data: {
-				model: formData
-			},
-			success: function (data) {
-				HideModal();
-				GetUsersListView();
+			$.ajax({
+				url: "@Url.Action("Edit", "User")",
+				type: "POST",
+				data: {
+					model: formData
+				},
+				success: function (data) {
+					HideModal();
+					GetUsersListView();
 
-				SuccesToastShow("Дані працівника оновлено");
-			},
-			error: function (xhr) {
-				$("span.text-danger").text("");
-				$("input").removeClass("error");
-
-				var errors = xhr.responseJSON;
-				if (errors) {
-					$.each(errors, function (key, value) {
-
-						if (key !== "") {
-							errorElement = $("[name='" + key.replace('model.', '') + "']").siblings("span.text-danger");
-							errorElement.text(value);
-						}
-
-					});
+					SuccesToastShow("Дані працівника оновлено");
+				},
+				error: function (xhr) {
+					ErrorToastShow(xhr.responseText);
 				}
-			}
-		});
+			});
+		}
 
 	}
 
