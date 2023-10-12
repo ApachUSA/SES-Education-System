@@ -121,7 +121,7 @@ namespace SES.Service.Implementations
 			try
 			{
 				await _testResultRepository.Update(model);
-
+				await _testHistoryService.Create(_mapper.Map<Test_History>(model));
 				return BaseResponse<bool>.Success(true, "");
 			}
 			catch (Exception e)
