@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace SES.Desktop.ViewModel
@@ -31,10 +32,18 @@ namespace SES.Desktop.ViewModel
             CurrentPage = new Login();
 		}
 
+		public void NavigateToLogin()
+		{
+			CurrentPage = new Login();
+			Application.Current.MainWindow.SizeToContent = SizeToContent.Manual;
+			Application.Current.MainWindow.WindowState = WindowState.Normal;
+		}
+
 		// Метод для переключения на страницу Start
 		public void NavigateToStart(ApiGetTestVM test)
 		{
 			CurrentPage = new Start(test);
+			Application.Current.MainWindow.WindowState = WindowState.Maximized;
 		}
 
 		public void NavigateToTesting(ApiGetTestVM test)
