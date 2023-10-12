@@ -9,6 +9,7 @@ using SES.Service.Interfaces;
 using SES.Web.Models;
 using System.Diagnostics;
 using Microsoft.AspNetCore.Authorization;
+using Azure;
 
 namespace SES.Web.Controllers
 {
@@ -55,18 +56,13 @@ namespace SES.Web.Controllers
 		[HttpPost]
 		public async Task<IActionResult> Create(Abstracts _abstract)
 		{
-			if (ModelState.IsValid)
+			var response = await _abstractService.Create(_abstract);
+			if (response.StatusCode == ResponseStatus.Success)
 			{
-				var response = await _abstractService.Create(_abstract);
-				if (response.StatusCode == ResponseStatus.Success)
-				{
-					ViewData["AreaName"] = _abstract.AreaOfStudy_ID;
-					return Ok(_abstract.AreaOfStudy_ID);
-				}
-				ModelState.AddModelError("", response.Description);
+				ViewData["AreaName"] = _abstract.AreaOfStudy_ID;
+				return Ok(_abstract.AreaOfStudy_ID);
 			}
-			return BadRequest(ModelState);
-
+			return BadRequest(response.Description);
 		}
 
 		[HttpGet]
@@ -83,17 +79,12 @@ namespace SES.Web.Controllers
 		[HttpPost]
 		public async Task<IActionResult> Edit(Abstracts _abstract)
 		{
-			if (ModelState.IsValid)
+			var response = await _abstractService.Update(_abstract);
+			if (response.StatusCode == ResponseStatus.Success)
 			{
-				var response = await _abstractService.Update(_abstract);
-				if (response.StatusCode == ResponseStatus.Success)
-				{
-					return Ok(_abstract.AreaOfStudy_ID);
-				}
-				ModelState.AddModelError("", response.Description);
+				return Ok(_abstract.AreaOfStudy_ID);
 			}
-			return BadRequest(ModelState);
-
+			return BadRequest(response.Description);
 		}
 
 		[HttpPost]
@@ -109,7 +100,6 @@ namespace SES.Web.Controllers
 				ModelState.AddModelError("", response.Description);
 			}
 			return BadRequest(ModelState);
-
 		}
 
 	}

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Azure;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -45,17 +46,12 @@ namespace SES.Web.Controllers
 		[HttpPost]
 		public async Task<IActionResult> Profile(User user)
 		{
-			if (ModelState.IsValid)
+			var response = await _userService.Update(user);
+			if (response.StatusCode == ResponseStatus.Success)
 			{
-				var response = await _userService.Update(user);
-				if (response.StatusCode == ResponseStatus.Success)
-				{
-					return Ok();
-				}
-				ModelState.AddModelError("", response.Description);
+				return Ok();
 			}
-			return BadRequest(ModelState);
-
+			return BadRequest(response.Description);
 		}
 
 		[HttpGet]
@@ -106,7 +102,7 @@ namespace SES.Web.Controllers
 		public async Task<IActionResult> Edit(int user_ID)
 		{
 			var response = await _userService.Get(user_ID);
-			
+
 			if (response.StatusCode == ResponseStatus.Success)
 			{
 				var register = _mapper.Map<RegisterVM>(response.Data);
@@ -145,22 +141,18 @@ namespace SES.Web.Controllers
 		[HttpPost]
 		public async Task<IActionResult> Edit(RegisterVM model)
 		{
-			if (ModelState.IsValid)
+			model.Role_ID_VM = model.Position_ID_VM switch
 			{
-				model.Role_ID_VM = model.Position_ID_VM switch
-				{
-					5 => Role.Teacher,
-					6 => Role.Admin,
-					_ => Role.Student,
-				};
-				var response = await _userService.Update(_mapper.Map<User>(model));
-				if (response.StatusCode == ResponseStatus.Success)
-				{
-					return Ok();
-				}
-				ModelState.AddModelError("", response.Description);
+				5 => Role.Teacher,
+				6 => Role.Admin,
+				_ => Role.Student,
+			};
+			var response = await _userService.Update(_mapper.Map<User>(model));
+			if (response.StatusCode == ResponseStatus.Success)
+			{
+				return Ok();
 			}
-			return BadRequest(ModelState);
+			return BadRequest(response.Description);
 
 		}
 

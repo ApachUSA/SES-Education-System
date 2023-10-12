@@ -6,6 +6,7 @@ using SES.Service.Interfaces;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using SES.Domain.Enum;
 using System.Text.Json;
+using Azure;
 
 namespace SES.Web.Controllers
 {
@@ -78,16 +79,14 @@ namespace SES.Web.Controllers
 				6 => Role.Admin,
 				_ => Role.Student,
 			};
-			if (ModelState.IsValid)
+
+			var response = await _accountService.Register(model);
+			if (response.StatusCode == ResponseStatus.Success)
 			{
-				var response = await _accountService.Register(model);
-				if (response.StatusCode == ResponseStatus.Success)
-				{
-					return Ok();
-				}
-				ModelState.AddModelError("", response.Description);
+				return Ok();
 			}
-			return BadRequest(ModelState);
+
+			return BadRequest(response.Description);
 		}
 
 
