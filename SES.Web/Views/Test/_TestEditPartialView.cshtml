@@ -1,6 +1,6 @@
 ﻿@model Test
 
-<div class="d-flex flex-column">
+<div class="d-flex flex-column" style="margin-bottom: 20px">
 
 	<div class="mb-1" style="margin-top: 1%"><a class="link_button_nodecorate" onclick="GetCatalogFilterView()"><i class="bi bi-arrow-left "></i><span>Назад</span></a></div>
 
@@ -22,14 +22,14 @@
 		<div class="form-group mb-3">
 			<label>Змінити статус тесту:</label>
 			<div class="form-check catalog-filter-checkbox ">
-				<input asp-for="Status" value="Підготовче" class="form-check-input year-checkbox" type="radio">
-				<label class="form-check-label" >
+				<input asp-for="Status" value="Підготовче" class="form-check-input year-checkbox" type="radio" id="Підготовче">
+				<label class="form-check-label" for="Підготовче">
 					Підготовче тестування (відображатиметься на сайті самопідготовки)
 				</label>
 			</div>
 			<div class="form-check catalog-filter-checkbox ">
-				<input asp-for="Status" value="Основне" class="form-check-input year-checkbox" type="radio">
-				<label class="form-check-label" >
+				<input asp-for="Status" value="Основне" class="form-check-input year-checkbox" type="radio" id="Основне">
+				<label class="form-check-label" for="Основне">
 					Основне тестування (відображатиметься у системі щорічного тестування працівників)
 				</label>
 			</div>
@@ -43,7 +43,7 @@
 				<div id="Question[@Model.Questions[i].Question_ID]" class="mb-4">
 
 					<input asp-for="@Model.Questions[i].Question_ID" hidden />
-					<input asp-for="@Model.Questions[i].Test_ID" hidden />
+					@* <input asp-for="@Model.Questions[i].Test_ID" hidden /> *@
 					<div class="d-flex flex-row justify-content-between">
 						<h5 class="fw-bold mb-3">Питання @(i + 1)</h5>
 						<a class="delete_icon" style="font-size: 20px; margin: 0 5px;" onclick="DeleteQuestionEV(@Model.Questions[i].Question_ID)"><i class="bi bi-trash3-fill"></i></a>
@@ -61,7 +61,7 @@
 
 							<div class="d-flex flex-row mb-3 align-items-center" id="Option[@Model.Questions[i].Options[j].Option_ID]">
 								<input asp-for="@Model.Questions[i].Options[j].Option_ID" hidden />
-								<input asp-for="@Model.Questions[i].Options[j].Question_ID" hidden />
+								@* <input asp-for="@Model.Questions[i].Options[j].Question_ID" hidden /> *@
 								<input asp-for="@Model.Questions[i].Options[j].Right" class="form-check-input" type="checkbox">
 								<section class="d-flex flex-column" style="width: 100%">
 									<input asp-for="@Model.Questions[i].Options[j].Text" class="form-control" style="width: 100%; background: transparent" />
@@ -80,8 +80,11 @@
 		</div>
 		<a class="add_icon mt-3 mb-4" onclick="CreateQuestionEV(@Model.Test_ID)"><i class="bi bi-plus-square-fill"></i><span style="margin-left: 5px;">Додати питання</span></a>
 		<div class="d-flex mt-4 flex-row justify-content-center">
-			<a onclick="GetCatalogFilterView() " class="main_button main_button_light" style="width: 300px; margin-right: 10px; height: 40px"><span>Cкасувати</span></a>
-			<a class="main_button" onclick="Submit()" style="width: 300px; margin-left: 10px; height: 40px"><span>Зберегти</span></a>
+			<a onclick="GetCatalogFilterView() " class="main_button main_button_light" style="width: 300px; margin-right: 10px; height: 40px"><span>Назад</span></a>
+			<a class="main_button" onclick="Submit()" style="width: 300px; margin-left: 10px; height: 40px">
+				<span>Зберегти</span>
+				<div class="spinner-border text-info ms-3" id="SaveTestSpin" hidden style="height: 20px; width: 20px" role="status"></div>
+				</a>
 		</div>
 	</form>
 
@@ -90,11 +93,12 @@
 <script>
 	var i = @Model.Questions.Count;
 	function Submit() {
+		$("#SaveTestSpin").removeAttr("hidden");
+
 		var $form = $("#EditTest");
 		$form.removeData('validator');
 		$form.removeData('unobtrusiveValidation');
 		$.validator.unobtrusive.parse('form');
-		console.log('w');
 		if ($form.valid()) {
 
 			var Test = {
@@ -109,14 +113,14 @@
 				var question = {
 					Question_ID: $(this).find("input[name$='.Question_ID']").val(),
 					Text: $(this).find("textarea").val(),
-					Test_ID: Test.Test_ID,
+					// Test_ID: Test.Test_ID,
 					Options: []
 				};
 
 				$(this).find(".d-flex.flex-row.mb-3.align-items-center").each(function () {
 					var option = {
 						Option_ID: $(this).find("input[name$='.Option_ID']").val(),
-						Question_ID: question.Question_ID,
+						// Question_ID: question.Question_ID,
 						Right: $(this).find("input[type=checkbox]").prop("checked"),
 						Text: $(this).find("input[type=text]").val()
 					};
@@ -134,13 +138,15 @@
 					model: Test,
 				},
 				success: function (data) {
+					$("#SaveTestSpin").attr("hidden", "hidden");
 					SuccesToastShow(data);
 				},
 				error: function (xhr) {
-
+					$("#SaveTestSpin").attr("hidden", "hidden");
 				}
 			});
 		} else {
+			$("#SaveTestSpin").attr("hidden", "hidden");
 			ErrorToastShow("Допущена помилка");
 		}
 	}
@@ -179,7 +185,7 @@
 												<input hidden="" type="number" data-val="true" data-val-required="The Question_ID field is required." id="Questions_${i}__Options_${optionsCount}__Question_ID" name="Questions[${i}].Options[${optionsCount}].Question_ID" value="${question_id}"><input name="__Invariant" type="hidden" value="Questions[${i}].Options[${optionsCount}].Question_ID">
 											<input class="form-check-input" type="checkbox" data-val="true" data-val-required="The Right field is required." id="Questions_${i}__Options_${optionsCount}__Right" name="Questions[${i}].Options[${optionsCount}].Right" value="true">
 										<section class="d-flex flex-column" style="width: 100%">
-												<input class="form-control" style="width: 100%; background: transparent" type="text" data-val="true" data-val-required="The Text field is required." id="Questions_${i}__Options_${optionsCount}__Text" name="Questions[${i}].Options[${optionsCount}].Text" value="">
+													<input class="form-control" style="width: 100%; background: transparent" type="text" data-val="true" data-val-required="Введіть текст варіанту відповіді." id="Questions_${i}__Options_${optionsCount}__Text" name="Questions[${i}].Options[${optionsCount}].Text" value="">
 												<span class="text-danger field-validation-valid" data-valmsg-for="Questions[${i}].Options[${optionsCount}].Text" data-valmsg-replace="true"></span>
 										</section>
 
@@ -192,7 +198,7 @@
 													<input hidden="" type="number" data-val="true" data-val-required="The Question_ID field is required." id="Questions_${i}__Options_${optionsCount}__Question_ID" name="Questions[${i}].Options[${optionsCount}].Question_ID" value="${question_id}"><input name="__Invariant" type="hidden" value="Questions[${i}].Options[${optionsCount}].Question_ID">
 												<input class="form-check-input" type="checkbox" data-val="true" data-val-required="The Right field is required." id="Questions_${i}__Options_${optionsCount}__Right" name="Questions[${i}].Options[${optionsCount}].Right" value="true">
 											<section class="d-flex flex-column" style="width: 100%">
-													<input class="form-control" style="width: 100%; background: transparent" type="text" data-val="true" data-val-required="The Text field is required." id="Questions_${i}__Options_${optionsCount}__Text" name="Questions[${i}].Options[${optionsCount}].Text" value="">
+														<input class="form-control" style="width: 100%; background: transparent" type="text" data-val="true" data-val-required="Введіть текст варіанту відповіді." id="Questions_${i}__Options_${optionsCount}__Text" name="Questions[${i}].Options[${optionsCount}].Text" value="">
 													<span class="text-danger field-validation-valid" data-valmsg-for="Questions[${i}].Options[${optionsCount}].Text" data-valmsg-replace="true"></span>
 											</section>
 												<a class="delete_icon" style="font-size: 20px; margin: 0 5px;" onclick="DeleteOptionEV(${option_ID})"><i class="bi bi-trash3-fill"></i></a>
@@ -252,7 +258,7 @@
 							</div>
 							<div class="form-group mb-3">
 								<label>Введіть текст запитання:</label>
-										<textarea class="form-control" style="background: transparent" rows="3" data-val="true" data-val-required="The Text field is required." id="Questions_${i}__Text" name="Questions[${i}].Text"></textarea>
+											<textarea class="form-control" style="background: transparent" rows="3" data-val="true" data-val-required="Введіть текст запитання." id="Questions_${i}__Text" name="Questions[${i}].Text"></textarea>
 									<span class="text-danger field-validation-valid" data-valmsg-for="Questions[${i}].Text" data-valmsg-replace="true"></span>
 							</div>
 							<label class="mb-3">Введіть текст варіантів відповідей та позначте правильну(-і) з них ліворуч:</label>
