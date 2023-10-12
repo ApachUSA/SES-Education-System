@@ -2,7 +2,7 @@
 
 
 <div class="d-flex flex-column">
-	<form>
+	<form id="CreateUserForm">
 		<div class="d-flex flex-row">
 			<div class="d-flex flex-column">
 				<div class="profile_title"><span>Персональні дані</span></div>
@@ -32,7 +32,7 @@
 					<select asp-items="ViewBag.Region" onchange="FillDepartmentOption(this)" id="region" class=" form-select"></select>
 				</div>
 				<div class="form-group mb-3">
-					<label>Оберіть частину, в якій служить працівник:</label>
+					<label>Оберіть пожежну частину, в якій служить працівник:</label>
 					<select asp-for="Department_ID_VM"  class=" form-select"></select>
 					<span asp-validation-for="Department_ID_VM" class="text-danger"></span>
 				</div>
@@ -79,8 +79,7 @@
 		if (imageObject) {
 			previewImage.src = imageObject.Image;
 		} else {
-			// Если изображение не найдено, можно установить заглушку или другое значение по умолчанию
-			previewImage.src = 'https://cdn-icons-png.flaticon.com/512/3177/3177440.png'; // Замените на вашу заглушку
+			previewImage.src = 'https://cdn-icons-png.flaticon.com/512/3177/3177440.png'; 
 		}
 	}
 </script>
