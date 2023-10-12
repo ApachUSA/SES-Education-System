@@ -34,7 +34,7 @@ namespace SES.Service.Implementations
 				var user = await _userRespository.Get().Include(x => x.Department).FirstOrDefaultAsync(x => x.Login == model.Login && x.Password == model.Password);
 				if (user == null)
 				{
-					return BaseResponse<ClaimsIdentity>.Fail(ResponseStatus.UserNotFound, "Неправельний логін або пароль");
+					return BaseResponse<ClaimsIdentity>.Fail(ResponseStatus.UserNotFound, "Неправильний логін або пароль");
 				}
 
 				return BaseResponse<ClaimsIdentity>.Success(Auth(user), "Користувач аторизований");
