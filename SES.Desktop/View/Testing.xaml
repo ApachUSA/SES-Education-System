@@ -7,116 +7,90 @@
       mc:Ignorable="d" 
      d:DesignHeight="980" d:DesignWidth="1820" 
       Title="Testing">
-    <Page.Resources>
-        <Style x:Key="CustomCheckBoxStyle" TargetType="CheckBox">
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="CheckBox">
-                        <Grid>
-                            <Border Background="{TemplateBinding Background}"
-                                    BorderBrush="White"
-                                    BorderThickness="2"
-                                    Width="22" Height="22"
-                                    CornerRadius="5">
-                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                            </Border>
-                        </Grid>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-            <Style.Triggers>
-                <Trigger Property="IsChecked" Value="True">
-                    <Setter Property="Background" Value="#EC6E07"/>
-                </Trigger>
-                <Trigger Property="IsChecked" Value="False">
-                    <Setter Property="Background" Value="Transparent"/>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-    </Page.Resources>
-    <StackPanel Width="1020" VerticalAlignment="Center">
+    <ScrollViewer CanContentScroll="True" VerticalScrollBarVisibility="Auto">
+        <StackPanel Width="1020" >
+            <Grid Margin="0 120 0 0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="auto"/>
+                </Grid.ColumnDefinitions>
 
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition Width="auto"/>
-                <ColumnDefinition Width="auto"/>
-            </Grid.ColumnDefinitions>
+                <TextBlock  Foreground="White" FontSize="16" VerticalAlignment="Bottom">
+                    <TextBlock.Text>
+                        <MultiBinding StringFormat="Питання {0}/{1}">
+                            <Binding Path="CurrentIndex" />
+                            <Binding Path="TestVM.Test.Count" />
+                        </MultiBinding>
+                    </TextBlock.Text>
+                </TextBlock>
 
-            <TextBlock  Foreground="White" FontSize="16" VerticalAlignment="Bottom">
-                <TextBlock.Text>
-                    <MultiBinding StringFormat="Питання {0}/{1}">
-                        <Binding Path="CurrentIndex" />
-                        <Binding Path="TestVM.Test.Count" />
-                    </MultiBinding>
-                </TextBlock.Text>
-            </TextBlock>
-
-            <TextBlock Text="{Binding CurrentTime}" FontSize="24" FontWeight="Bold" Foreground="#EC6E07"
+                <TextBlock Text="{Binding CurrentTime}" FontSize="24" FontWeight="Bold" Foreground="#EC6E07"
                        Grid.Column="1" VerticalAlignment="Bottom"  Margin="60 0"/>
 
-            <Image  Source="\Images\SES.png" Width="120" Height="120" Grid.Column="2"/>
+                <Image  Source="\Images\SES.png" Width="120" Height="120" Grid.Column="2"/>
 
-        </Grid>
+            </Grid>
 
-        <Grid Margin="0 30">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition/>
-                <RowDefinition/>
-            </Grid.RowDefinitions>
+            <Grid Margin="0 30">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
 
-            <TextBlock Text="{Binding CurrentQuestion.Text}" 
+                <TextBlock Text="{Binding CurrentQuestion.Text}" 
                        Foreground="White" FontSize="24" FontWeight="Bold" Grid.ColumnSpan="2" 
                        TextWrapping="Wrap"/>
 
-            <StackPanel Grid.Row="1" Grid.ColumnSpan="2" Margin="0 80 0 0">
-                <ItemsControl Name="OptionsItemsControl" ItemsSource="{Binding CurrentQuestion.Options}">
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <Grid  Margin="0 40 0 0" VerticalAlignment="Center">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="auto"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Row="1" Grid.ColumnSpan="2" Margin="0 80 0 0">
+                    <ItemsControl Name="OptionsItemsControl" ItemsSource="{Binding CurrentQuestion.Options}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Grid  Margin="0 40 0 0" VerticalAlignment="Center">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
 
-                                <CheckBox IsChecked="{Binding Right}" Margin="0,0,20,0"
+                                    <CheckBox IsChecked="{Binding Right}" Margin="0,0,20,0"
                                           Style="{StaticResource CustomCheckBoxStyle}"/>
 
-                                <TextBlock Text="{Binding Text}" FontSize="16" Foreground="White" 
+                                    <TextBlock Text="{Binding Text}" FontSize="16" Foreground="White" 
                                            TextWrapping="Wrap" Grid.Column="1"/>
 
-                            </Grid>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-            </StackPanel>
+                                </Grid>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
 
 
-        </Grid>
+            </Grid>
 
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-            <Button Width="300" Height="40" Content="Назад" Margin="10" BorderThickness="0"
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <Button Width="300" Height="40" Content="Назад" Margin="10" BorderThickness="0"
                     Style="{StaticResource MainButton}" Command="{Binding PreviousQuestion}"
                     Visibility="{Binding PreviousButtonVisibility}"/>
 
 
-            <Button Width="300" Height="40" Content="Далі" Margin="10" BorderThickness="0"
+                <Button Width="300" Height="40" Content="Далі" Margin="10" BorderThickness="0"
                     Style="{StaticResource MainButton}" Command="{Binding NextQuestion}"
                      Visibility="{Binding NextButtonVisibility}"/>
 
-            <Button Width="300" Height="40" Content="Завершити" Margin="10" BorderThickness="0"
+                <Button Width="300" Height="40" Content="Завершити" Margin="10" BorderThickness="0"
                     Style="{StaticResource MainButton}" Command="{Binding FinishTesting}"
                     Visibility="{Binding FinishButtonVisibility}"/>
-            
-            
-        </StackPanel>
 
-        <!--<Button Width="300" Height="40" Content="Завершити" Margin="10" BorderThickness="0"
+
+            </StackPanel>
+
+            <!--<Button Width="300" Height="40" Content="Завершити" Margin="10" BorderThickness="0"
           Style="{StaticResource MainButton}" Command="{Binding FinishTesting}"
           />-->
-    </StackPanel>
+        </StackPanel>
+    </ScrollViewer>
 </Page>
