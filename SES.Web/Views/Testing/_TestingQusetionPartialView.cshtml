@@ -1,7 +1,7 @@
 ﻿@model Question
 
 
-<div class="container d-flex flex-column" style="width: 80%">
+<div class="container d-flex flex-column" style="width: 80%; margin-bottom: 20px">
 
 	<h6 id="question-number">Питання @ViewBag.Number</h6>
 	<h5 style="font-weight: 700; margin-bottom: 20px">@Model.Text</h5>
@@ -43,6 +43,7 @@
 			ErrorToastShow("Оберіть варінт(-и) відповіді");
 		}
 		else {
+			
 			$.ajax({
 				url: "@Url.Action("NextQuestion", "Testing")",
 				type: "Get",
@@ -62,6 +63,12 @@
 					ErrorToastShow(xhr.responseText);
 				}
 			});
+
+			if (Status == "Finish") 
+			{ 
+				clearInterval(countdown); 
+				document.getElementById("countdown").innerHTML = ``; 
+			}
 		}
 	}
 
