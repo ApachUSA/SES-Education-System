@@ -46,14 +46,17 @@ namespace SES.Domain.Entity.UserE
 
 		[DisplayName("Логін")]
 		[Required(ErrorMessage = "Введіть логін.")]
+		[MaxLength(25, ErrorMessage = "Максимальна к-сть символів: 25.")]
 		public required string Login { get; set; }
 
 		[DisplayName("Пароль")]
 		[Required(ErrorMessage = "Введіть пароль.")]
+		[MaxLength(10, ErrorMessage = "Максимальна к-сть символів: 10.")]
 		public required string Password { get; set; }
 
 		[DisplayName("Підтвердження паролю")]
 		[Required(ErrorMessage = "Підтвердіть пароль.")]
+		[MaxLength(10, ErrorMessage = "Максимальна к-сть символів: 10.")]
 		[Compare("Password", ErrorMessage = "Паролі не співпадають.")]
 		public required string PasswordConfirm { get; set; }
 

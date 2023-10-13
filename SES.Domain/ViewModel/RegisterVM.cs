@@ -38,10 +38,12 @@ namespace SES.Domain.ViewModel
 
 		[DisplayName("Логін")]
 		[Required(ErrorMessage = "Введіть логін.")]
+		[MaxLength(25, ErrorMessage = "Максимальна к-сть символів: 25.")]
 		public required string Login_VM { get; set; }
 
 		[DisplayName("Пароль")]
 		[Required(ErrorMessage = "Введіть пароль.")]
+		[MaxLength(10, ErrorMessage = "Максимальна к-сть символів: 10.")]
 		public required string Password_VM { get; set; }
 
 		[DisplayName("Роль")]
