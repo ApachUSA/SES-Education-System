@@ -15,8 +15,8 @@ namespace SES.Desktop.ViewModel
 	public class LoginVM : ViewModelBase
 	{
 
-		public string? Login { get; set; } = "student";
-		public string? Password { get; set; } = "student";
+		public string? Login { get; set; }
+		public string? Password { get; set; }
 		public string? Error { get; set; }
 
 		public ICommand LoginCommand { get; set; }

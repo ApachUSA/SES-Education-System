@@ -40,7 +40,7 @@ namespace SES.Web.Controllers
 				var user = response.Data.Where(x => x.Login == model.Login && x.Password == model.Password).FirstOrDefault();
 				if (user == null)
 				{
-					return BaseResponse<ApiGetTestVM>.Fail(Domain.Enum.ResponseStatus.UserNotFound, "Неправельний логін або пароль ");
+					return BaseResponse<ApiGetTestVM>.Fail(Domain.Enum.ResponseStatus.UserNotFound, "Неправильний логін або пароль ");
 
 				}
 
