@@ -8,7 +8,7 @@
       d:DesignHeight="980" d:DesignWidth="1820"
       Title="Finish">
     <ScrollViewer CanContentScroll="True" VerticalScrollBarVisibility="Auto">
-        <StackPanel Width="1020" VerticalAlignment="Center">
+        <StackPanel Width="1040" VerticalAlignment="Center">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
@@ -77,7 +77,7 @@
             </Grid>
 
             <TextBlock Text="{Binding SubTitle}" TextWrapping="Wrap"
-                   Foreground="White" FontSize="18" TextAlignment="Center" Margin="0 0 0 10"/>
+                   Foreground="White" FontSize="18" TextAlignment="Center" Margin="0 0 0 20"/>
 
             <TextBlock  Text="Для завершення роботи, будь ласка, вийдіть із системи" Foreground="White" FontSize="14" 
                    HorizontalAlignment="Center" Margin="0 2 0 10"  TextWrapping="Wrap" TextAlignment="Center"/>
