@@ -14,6 +14,7 @@ using iText.IO.Font;
 using iText.Kernel.Font;
 using iText.Layout.Borders;
 using SES.Domain.ViewModel;
+using iText.IO.Image;
 
 namespace SES.Web.Controllers
 {
@@ -21,11 +22,13 @@ namespace SES.Web.Controllers
 	{
 		private readonly ITestHistoryService _historyService;
 		private readonly ITestResultService _resultService;
+		private readonly IUserService _userService;
 
-		public TestResultController(ITestResultService resultService, ITestHistoryService historyService)
+		public TestResultController(ITestResultService resultService, ITestHistoryService historyService, IUserService userService)
 		{
 			_resultService = resultService;
 			_historyService = historyService;
+			_userService = userService;
 		}
 
 		[HttpGet]
@@ -69,8 +72,11 @@ namespace SES.Web.Controllers
 		}
 
 		[HttpGet]
-		public IActionResult StudentsResultPdf([FromQuery] string result)
+		public async Task<IActionResult> StudentsResultPdf([FromQuery] string result)
 		{
+			var teacher = await _userService.Get(int.Parse(HttpContext.User.FindFirst("UserID").Value));
+			if (teacher.StatusCode != ResponseStatus.Success) return BadRequest(teacher.Description);
+
 			var results = System.Text.Json.JsonSerializer.Deserialize<List<PDFResultVM>>(result);
 			using MemoryStream memoryStream = new();
 
@@ -79,6 +85,12 @@ namespace SES.Web.Controllers
 			string FONT_FILENAME = @"wwwroot/times.ttf";
 			PdfFont font = PdfFontFactory.CreateFont(FONT_FILENAME, PdfEncodings.IDENTITY_H);
 			pdfDoc.SetFont(font);
+
+			var image = new Image(ImageDataFactory.Create(@"wwwroot/img/SES.png"));
+			image.SetHorizontalAlignment(HorizontalAlignment.CENTER);
+			image.SetWidth(80);
+			image.SetHeight(80);
+			pdfDoc.Add(image);
 
 			var title = new Paragraph("Державна служба України з надзвичайних ситуацій");
 			title.SetTextAlignment(TextAlignment.CENTER);
@@ -89,12 +101,16 @@ namespace SES.Web.Controllers
 			var subtitle = new Paragraph("Результати проведення Державної кваліфікаційної атестації");
 			subtitle.SetTextAlignment(TextAlignment.CENTER);
 			subtitle.SetFontSize(12);
-			subtitle.SetBold();
 			pdfDoc.Add(subtitle);
+
+			var subsubtitle = new Paragraph($"{teacher.Data.Department.Number} ДПРЧ ГУ ДСНС України, {teacher.Data.Department.City.Region_ID} обл., м. {teacher.Data.Department.City.Name}");
+			subsubtitle.SetTextAlignment(TextAlignment.CENTER);
+			subsubtitle.SetFontSize(12);
+			subsubtitle.SetMarginTop(50);
+			pdfDoc.Add(subsubtitle);
 
 
 			var table = new Table(UnitValue.CreatePercentArray(new float[] { 1, 3, 3, 1, 2 })).UseAllAvailableWidth();
-			table.SetMarginTop(100);
 			table.AddHeaderCell(new Paragraph("№").SetTextAlignment(TextAlignment.CENTER).SetBold());
 			table.AddHeaderCell(new Paragraph("ПІБ").SetTextAlignment(TextAlignment.CENTER).SetBold());
 			table.AddHeaderCell(new Paragraph("Посада").SetTextAlignment(TextAlignment.CENTER).SetBold());
@@ -113,9 +129,8 @@ namespace SES.Web.Controllers
 
 			pdfDoc.Add(table);
 
-			var footer = new Table(UnitValue.CreatePercentArray(new float[] { 2, 3, 2 })).UseAllAvailableWidth();
+			var footer = new Table(UnitValue.CreatePercentArray(new float[] { 2, 2, 2 })).UseAllAvailableWidth();
 			footer.SetMarginTop(100);
-			footer.SetBorder(Border.NO_BORDER);
 
 			var paragraphDate = new Paragraph();
 			var paragraphSnp = new Paragraph();
@@ -123,21 +138,13 @@ namespace SES.Web.Controllers
 
 			paragraphDate.Add(new Text("Дата: ")).Add(new Text(DateTime.Now.ToShortDateString()).SetUnderline()).Add(new Text(" р."));
 			paragraphSnp.Add(new Text(HttpContext.User.Identity.Name).SetUnderline()).Add("\n").Add(new Text("(ПІБ)").SetFontSize(8));
-			paragraphSign.Add(new Text(new string('_', 30))).Add("\n").Add(new Text("(підпис та печатка)").SetFontSize(8));
+			paragraphSign.Add(new Text(new string('_', 25))).Add("\n").Add(new Text("(підпис та печатка)").SetFontSize(8));
 
 
-
-			footer.AddCell(paragraphDate).SetBorder(Border.NO_BORDER);
-			footer.AddCell(paragraphSnp.SetTextAlignment(TextAlignment.CENTER));
-			footer.AddCell(paragraphSign.SetTextAlignment(TextAlignment.CENTER));
-
-			foreach (var cell in footer.GetChildren())
-			{
-				if (cell is Cell tableCell)
-				{
-					tableCell.SetBorder(Border.NO_BORDER);
-				}
-			}
+			
+			footer.AddCell(new Cell().Add(paragraphDate).SetBorder(Border.NO_BORDER));
+			footer.AddCell(new Cell().Add(paragraphSign.SetTextAlignment(TextAlignment.CENTER)).SetBorder(Border.NO_BORDER));
+			footer.AddCell(new Cell().Add(paragraphSnp.SetTextAlignment(TextAlignment.CENTER)).SetBorder(Border.NO_BORDER));
 
 			pdfDoc.Add(footer);
 
