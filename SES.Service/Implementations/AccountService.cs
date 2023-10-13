@@ -75,7 +75,7 @@ namespace SES.Service.Implementations
 				new Claim(ClaimsIdentity.DefaultNameClaimType, user.Surname + " " + user.Name + " " + user.Patronymic),
 				new Claim(ClaimsIdentity.DefaultRoleClaimType,user.Role_ID.ToString()),
 				new Claim("UserId", user.User_ID.ToString()),
-				new Claim("Department", user.Department.Number.ToString())
+				new Claim("Department", user.Department.Department_ID.ToString())
 			};
 
 			return new ClaimsIdentity(claims, "ApplicationCookie", ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
