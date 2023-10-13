@@ -46,23 +46,15 @@
                        Foreground="White" FontSize="24" FontWeight="Bold" Grid.ColumnSpan="2" 
                        TextWrapping="Wrap"/>
 
-                <StackPanel Grid.Row="1" Grid.ColumnSpan="2" Margin="0 80 0 0">
+                <TextBlock Text="{Binding ErrorMessage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  Margin="0 80 0 0"
+                           Foreground="Red" FontSize="14" FontWeight="Bold" Grid.ColumnSpan="2" 
+                           TextWrapping="Wrap"/>
+                <StackPanel Grid.Row="1" Grid.ColumnSpan="2">
                     <ItemsControl Name="OptionsItemsControl" ItemsSource="{Binding CurrentQuestion.Options}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <Grid  Margin="0 40 0 0" VerticalAlignment="Center">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="auto"/>
-                                        <ColumnDefinition Width="*"/>
-                                    </Grid.ColumnDefinitions>
-
-                                    <CheckBox IsChecked="{Binding Right}" Margin="0,0,20,0"
-                                          Style="{StaticResource CustomCheckBoxStyle}"/>
-
-                                    <TextBlock Text="{Binding Text}" FontSize="16" Foreground="White" 
-                                           TextWrapping="Wrap" Grid.Column="1"/>
-
-                                </Grid>
+                                <CheckBox IsChecked="{Binding Right}" Margin="0 40 0 0"
+                                          Style="{StaticResource CustomCheckBoxStyle}" Content="{Binding Text}"/>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
