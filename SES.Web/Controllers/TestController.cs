@@ -82,7 +82,7 @@ namespace SES.Web.Controllers
 						return BadRequest("Основний тест для цієї посади вже існує.");
 					}
 				}
-				return BadRequest(test.Description);
+				else return BadRequest(test.Description);
 			}
 
 			var response = await _testService.Create(model);
