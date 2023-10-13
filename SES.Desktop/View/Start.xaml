@@ -32,7 +32,7 @@
                 </StackPanel>
             </Grid>
 
-            <TextBlock Text="Вітаємо у системі складання тесту в рамках щорічного підвищення кваліфікації працівників ДСНС!" Foreground="White" FontSize="40"
+            <TextBlock Text="Вітаємо у системі складання тесту в рамках щорічного підвищення кваліфікації працівників Служби порятунку!" Foreground="White" FontSize="40"
                    FontWeight="Bold" TextWrapping="Wrap" TextAlignment="Center" Margin="0 40"/>
 
 
@@ -76,7 +76,7 @@
             <TextBlock Text="Бажаємо вам успіхів!" Foreground="White" FontSize="30" HorizontalAlignment="Center"
              FontWeight="Bold" Margin="0 20 0 10"/>
 
-            <Button Width="300" Height="40" Content="Почати тестування" Margin="10" BorderThickness="0"
+            <Button Width="300" Height="40" Content="Почати тестування" Margin="0 10 0 0" BorderThickness="0"
          Style="{StaticResource MainButton}" Command="{Binding StartingTest}"/>
 
             <Button Width="300" Height="40" Content="Назад" Margin="10" BorderThickness="0"
