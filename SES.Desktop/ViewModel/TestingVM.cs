@@ -24,6 +24,8 @@ namespace SES.Desktop.ViewModel
 		public Visibility NextButtonVisibility { get; set; }
 		public Visibility FinishButtonVisibility { get; set; } = Visibility.Collapsed;
 
+		public string ErrorMessage { get; set; }
+
 		private DispatcherTimer timer;
 		public TimeSpan CurrentTime { get; set; }
 
@@ -63,10 +65,22 @@ namespace SES.Desktop.ViewModel
 
 		private void Next()
 		{
-			CurrentIndex++;
-			CheckButtonVisibility();
-			OnPropertyChanged(nameof(CurrentQuestion));
-			OnPropertyChanged(nameof(CurrentIndex));
+			if (!CurrentQuestion.Options.Any(x => x.Right == true))
+			{
+				ErrorMessage = "Оберіть варіант(-и) відповіді.";
+				OnPropertyChanged(nameof(ErrorMessage));
+				return;
+			}
+			else
+			{
+				ErrorMessage = "";
+				CurrentIndex++;
+				CheckButtonVisibility();
+				OnPropertyChanged(nameof(CurrentQuestion));
+				OnPropertyChanged(nameof(CurrentIndex));
+				OnPropertyChanged(nameof(ErrorMessage));
+			}
+			
 
 		}
 
@@ -80,60 +94,70 @@ namespace SES.Desktop.ViewModel
 
 		private async void Finish()
 		{
-			timer.Stop();
-
-			int totalPoint = 0;
-			for (int i = 0; i < UserQuestions.Count; i++)
+			if (!CurrentQuestion.Options.Any(x => x.Right == true))
 			{
-				if (AreOptionsEqual(UserQuestions[i].Options, TestVM.Test[i].Options))
-				{
-					totalPoint++;
-				}
+				ErrorMessage = "Оберіть варіант(-и) відповіді.";
+				OnPropertyChanged(nameof(ErrorMessage));
+				return;
 			}
-
-
-			int mark = (double)(totalPoint * 100 / UserQuestions.Count) switch
+			else
 			{
-				>= 90 => 5,
-				>= 80 => 4,
-				>= 70 => 3,
-				>= 60 => 2,
-				_ => 1,
-			};
 
-			var Test_Result = new Test_Result()
-			{
-				Test_Result_ID = TestVM.TestResult_ID,
-				Date = DateTime.Now.ToShortDateString(),
-				Mark = mark,
-				Right_Answer_Count = totalPoint,
-				Status = TestVM.Status switch
+				timer.Stop();
+
+				int totalPoint = 0;
+				for (int i = 0; i < UserQuestions.Count; i++)
 				{
-					null => mark <= 2 ? ResultStatus.Retake : ResultStatus.Pass,
-					_ => mark <= 2 ? ResultStatus.Fail : ResultStatus.Pass,
-				},
-				Test_ID = UserQuestions[0].Test_ID,
-				User_ID = TestVM.User.User_ID
-			};
-
-			using HttpClient client = new();
-			try
-			{
-				var response = await client.PostAsJsonAsync($"https://localhost:7277/TestApi/PostResult",  Test_Result);
-				response.EnsureSuccessStatusCode();
-
-				var baseResponse = JsonSerializer.Deserialize<BaseResponse<bool>>(await response.Content.ReadAsStringAsync(), new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-				if(baseResponse.StatusCode == ResponseStatus.Success)
-				{
-					Application.Current.MainWindow.Closing -= MainWindow_Closing;
-					((MainWindowVM)Application.Current.MainWindow.DataContext).NavigateToFinish(TestVM.User, Test_Result, UserQuestions.Count);
+					if (AreOptionsEqual(UserQuestions[i].Options, TestVM.Test[i].Options))
+					{
+						totalPoint++;
+					}
 				}
-				else MessageBox.Show(baseResponse.Description);
 
-			}
-			catch (Exception ex)
-			{
-				MessageBox.Show(ex.Message);
+
+				int mark = (double)(totalPoint * 100 / UserQuestions.Count) switch
+				{
+					>= 90 => 5,
+					>= 80 => 4,
+					>= 70 => 3,
+					>= 60 => 2,
+					_ => 1,
+				};
+
+				var Test_Result = new Test_Result()
+				{
+					Test_Result_ID = TestVM.TestResult_ID,
+					Date = DateTime.Now.ToShortDateString(),
+					Mark = mark,
+					Right_Answer_Count = totalPoint,
+					Status = TestVM.Status switch
+					{
+						null => mark <= 2 ? ResultStatus.Retake : ResultStatus.Pass,
+						_ => mark <= 2 ? ResultStatus.Fail : ResultStatus.Pass,
+					},
+					Test_ID = UserQuestions[0].Test_ID,
+					User_ID = TestVM.User.User_ID
+				};
+
+				using HttpClient client = new();
+				try
+				{
+					var response = await client.PostAsJsonAsync($"https://localhost:7277/TestApi/PostResult", Test_Result);
+					response.EnsureSuccessStatusCode();
+
+					var baseResponse = JsonSerializer.Deserialize<BaseResponse<bool>>(await response.Content.ReadAsStringAsync(), new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+					if (baseResponse.StatusCode == ResponseStatus.Success)
+					{
+						Application.Current.MainWindow.Closing -= MainWindow_Closing;
+						((MainWindowVM)Application.Current.MainWindow.DataContext).NavigateToFinish(TestVM.User, Test_Result, UserQuestions.Count);
+					}
+					else MessageBox.Show(baseResponse.Description);
+
+				}
+				catch (Exception ex)
+				{
+					MessageBox.Show(ex.Message);
+				}
 			}
 
 		}
