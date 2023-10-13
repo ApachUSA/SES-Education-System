@@ -4,18 +4,18 @@
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="false">
 	<div class="modal-dialog modal-dialog-centered">
 		<div class="modal-content">
-			<div class="modal_card d-flex flex-column justify-content-between">
+			<div class="modal_card d-flex flex-column justify-content-between" style="width: 420px">
 				<form asp-action="Edit" id="EditAbstractForm">
 					<input asp-for="Abstract_ID" hidden />
 					<span style="font-weight: 700">Редагування</span>
 					<div class="form-group mb-3 mt-4">
 						<label asp-for="Name"></label>
-						<input asp-for="Name" class="form-control" />
+						<textarea asp-for="Name" class="form-control" rows="2"></textarea>
 						<span asp-validation-for="Name" class="text-danger"></span>
 					</div>
 					<div class="form-group mb-3">
 						<label asp-for="URL"></label>
-						<input asp-for="URL" class="form-control" />
+						<textarea asp-for="URL" class="form-control" rows="2"></textarea>
 						<span asp-validation-for="URL" class="text-danger"></span>
 					</div>
 					<input asp-for="AreaOfStudy_ID" hidden />
