@@ -11,10 +11,13 @@
 	{
 		<div class="admin_icon mb-2 mt-2"><a class="add_icon" onclick="GetCreate(@ViewBag.AreaName)"><i class="bi bi-plus-square-fill"></i></a></div>
 	}
+	@{
+		int i = 1;
+	}
 	@foreach (var item in Model)
 	{
 		<div class="theme_item">
-			<a class="link_button_nodecorate" href="@item.URL" target="_blank"><span>@item.Name</span></a>
+			<a class="link_button_nodecorate" href="@item.URL" target="_blank"><span>Тема @(i++). @item.Name</span></a>
 			@if (User.IsInRole("Admin"))
 			{
 				<div class="admin_icon"><a class="edit_icon" onclick="GetEdit(@item.Abstract_ID)"><i class="bi bi-pencil-square"></i></a></div>
