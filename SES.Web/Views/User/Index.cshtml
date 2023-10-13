@@ -74,7 +74,10 @@
 			</div>
 
 			<div class="d-flex flex-row align-items-center justify-content-center" style="margin-top: 50px">
-				<a onclick="GetPDF()" class="main_button" style="width: 300px; height: 40px"><span>Завантажити</span></a>
+				<a onclick="GetPDF()" class="main_button" style="width: 300px; height: 40px">
+					<span>Завантажити</span>
+					<div class="spinner-border text-info ms-3" id="PdfSpin" hidden style="height: 20px; width: 20px" role="status"></div>
+				</a>
 			</div>
 
 		</div>
@@ -405,7 +408,6 @@
 	});
 
 	$(".filter_date").on("blur keypress", function (e) {
-		// Проверяем, нажата ли клавиша Enter (код клавиши 13)
 		if (e.type === "keypress" && e.which !== 13) {
 			return;
 		}
@@ -415,19 +417,16 @@
 	function FilterResult() {
 		var selectedValues = [];
 
-		// Получаем выбранные флажки
 		$(".filter-result-checkbox:checked").each(function () {
 			selectedValues.push($(this).attr("id"));
 		});
 
 		var formattedDate = $(".filter_date").val();
-		// Разделяем дату на части по дефису
 		if (formattedDate != "") {
 			var parts = formattedDate.split("-");
 			formattedDate = parts[2] + "." + parts[1] + "." + parts[0];
 		}
 
-		// Преобразуем выбранные значения в строку для передачи
 		var filterValues = selectedValues.join(",");
 
 		$.ajax({
@@ -464,22 +463,31 @@
 
 			PDFResult.push(result);
 		});
+		if (PDFResult.length == 0) {
+			ErrorToastShow("Список результатів порожній");
+		}
+		else {
+			$("#PdfSpin").removeAttr("hidden");
+			$.ajax({
+				url: "@Url.Action("StudentsResultPdf", "TestResult")",
+				type: "GET",
+				data: { result: JSON.stringify(PDFResult) },
+				success: function () {
+					var pdfUrl = '@Url.Action("StudentsResultPdf", "TestResult")';
+					pdfUrl += '?result=' + encodeURIComponent(JSON.stringify(PDFResult));
+					window.open(pdfUrl, '_blank');
 
-		$.ajax({
-			url: "@Url.Action("StudentsResultPdf", "TestResult")",
-			type: "GET",
-			data: { result: JSON.stringify(PDFResult) },
-			success: function () {
-				var pdfUrl = '@Url.Action("StudentsResultPdf", "TestResult")';
-				pdfUrl += '?result=' + encodeURIComponent(JSON.stringify(PDFResult));
-				window.open(pdfUrl, '_blank');
+					$("#PdfSpin").attr("hidden", "hidden");
 
-				SuccesToastShow("PDF згенеровано");
-			},
-			error: function (xhr) {
-				ErrorToastShow(xhr.responseText);
-			}
-		});
+					SuccesToastShow("PDF згенеровано");
+				},
+				error: function (xhr) {
+					$("#PdfSpin").attr("hidden", "hidden");
+
+					ErrorToastShow(xhr.responseText);
+				}
+			});
+		}
 	}
 </script>
 
