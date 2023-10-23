@@ -80,7 +80,7 @@ namespace SES.Desktop.ViewModel
 				OnPropertyChanged(nameof(CurrentIndex));
 				OnPropertyChanged(nameof(ErrorMessage));
 			}
-			
+
 
 		}
 
@@ -100,64 +100,73 @@ namespace SES.Desktop.ViewModel
 				OnPropertyChanged(nameof(ErrorMessage));
 				return;
 			}
-			else
+			SaveResult();
+
+		}
+
+		private async void SaveResult()
+		{
+
+			timer.Stop();
+
+			int totalPoint = 0;
+			for (int i = 0; i < UserQuestions.Count; i++)
 			{
-
-				timer.Stop();
-
-				int totalPoint = 0;
-				for (int i = 0; i < UserQuestions.Count; i++)
+				if (AreOptionsEqual(UserQuestions[i].Options, TestVM.Test[i].Options))
 				{
-					if (AreOptionsEqual(UserQuestions[i].Options, TestVM.Test[i].Options))
-					{
-						totalPoint++;
-					}
+					totalPoint++;
 				}
+			}
 
 
-				int mark = (double)(totalPoint * 100 / UserQuestions.Count) switch
+			int mark = (double)(totalPoint * 100 / UserQuestions.Count) switch
+			{
+				>= 90 => 5,
+				>= 80 => 4,
+				>= 70 => 3,
+				>= 60 => 2,
+				_ => 1,
+			};
+
+			var Test_Result = new Test_Result()
+			{
+				Test_Result_ID = TestVM.TestResult_ID,
+				Date = DateTime.Now.ToShortDateString(),
+				Mark = mark,
+				Right_Answer_Count = totalPoint,
+				Status = TestVM.Status switch
 				{
-					>= 90 => 5,
-					>= 80 => 4,
-					>= 70 => 3,
-					>= 60 => 2,
-					_ => 1,
+					null => mark <= 2 ? ResultStatus.Retake : ResultStatus.Pass,
+					_ => mark <= 2 ? ResultStatus.Fail : ResultStatus.Pass,
+				},
+				Test_ID = UserQuestions[0].Test_ID,
+				User_ID = TestVM.User.User_ID
+			};
+
+
+			try
+			{
+				var handler = new HttpClientHandler
+				{
+					ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
 				};
 
-				var Test_Result = new Test_Result()
+				var client = new HttpClient(handler);
+				var response = await client.PostAsJsonAsync($"https://192.168.50.186:44339/TestApi/PostResult", Test_Result);
+				response.EnsureSuccessStatusCode();
+
+				var baseResponse = JsonSerializer.Deserialize<BaseResponse<bool>>(await response.Content.ReadAsStringAsync(), new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+				if (baseResponse.StatusCode == ResponseStatus.Success)
 				{
-					Test_Result_ID = TestVM.TestResult_ID,
-					Date = DateTime.Now.ToShortDateString(),
-					Mark = mark,
-					Right_Answer_Count = totalPoint,
-					Status = TestVM.Status switch
-					{
-						null => mark <= 2 ? ResultStatus.Retake : ResultStatus.Pass,
-						_ => mark <= 2 ? ResultStatus.Fail : ResultStatus.Pass,
-					},
-					Test_ID = UserQuestions[0].Test_ID,
-					User_ID = TestVM.User.User_ID
-				};
-
-				using HttpClient client = new();
-				try
-				{
-					var response = await client.PostAsJsonAsync($"https://localhost:7277/TestApi/PostResult", Test_Result);
-					response.EnsureSuccessStatusCode();
-
-					var baseResponse = JsonSerializer.Deserialize<BaseResponse<bool>>(await response.Content.ReadAsStringAsync(), new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-					if (baseResponse.StatusCode == ResponseStatus.Success)
-					{
-						Application.Current.MainWindow.Closing -= MainWindow_Closing;
-						((MainWindowVM)Application.Current.MainWindow.DataContext).NavigateToFinish(TestVM.User, Test_Result, UserQuestions.Count);
-					}
-					else MessageBox.Show(baseResponse.Description);
-
+					Application.Current.MainWindow.Closing -= MainWindow_Closing;
+					((MainWindowVM)Application.Current.MainWindow.DataContext).NavigateToFinish(TestVM.User, Test_Result, UserQuestions.Count);
 				}
-				catch (Exception ex)
-				{
-					MessageBox.Show(ex.Message);
-				}
+				else MessageBox.Show(baseResponse.Description);
+
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show(ex.Message);
 			}
 
 		}
@@ -226,7 +235,7 @@ namespace SES.Desktop.ViewModel
 
 			if (CurrentTime <= TimeSpan.Zero)
 			{
-				Finish();
+				SaveResult();
 			}
 			OnPropertyChanged(nameof(CurrentTime));
 		}
@@ -253,7 +262,7 @@ namespace SES.Desktop.ViewModel
 
 			if (MessageBox.Show("Буде збережено ту кількість відповідей, яку ви встигли обрати.", "Ви впевнені що хочете вийти з тесту?", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
 			{
-				Finish();
+				SaveResult();
 			}
 			else
 			{

@@ -40,16 +40,18 @@
                 <Grid.RowDefinitions>
                     <RowDefinition/>
                     <RowDefinition/>
+                    <RowDefinition/>
                 </Grid.RowDefinitions>
 
                 <TextBlock Text="{Binding CurrentQuestion.Text}" 
                        Foreground="White" FontSize="24" FontWeight="Bold" Grid.ColumnSpan="2" 
                        TextWrapping="Wrap"/>
 
-                <TextBlock Text="{Binding ErrorMessage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  Margin="0 80 0 0"
-                           Foreground="Red" FontSize="14" FontWeight="Bold" Grid.ColumnSpan="2" 
+                <TextBlock Text="{Binding ErrorMessage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  Margin="0 20 0 0"
+                           Foreground="Red" FontSize="14" FontWeight="Bold" Grid.ColumnSpan="2" Grid.Row="1"
                            TextWrapping="Wrap"/>
-                <StackPanel Grid.Row="1" Grid.ColumnSpan="2">
+                
+                <StackPanel Grid.Row="2" Grid.ColumnSpan="2">
                     <ItemsControl Name="OptionsItemsControl" ItemsSource="{Binding CurrentQuestion.Options}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
