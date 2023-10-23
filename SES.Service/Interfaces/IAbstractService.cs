@@ -14,6 +14,7 @@ namespace SES.Service.Interfaces
 		Task<BaseResponse<bool>> Create(Abstracts model);
 
 		Task<BaseResponse<List<Abstracts>>> GetAll(int area_ID);
+
 		Task<BaseResponse<Abstracts>> Get(int abstract_ID);
 
 		Task<BaseResponse<bool>> Update(Abstracts model);

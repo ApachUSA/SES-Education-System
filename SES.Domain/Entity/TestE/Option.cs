@@ -22,6 +22,5 @@ namespace SES.Domain.Entity.TestE
 
 		public Question? Question { get; set; }
 
-		//public List<Right_Answer>? Right_Answers { get; set; }
 	}
 }

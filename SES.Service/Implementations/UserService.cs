@@ -23,24 +23,6 @@ namespace SES.Service.Implementations
 			_userRepository = userRepository;
 		}
 
-		public async Task<BaseResponse<bool>> ChangePassword(ChangePasswordVM model)
-		{
-			try
-			{
-				var user = await _userRepository.Get().FirstOrDefaultAsync(x => x.User_ID == model.User_ID);
-				if (user == null) return BaseResponse<bool>.Fail(ResponseStatus.UserNotFound, "Користувача не знайдено");
-
-				user.Password = model.Password;
-				await _userRepository.Update(user);
-
-				return BaseResponse<bool>.Success(true, "");
-			}
-			catch (Exception e)
-			{
-				return BaseResponse<bool>.Error($"[User ChangePassword] : {e.Message}");
-			}
-		}
-
 		public async Task<BaseResponse<bool>> Delete(int id)
 		{
 			try

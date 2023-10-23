@@ -17,8 +17,6 @@ namespace SES.Service.Interfaces
 
 		Task<BaseResponse<User>> Update(User model);
 
-		Task<BaseResponse<bool>> ChangePassword(ChangePasswordVM model);
-
 		Task<BaseResponse<bool>> Delete(int id);
 	}
 }

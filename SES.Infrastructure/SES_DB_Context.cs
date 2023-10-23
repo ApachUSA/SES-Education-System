@@ -21,7 +21,6 @@ namespace SES.Infrastructure
 
 		public DbSet<Option> Options { get; set; }
 		public DbSet<Question> Questions { get; set; }
-		//public DbSet<Right_Answer> RightAnswers { get; set; }
 		public DbSet<Test> Tests { get; set; }
 		public DbSet<Test_History> Tests_Histories { get; set; }
 		public DbSet<Test_Result> Test_Results { get; set; }
@@ -64,24 +63,6 @@ namespace SES.Infrastructure
 				.HasForeignKey(x => x.Test_ID)
 				.OnDelete(DeleteBehavior.Cascade);
 			});
-
-			//modelBuilder.Entity<Right_Answer>(builder =>
-			//{
-			//	builder.ToTable("RightAnswers").HasKey(x => x.Right_Answer_ID);
-			//	builder.Property(x => x.Right_Answer_ID).ValueGeneratedOnAdd();
-
-			//	builder.HasOne(x => x.Option)
-			//		.WithMany(x => x.Right_Answers)
-			//		.HasForeignKey(x => x.Option_ID)
-			//		.OnDelete(DeleteBehavior.Cascade);
-
-			//	builder.HasOne(x => x.Question)
-			//	.WithMany(x => x.Right_Answers)
-			//	.HasForeignKey(x => x.Question_ID)
-			//	.OnDelete(DeleteBehavior.NoAction);
-
-			//});
-
 
 			modelBuilder.Entity<Test>(builder =>
 			{
@@ -130,7 +111,6 @@ namespace SES.Infrastructure
 					.OnDelete(DeleteBehavior.Cascade);
 
 			});
-
 
 			modelBuilder.Entity<City>(builder =>
 			{
@@ -182,8 +162,6 @@ namespace SES.Infrastructure
 				builder.HasOne(x => x.Rang)
 					.WithMany(x => x.Users)
 					.HasForeignKey(x => x.Rang_ID);
-
-
 
 			});
 

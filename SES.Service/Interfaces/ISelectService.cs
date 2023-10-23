@@ -13,10 +13,15 @@ namespace SES.Service.Interfaces
 	public interface ISelectService
 	{
 		Task<BaseResponse<List<Rang>>> GetRangs();
+
 		Task<BaseResponse<List<Department>>> GetDepartments(int region_ID);
+
 		Task<BaseResponse<List<City>>> GetCities(int region_ID);
+
 		Task<BaseResponse<List<Position>>> GetPositions();
+
 		Task<BaseResponse<Region[]>> GetRegions();
+
 		Task<BaseResponse<Role[]>> GetRoles();
 	}
 }
