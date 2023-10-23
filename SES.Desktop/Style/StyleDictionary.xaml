@@ -94,7 +94,7 @@ CornerRadius="5">
                         </Border>
                         <TextBlock FontSize="16" Foreground="White" Grid.Column="1"
                                     TextWrapping="Wrap" Text="{TemplateBinding Content}">
-                                    
+
                         </TextBlock>
                     </Grid>
                 </ControlTemplate>

@@ -46,8 +46,8 @@ namespace SES.Web.Controllers
 		{
 			var rang = await _selectService.GetRangs();
 			var position = await _selectService.GetPositions();
-			var region = await _selectService.GetRegions();
-			var role = await _selectService.GetRoles();
+			var region =  _selectService.GetRegions();
+			var role =  _selectService.GetRoles();
 
 			List<SelectListItem> selectRegion = region.Data.Select(reg => new SelectListItem
 			{

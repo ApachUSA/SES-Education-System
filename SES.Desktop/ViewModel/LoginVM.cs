@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Text;
@@ -29,10 +30,15 @@ namespace SES.Desktop.ViewModel
 
 		private async void Auth()
 		{
-			using HttpClient client = new();
 			try
 			{
-				var response = await client.GetAsync($"https://localhost:7277/TestApi/GetTest?Login={Login}&Password={Password}");
+				var handler = new HttpClientHandler
+				{
+					ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
+				};
+
+				var client = new HttpClient(handler);
+				var response = await client.GetAsync($"https://192.168.50.186:44339/TestApi/GetTest?Login={Login}&Password={Password}");
 				response.EnsureSuccessStatusCode();
 
 				var json = await response.Content.ReadAsStringAsync();

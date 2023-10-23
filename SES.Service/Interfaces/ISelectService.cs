@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Web.Mvc;
 
 namespace SES.Service.Interfaces
 {
@@ -20,8 +19,8 @@ namespace SES.Service.Interfaces
 
 		Task<BaseResponse<List<Position>>> GetPositions();
 
-		Task<BaseResponse<Region[]>> GetRegions();
+		BaseResponse<Region[]> GetRegions();
 
-		Task<BaseResponse<Role[]>> GetRoles();
+		BaseResponse<Role[]> GetRoles();
 	}
 }

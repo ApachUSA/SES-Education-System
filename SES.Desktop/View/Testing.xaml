@@ -63,26 +63,22 @@
 
             </Grid>
 
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                    <Button Width="300" Height="40" Content="Назад" Margin="10" BorderThickness="0"
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <Button Width="300" Height="40" Content="Назад" Margin="10" BorderThickness="0"
                         Style="{StaticResource MainButton}" Command="{Binding PreviousQuestion}"
                         Visibility="{Binding PreviousButtonVisibility}"/>
 
 
-                    <Button Width="300" Height="40" Content="Далі" Margin="10" BorderThickness="0"
+                <Button Width="300" Height="40" Content="Далі" Margin="10" BorderThickness="0"
                         Style="{StaticResource MainButton}" Command="{Binding NextQuestion}"
                          Visibility="{Binding NextButtonVisibility}"/>
 
-                    <Button Width="300" Height="40" Content="Завершити" Margin="10" BorderThickness="0"
+                <Button Width="300" Height="40" Content="Завершити" Margin="10" BorderThickness="0"
                         Style="{StaticResource MainButton}" Command="{Binding FinishTesting}"
                         Visibility="{Binding FinishButtonVisibility}"/>
 
 
-                </StackPanel>
-
-            <!--<Button Width="300" Height="40" Content="Завершити" Margin="10" BorderThickness="0"
-          Style="{StaticResource MainButton}" Command="{Binding FinishTesting}"
-          />-->
+            </StackPanel>
         </StackPanel>
     </ScrollViewer>
 </Page>

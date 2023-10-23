@@ -9,7 +9,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Web.Mvc;
 
 namespace SES.Service.Implementations
 {
@@ -82,7 +81,7 @@ namespace SES.Service.Implementations
 			}
 		}
 
-		public async Task<BaseResponse<Region[]>> GetRegions()
+		public BaseResponse<Region[]> GetRegions()
 		{
 			try
 			{
@@ -95,7 +94,7 @@ namespace SES.Service.Implementations
 			}
 		}
 
-		public async Task<BaseResponse<Role[]>> GetRoles()
+		public BaseResponse<Role[]> GetRoles()
 		{
 			try
 			{
