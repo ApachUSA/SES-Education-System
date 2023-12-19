@@ -101,6 +101,7 @@ namespace SES.Service.Implementations
 					.Include(x => x.Questions)
 					.ThenInclude(x => x.Options)
 					.Include(x => x.Position)
+					.Where(x => x.Status == TestStatus.Основне)
 					.FirstOrDefaultAsync(x => x.Position_ID == position_ID);
 
 				if (test == null) return BaseResponse<Test>.Fail(ResponseStatus.ItemNotFound, "Тест не знайдено");
