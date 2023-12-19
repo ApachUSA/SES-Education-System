@@ -152,7 +152,7 @@ namespace SES.Desktop.ViewModel
 				};
 
 				var client = new HttpClient(handler);
-				var response = await client.PostAsJsonAsync($"https://192.168.50.186:44339/TestApi/PostResult", Test_Result);
+				var response = await client.PostAsJsonAsync($"http://192.168.50.121:8080/TestApi/PostResult", Test_Result);
 				response.EnsureSuccessStatusCode();
 
 				var baseResponse = JsonSerializer.Deserialize<BaseResponse<bool>>(await response.Content.ReadAsStringAsync(), new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
