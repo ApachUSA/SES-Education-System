@@ -13,7 +13,7 @@ The modern world is constantly changing, and new challenges arise in terms of sa
 
 
 <div align="center">
-  <img src="/Domain/Screenshots/Architecture.png"/>
+  <img src="/SES.Domain/Screenshots/Architecture.png"/>
   <p>Architecture</p>
   <br/>
 </div>
@@ -48,4 +48,115 @@ Administrator:
 Student:
 - Pass the main test corresponding to his/her specialization. The result is displayed on the site for both the student and his teacher.
 
+## Screenshots
+### WEB
+#### Admin
+<div align="center">
+  <img src="/SES.Domain/Screenshots/Login.png"/>
+  <p>Login</p>
+  <br/>
+</div>
+<div align="center">
+  <img src="/SES.Domain/Screenshots/MainPage.png"/>
+  <p>Main page</p>
+  <br/>
+</div>
+<div align="center">
+  <img src="/SES.Domain/Screenshots/Profile.png"/>
+  <p>Profile</p>
+  <br/>
+</div>
+<div align="center">
+  <img src="/SES.Domain/Screenshots/UserCreate.png"/>
+  <p>User create</p>
+  <br/>
+</div>
+<div align="center">
+  <img src="/SES.Domain/Screenshots/UserList.png"/>
+  <p>User list</p>
+  <br/>
+</div>
+<div align="center">
+  <img src="/SES.Domain/Screenshots/UserEdit.png"/>
+  <p>User edit</p>
+  <br/>
+</div>
+<div align="center">
+  <img src="/SES.Domain/Screenshots/UserSearch.png"/>
+  <p>User search</p>
+  <br/>
+</div>
+<div align="center">
+  <img src="/SES.Domain/Screenshots/LectureList.png"/>
+  <p>Lecture list</p>
+  <br/>
+</div>
+<div align="center">
+  <img src="/SES.Domain/Screenshots/TestList.png"/>
+  <p>Test list</p>
+  <br/>
+</div>
+<div align="center">
+  <img src="/SES.Domain/Screenshots/CreateTest.png"/>
+  <p>Create test</p>
+  <br/>
+</div>
 
+#### Teacher
+
+<div align="center">
+  <img src="/SES.Domain/Screenshots/StudentList.png"/>
+  <p>Student result list</p>
+  <br/>
+</div>
+<div align="center">
+  <img src="/SES.Domain/Screenshots/TestResultPDF.png"/>
+  <p>User test result PDF</p>
+  <br/>
+</div>
+
+#### Student
+
+<div align="center">
+  <img src="/SES.Domain/Screenshots/TestStart.png"/>
+  <p>Test start</p>
+  <br/>
+</div>
+<div align="center">
+  <img src="/SES.Domain/Screenshots/Testing.png"/>
+  <p>Testing</p>
+  <br/>
+</div>
+<div align="center">
+  <img src="/SES.Domain/Screenshots/TestFinish.png"/>
+  <p>Test finish</p>
+  <br/>
+</div>
+<div align="center">
+  <img src="/SES.Domain/Screenshots/TestResult.png"/>
+  <p>Test result</p>
+  <br/>
+</div>
+
+### Desktop
+#### Student
+<div align="center">
+  <img src="/SES.Domain/Screenshots/WpfLogin.png"/>
+  <p>Login (WPF)</p>
+  <br/>
+</div>
+<div align="center">
+  <img src="/SES.Domain/Screenshots/WpfTestStart.png"/>
+  <p>Test start (WPF)</p>
+  <br/>
+</div>
+<div align="center">
+  <img src="/SES.Domain/Screenshots/WpfTesting.png"/>
+  <p>Testing (WPF)</p>
+  <br/>
+</div>
+<div align="center">
+  <img src="/SES.Domain/Screenshots/WpfTestFinish.png"/>
+  <p>Test finish (WPF)</p>
+  <br/>
+</div>
